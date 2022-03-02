@@ -1,5 +1,5 @@
 <?php
-namespace app;
+namespace app\index;
 
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;

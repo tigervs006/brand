@@ -10,8 +10,6 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::get('think', function () {
-    return 'hello,ThinkPHP6!';
+Route::get('think', function (): string {
+    return '<h2 style="text-align: center">Hello ThinkPHP6!</h2>';
 });
-
-Route::get('hello/:name', 'index/hello');
