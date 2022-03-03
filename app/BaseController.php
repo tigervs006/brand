@@ -1,9 +1,10 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\index;
+namespace app;
 
 use think\App;
+use think\Request;
 use think\Validate;
 use think\facade\View;
 
@@ -14,13 +15,13 @@ abstract class BaseController
 {
     /**
      * Request实例
-     * @var \think\Request
+     * @var Request
      */
-    protected \think\Request $request;
+    protected Request $request;
 
     /**
      * 应用实例
-     * @var \think\App
+     * @var App
      */
     protected App $app;
 

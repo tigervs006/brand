@@ -2,7 +2,7 @@
 
 namespace app\index\controller;
 
-use app\index\BaseController;
+use app\BaseController;
 
 class Services extends BaseController
 {

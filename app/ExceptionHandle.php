@@ -1,14 +1,15 @@
 <?php
-namespace app\index;
 
-use think\db\exception\DataNotFoundException;
-use think\db\exception\ModelNotFoundException;
+namespace app;
+
+use Throwable;
+use think\Response;
 use think\exception\Handle;
 use think\exception\HttpException;
-use think\exception\HttpResponseException;
 use think\exception\ValidateException;
-use think\Response;
-use Throwable;
+use think\exception\HttpResponseException;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
 
 /**
  * 应用异常处理类

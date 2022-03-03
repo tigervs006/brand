@@ -1,7 +1,7 @@
 <?php
 declare (strict_types = 1);
 
-namespace app\index;
+namespace app;
 
 use think\Service;
 
