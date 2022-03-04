@@ -2,7 +2,7 @@
 
 namespace app\index\controller;
 
-use app\BaseController;
+use app\index\BaseController;
 
 class Product extends BaseController
 {

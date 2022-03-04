@@ -2,9 +2,9 @@
 
 namespace app\index\controller;
 
-use app\BaseController;
+use app\index\BaseController;
 
-class Services extends BaseController
+class Support extends BaseController
 {
     final public function index(): string
     {

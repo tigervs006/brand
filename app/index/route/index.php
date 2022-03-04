@@ -7,5 +7,5 @@ Route::group(function () {
     Route::rule('case/:id', 'cases/detail');
     Route::rule('product/:id', 'product/detail');
     Route::rule('industry/:id', 'industry/detail');
-    Route::rule('services/video/:id', 'services/detail');
+    Route::rule('support/video/:id', 'support/detail');
 })->option(['method' => 'get', 'https' => true])->pattern(['id' => '\d+', 'name' => '\w+']);
