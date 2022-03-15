@@ -8,26 +8,26 @@ class Support extends BaseController
 {
     final public function index(): string
     {
-        return $this->view::fetch('../services/index');
+        return $this->view::fetch('../support/index');
     }
 
     final public function video(): string
     {
-        return $this->view::fetch('../services/video');
+        return $this->view::fetch('../support/video');
     }
 
     final public function detail(): string
     {
-        return $this->view::fetch('../services/detail');
+        return $this->view::fetch('../support/detail');
     }
 
     final public function software(): string
     {
-        return $this->view::fetch('../services/software');
+        return $this->view::fetch('../support/software');
     }
 
     final public function instruction(): string
     {
-        return $this->view::fetch('../services/instruction');
+        return $this->view::fetch('../support/instruction');
     }
 }

@@ -7,6 +7,7 @@ use think\App;
 use think\Request;
 use think\Validate;
 use think\facade\View;
+use app\services\channel\ChannelServices;
 
 /**
  * 控制器基础类

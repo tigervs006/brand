@@ -11,4 +11,9 @@ class ChannelServices extends BaseServices
     {
         $this->dao = $dao;
     }
+
+    public function getChannel()
+    {
+        
+    }
 }
