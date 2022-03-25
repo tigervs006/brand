@@ -1,8 +1,11 @@
 <?php
-
 namespace app\dao;
 
+use think\Collection;
 use core\basic\BaseModel;
+use think\db\exception\DbException;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
 
 abstract class BaseDao
 {
@@ -43,6 +46,25 @@ abstract class BaseDao
     }
 
     /**
+     * 根据条件获取数据
+     * @return array|Collection
+     * @param array $map 条件
+     * @param string|null $field 字段
+     * @param array|null $order 排序
+     * @throws DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     */
+    public function getData(array $map, ?array $order, ?string $field = '*'): array|Collection
+    {
+        if ($order) {
+            return $this->getModel()->where($map)->order($order)->field($field)->select();
+        } else {
+            return $this->getModel()->where($map)->field($field)->select();
+        }
+    }
+
+    /**
      * 新增一条数据
      * @return BaseModel
      * @param array $data
@@ -56,9 +78,9 @@ abstract class BaseDao
      * 批量新增数据
      * @param array $data
      * @throws \Exception
-     * @return \think\Collection
+     * @return Collection
      */
-    public function saveAll(array $data): \think\Collection
+    public function saveAll(array $data): Collection
     {
         return $this->getModel()->saveAll($data);
     }

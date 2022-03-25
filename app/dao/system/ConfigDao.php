@@ -1,33 +1,32 @@
 <?php
 declare (strict_types = 1);
-
-namespace app\dao\channel;
+namespace app\dao\system;
 
 use app\dao\BaseDao;
 use think\Collection;
-use app\model\channel\Channel;
+use app\model\system\Config;
 use think\db\exception\DbException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 
-class ChannelDao extends BaseDao
+class ConfigDao extends BaseDao
 {
     protected function setModel(): string
     {
-        return Channel::class;
+        return Config::class;
     }
 
     /**
+     * 获取系统配置项
+     * @param array $map
+     * @param string|null $field
      * @return array|Collection
-     * @param array $map 条件
-     * @param array|null $order 排序
-     * @param string|null $field 字段
      * @throws DbException
      * @throws DataNotFoundException
      * @throws ModelNotFoundException
      */
-    public function getChananel(array $map, ?array $order, ?string $field): array|Collection
+    public function getConfig(array $map, ?string $field): array|Collection
     {
-        return $this->getData($map, $order, $field);
+        return $this->getData($map, [], $field);
     }
 }

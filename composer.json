@@ -13,11 +13,7 @@
         {
             "name": "liu21st",
             "email": "liu21st@gmail.com"
-        },
-        {
-            "name": "yunwuxin",
-            "email": "448901948@qq.com"
-        }        
+        }
     ],
     "require": {
         "php": ">=8.0.15",
@@ -37,7 +33,8 @@
     },
     "autoload": {
         "psr-4": {
-            "app\\": "app"
+            "app\\": "app",
+            "core\\": "core"
         },
         "psr-0": {
             "": "extend/"
@@ -51,5 +48,11 @@
             "@php think service:discover",
             "@php think vendor:publish"
         ]
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
     }
 }

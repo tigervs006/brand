@@ -1,7 +1,6 @@
 <?php
 declare (strict_types = 1);
-
-namespace app\index;
+namespace core\basic;
 
 use think\App;
 use think\Request;
@@ -68,6 +67,23 @@ abstract class BaseController
     protected function initialize()
     {
         $this->id = $this->request->param('id/d', 1);
+        // 只在index应用执行
+         app('http')->getName() === 'index' && $this->Channel();
+    }
+
+    /**
+     * 获取网站栏目
+     * @return void
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\db\exception\DataNotFoundException
+     */
+    private function Channel(): void
+    {
+        /** @var ChannelServices $services */
+        $services = app()->make(ChannelServices::class);
+        $result = $services->getChildren($services->index(['status' => 1], ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname'));
+        $this->view::assign('channel', $result);
     }
 
     /**

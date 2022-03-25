@@ -22,10 +22,10 @@ class ExceptionHandle extends Handle
      */
     protected $ignoreReport = [
         HttpException::class,
-        HttpResponseException::class,
-        ModelNotFoundException::class,
-        DataNotFoundException::class,
         ValidateException::class,
+        HttpResponseException::class,
+        DataNotFoundException::class,
+        ModelNotFoundException::class
     ];
 
     /**

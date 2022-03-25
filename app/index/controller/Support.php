@@ -2,7 +2,7 @@
 
 namespace app\index\controller;
 
-use app\index\BaseController;
+use core\basic\BaseController;
 
 class Support extends BaseController
 {
