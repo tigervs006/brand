@@ -11,7 +11,8 @@ use think\db\exception\ModelNotFoundException;
 try {
     /** @var ConfigServices $services */
     $services = app()->make(ConfigServices::class);
-    return array_column($services->index(['status' => 1], 'name, value')->toArray(), 'value', 'name');
+    $result = $services->index(['status' => 1], 'name, value')->toArray();
+    return array_column($result, 'value', 'name');
 } catch (DbException|DataNotFoundException|ModelNotFoundException $e) {
     return app('json')->fail($e->getMessage());
 }
