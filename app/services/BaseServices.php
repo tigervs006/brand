@@ -51,9 +51,9 @@ abstract class BaseServices
 
     /**
      * 数据库事务操作
-     * @param callable $closure
-     * @param bool $isTran
      * @return mixed
+     * @param bool $isTran
+     * @param callable $closure
      */
     public function transaction(callable $closure, bool $isTran = true): mixed
     {

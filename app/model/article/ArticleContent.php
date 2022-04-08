@@ -6,5 +6,5 @@ use core\basic\BaseModel;
 
 class ArticleContent extends BaseModel
 {
-
+    protected $pk = 'aid';
 }

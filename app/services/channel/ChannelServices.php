@@ -5,9 +5,6 @@ namespace app\services\channel;
 use think\Collection;
 use app\services\BaseServices;
 use app\dao\channel\ChannelDao;
-use think\db\exception\DbException;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\ModelNotFoundException;
 
 class ChannelServices extends BaseServices
 {
@@ -21,9 +18,6 @@ class ChannelServices extends BaseServices
      * @param array $map 条件
      * @param string|null $field 字段
      * @param array|null $order 排序
-     * @throws DbException
-     * @throws DataNotFoundException
-     * @throws ModelNotFoundException
      */
     public function index(array $map, ?array $order, ?string $field): array|Collection
     {

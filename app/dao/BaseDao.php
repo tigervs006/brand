@@ -28,6 +28,11 @@ abstract class BaseDao
     abstract protected function setModel(): string;
 
     /**
+     * 设置join链表模型
+     */
+    protected function setJoinModel() {}
+
+    /**
      * 获取模型
      * @return BaseModel
      */
@@ -65,6 +70,16 @@ abstract class BaseDao
     }
 
     /**
+     * 计算数据总量
+     * @return int
+     * @param string|null $field
+     */
+    public function getCount(?string $field = 'id'): int
+    {
+        return $this->getModel()->count($field);
+    }
+
+    /**
      * 新增一条数据
      * @return BaseModel
      * @param array $data
@@ -76,23 +91,27 @@ abstract class BaseDao
 
     /**
      * 批量新增数据
+     * @return int
      * @param array $data
-     * @throws \Exception
-     * @return Collection
      */
-    public function saveAll(array $data): Collection
+    public function saveAll(array $data): int
     {
-        return $this->getModel()->saveAll($data);
+        return $this->getModel()->insertAll($data);
     }
 
     /**
      * 删除一条或多条数据
      * @return boolean
-     * @param int|array|string $id
+     * @param int|array $id
      */
-    public function delete(int|array|string $id): bool
+    public function delete(int|array $id, ?string $key = null): bool
     {
-        return $this->getModel()::destroy($id);
+        if (is_array($id)) {
+            $where = $id;
+        } else {
+            $where = [is_null($key) ? $this->getPk() : $key => $id];
+        }
+        return $this->getModel()::where($where)->useSoftDelete('delete_time',time())->delete();
     }
 
     /**
@@ -102,7 +121,7 @@ abstract class BaseDao
      * @param string|null $key
      * @param array|int|string $id
      */
-    public function updateOne(array|int|string $id, array $data, ?string $key): BaseModel
+    public function updateOne(int|array|string $id, array $data, ?string $key = null): BaseModel
     {
         if (is_array($id)) {
             $where = $id;

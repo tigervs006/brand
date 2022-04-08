@@ -3,6 +3,7 @@
 namespace core\utils;
 
 use think\Response;
+use think\facade\Request;
 
 /**
  * Json输出类
@@ -24,7 +25,9 @@ class Json
         $res = compact('status', 'msg');
 
         $msg && $res['msg'] = $msg;
-        !is_null($data) && $res['data'] = $data;
+        $res['method'] = Request::method();
+        $res['route'] = Request::pathinfo();
+        !is_null($data) && $res['result'] = $data;
 
         return Response::create($res, 'json', $this->code);
     }

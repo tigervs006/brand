@@ -28,13 +28,28 @@ abstract class BaseController
     /**
      * @var int
      */
-    protected int $id;
+    protected int $page;
 
     /**
      * 界面渲染
      * @var View
      */
     protected View $view;
+
+    /**
+     * @var object
+     */
+    protected object $json;
+
+    /**
+     * @var int
+     */
+    protected int $listRows;
+
+    /**
+     * @var int|array|string
+     */
+    protected int|array|string $id;
 
     /**
      * 是否批量验证
@@ -66,17 +81,21 @@ abstract class BaseController
     // 初始化
     protected function initialize()
     {
-        $this->id = $this->request->param('id/d', 1);
+        $this->json = App('json');
+        $this->id = $this->request->param('id', 1);
+        $this->page = $this->request->param('page/d', 1);
+        $this->listRows = $this->request->param('listRows/d', 15);
+
         // 只在index应用执行
-         app('http')->getName() === 'index' && $this->Channel();
+         App('http')->getName() === 'index' && $this->Channel();
     }
 
     /**
-     * 获取网站栏目
+     * 网站栏目
      * @return void
      * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
      */
     private function Channel(): void
     {
