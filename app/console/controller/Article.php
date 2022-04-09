@@ -9,7 +9,7 @@ class Article extends BaseController
 {
     protected ArticleServices $services;
 
-    public function initialize()
+    protected function initialize()
     {
         parent::initialize();
         $this->services = app()->make(ArticleServices::class);
@@ -19,13 +19,17 @@ class Article extends BaseController
      * 文章内容
      * @return mixed
      */
-    public function index(): mixed
+    final public function index(): mixed
     {
         $result = $this->services->article($this->id);
         return $this->json->successful('请求成功', $result);
     }
 
-    public function delete()
+    /**
+     * 删除文章
+     * @return mixed
+     */
+    final public function delete(): mixed
     {
         $this->services->del($this->id);
         return $this->json->successful('删除成功');
@@ -35,7 +39,7 @@ class Article extends BaseController
      * 新增|编辑
      * @return mixed
      */
-    public function save(): mixed
+    final public function save(): mixed
     {
         $data = $this->request->param();
         $this->services->saveArticle($data);
@@ -46,7 +50,7 @@ class Article extends BaseController
      * 文章列表
      * @return mixed
      */
-    public function lists(): mixed
+    final public function lists(): mixed
     {
         $orderField = $this->request->param('sortField/s', 'id');
         $sortOrder = $this->request->param('sortOrder/s', 'desc');

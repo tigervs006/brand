@@ -47,6 +47,12 @@ abstract class BaseController
     protected int $listRows;
 
     /**
+     * 阅读量步长
+     * @var int
+     */
+    protected int $incValue = 1;
+
+    /**
      * @var int|array|string
      */
     protected int|array|string $id;
@@ -57,11 +63,6 @@ abstract class BaseController
      */
     protected bool $batchValidate = false;
 
-    /**
-     * 控制器中间件
-     * @var array
-     */
-    protected array $middleware = [];
 
     /**
      * 构造方法

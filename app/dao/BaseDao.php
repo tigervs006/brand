@@ -3,9 +3,6 @@ namespace app\dao;
 
 use think\Collection;
 use core\basic\BaseModel;
-use think\db\exception\DbException;
-use think\db\exception\DataNotFoundException;
-use think\db\exception\ModelNotFoundException;
 
 abstract class BaseDao
 {
@@ -54,11 +51,8 @@ abstract class BaseDao
      * 根据条件获取数据
      * @return array|Collection
      * @param array $map 条件
-     * @param string|null $field 字段
      * @param array|null $order 排序
-     * @throws DbException
-     * @throws DataNotFoundException
-     * @throws ModelNotFoundException
+     * @param string|null $field 字段
      */
     public function getData(array $map, ?array $order, ?string $field = '*'): array|Collection
     {

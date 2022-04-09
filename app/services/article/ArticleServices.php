@@ -34,6 +34,17 @@ class ArticleServices extends BaseServices
     }
 
     /**
+     * 自增阅读量
+     * @return bool
+     * @param int $id id
+     * @param int $incValue 步长
+     */
+    public function inc(int $id, int $incValue): bool
+    {
+        return $this->dao->setInc($id, $incValue);
+    }
+
+    /**
      * 文章内容
      * @return array
      * @param int $id
@@ -44,17 +55,39 @@ class ArticleServices extends BaseServices
     }
 
     /**
+     * 上/下一篇文章
+     * @return array
+     * @param int $id id
+     */
+    public function prenext(int $id): array
+    {
+        return $this->dao->getPrenext($id);
+    }
+
+    /**
+     * 分页列表，用于前端
+     * @param int $rows 数量
+     * @param string $field 字段
+     * @param array|null $order 排序
+     */
+    public function paginate(string $field, int $rows, ?array $order = ['id' => 'desc']): \think\Paginator
+    {
+        return $this->dao->getPaginate($field, $rows, $order);
+    }
+
+    /**
      * 文章列表
      * @return array
      * @param int $page
      * @param int $listRows
      * @param array|null $order
+     * @param string|null $field
      */
-    public function getList(int $page, int $listRows, ?array $order): array
+    public function getList(int $page, int $listRows, ?array $order = ['id' => 'desc'], ?string $field = '*'): array
     {
         $total = $this->dao->getCount();
-        $result = $this->dao->getArtList($page, $listRows, $order);
-        return compact('total', 'result');
+        $data = $this->dao->getArtList($page, $listRows, $order, $field);
+        return compact('total', 'data');
     }
 
     /**
@@ -70,21 +103,23 @@ class ArticleServices extends BaseServices
         $content['content'] = $data['content'];
         unset($data['content'], $data['id']);
         return $this->transaction(function () use ($id, $data, $articleContentService, $content) {
-            if ($id) {
-                $info = $this->dao->updateOne($id, $data);
-                $content['aid'] = $id;
-                $res = $info && $articleContentService->update($id, $content, 'aid');
-            } else {
-                unset($data['id']);
-                $data['add_time'] = time();
-                $info = $this->dao->saveAll($data);
-                $content['aid'] = $info->id;
-                $res = $info && $articleContentService->save($content);
+            switch (true) {
+                case $id:
+                    $info = $this->dao->updateOne($id, $data);
+                    $content['aid'] = $id;
+                    $res = $info && $articleContentService->update($id, $content, 'aid');
+                    break;
+                default:
+                    unset($data['id']);
+                    $data['add_time'] = time();
+                    $info = $this->dao->saveAll($data);
+                    $content['aid'] = $info->id;
+                    $res = $info && $articleContentService->save($content);
             }
-            if (!$res) {
-                throw new ApiException('保存失败');
-            } else {
+            if ($res) {
                 return $info;
+            } else {
+                throw new ApiException('保存失败');
             }
         });
     }

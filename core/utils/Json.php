@@ -26,7 +26,7 @@ class Json
 
         $msg && $res['msg'] = $msg;
         $res['method'] = Request::method();
-        $res['route'] = Request::pathinfo();
+        $res['path'] = Request::pathinfo();
         !is_null($data) && $res['result'] = $data;
 
         return Response::create($res, 'json', $this->code);
