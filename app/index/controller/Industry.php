@@ -11,24 +11,24 @@ class Industry extends BaseController
      * 分页数
      * @var int
      */
-    protected int $rows = 10;
+    private int $rows = 10;
 
     /**
      * @var ArticleServices
      */
-    protected ArticleServices $services;
+    private ArticleServices $services;
 
     /**
      * 排序方式
      * @var array|string[]
      */
-    protected array $order = ['id' => 'desc'];
+    private array $order = ['id' => 'desc'];
 
     /**
-     * 提取字段
+     * 获取字段
      * @var string
      */
-    protected string $field = 'id, cid, click, title, author, litpic, create_time, description';
+    private string $field = 'id, cid, click, title, author, litpic, create_time, description';
 
 
     protected function initialize()

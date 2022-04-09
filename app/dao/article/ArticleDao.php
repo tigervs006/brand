@@ -13,6 +13,19 @@ class ArticleDao extends BaseDao
     }
 
     /**
+     * 自增阅读量
+     * @return bool
+     * @param int $id id
+     * @param int $incValue 步长
+     */
+    public function setInc(int $id, int $incValue): bool
+    {
+        $articleClick = $this->getModel()->find($id);
+        $articleClick->click += $incValue;
+        return $articleClick->isAutoWriteTimestamp(false)->save();
+    }
+
+    /**
      * 文章内容
      * @return array
      * @param int $id
@@ -30,14 +43,14 @@ class ArticleDao extends BaseDao
      * @param array|null $order 排序
      * @param string|null $field 字段
      */
-    public function getArtList(int $page, int $listRows, ?array $order, ?string $field): array
+    public function getArtList(int $page, int $listRows, ?string $field = '*', ?array $order = ['id' => 'desc']): array
     {
         return $this->getModel()->with(['channel'])->field($field)->order($order)->page($page, $listRows)->select()->toArray();
     }
 
     /**
      * @return \think\Paginator
-     * 分页列表，用于前端
+     * 前端分页列表
      * @param int $rows 数量
      * @param string $field 字段
      * @param array|null $order 排序
@@ -45,19 +58,6 @@ class ArticleDao extends BaseDao
     public function getPaginate(string $field, int $rows, ?array $order = null): \think\Paginator
     {
         return $this->getModel()->with(['channel'])->where(['status' => 1])->field($field)->order($order)->paginate($rows);
-    }
-
-    /**
-     * 自增阅读量
-     * @return bool
-     * @param int $id id
-     * @param int $incValue 步长
-     */
-    public function setInc(int $id, int $incValue): bool
-    {
-        $articleClick = $this->getModel()->find($id);
-        $articleClick->click += $incValue;
-        return $articleClick->isAutoWriteTimestamp(false)->save();
     }
 
     /**

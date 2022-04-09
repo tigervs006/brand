@@ -45,6 +45,15 @@ class ArticleServices extends BaseServices
     }
 
     /**
+     * 计算总数
+     * @return int
+     */
+    public function count(): int
+    {
+        return $this->dao->getCount();
+    }
+
+    /**
      * 文章内容
      * @return array
      * @param int $id
@@ -83,11 +92,9 @@ class ArticleServices extends BaseServices
      * @param array|null $order
      * @param string|null $field
      */
-    public function getList(int $page, int $listRows, ?array $order = ['id' => 'desc'], ?string $field = '*'): array
+    public function getList(int $page, int $listRows, ?string $field = '*', ?array $order = ['id' => 'desc']): array
     {
-        $total = $this->dao->getCount();
-        $data = $this->dao->getArtList($page, $listRows, $order, $field);
-        return compact('total', 'data');
+        return $this->dao->getArtList($page, $listRows, $field, $order);
     }
 
     /**

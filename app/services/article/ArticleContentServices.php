@@ -1,5 +1,5 @@
 <?php
-
+declare (strict_types = 1);
 namespace app\services\article;
 
 use app\services\BaseServices;
@@ -8,7 +8,7 @@ use app\dao\article\ArticleContentDao;
 /**
  * Class ArticleContentServices
  * @package app\services\article
- * @method save(array $data)保存
+ * @method save(array $data) 保存内容
  * @method update($id, array $data, ?string $key = null)
  */
 class ArticleContentServices extends BaseServices

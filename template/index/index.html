@@ -478,81 +478,50 @@
             <h2>新闻资讯</h2>
             <p class="text-muted">INDUSTRY NEWS</p>
         </div>
+{present name="$hotart"}
         <div class="row g-3">
             <div class="col-12 col-md-4 part-industry-left">
+{foreach $hotart as $item}
+{compare name="item['is_head']" value="1" type="equal"}
                 <div class="img-animated overflow-hidden border-bottom-dashed">
-                    <a target="_blank" href="industry/1.html" class="text-reset text-decoration-none" title="机器视觉缺陷检测设备在各大行业中的应用介绍">
+                    <a target="_blank" href="industry/{$item.id}.html" class="text-reset text-decoration-none" title="{$item.title}">
                         <div class="rounded overflow-hidden">
-                            <img class="img-fluid" alt="机器视觉激光焊接检测方案" title="机器视觉激光焊接检测方案" src="__STATIC__/static/images/606eb7d41495a.png"/>
+                            <img class="img-fluid" alt="{$item.title}" title="{$item.title}" src="{$item.litpic}"/>
                         </div>
-                        <h3 class="transition text-ellipsis">机器视觉缺陷检测设备在各大行业中的应用介绍</h3>
-                        <p class="part-industry-detail"><span>发布时间：2022-01-17 </span>| <span>阅读量：1121 </span>| <span>作者：Kevin</span></p>
-                        <p class="text-clamp-3 text-clamp-ellipsis">在机器视觉技术的研发源于激光焊缝自动化带来的灵感，围绕着机器视觉和激光焊缝跟踪检测两大领域进行跨界创新，研发出了“机器视觉—激光焊缝自动跟踪及检测系统”。该系统选择激光视觉传感器作为焊缝自动跟踪系统的传感器，具有主动性、非接触、能获取物体的三维信息、灵敏度精度高、抗电磁场干扰能力强等优点</p>
+                        <h3 class="transition text-ellipsis">{$item.title}</h3>
+                        <p class="part-industry-detail"><span>发布时间：{$item.create_time|date="Y-m-d"} </span>| <span>阅读量：{$item.click} </span>| <span>作者：{$item.author}</span></p>
+                        <p class="text-clamp-3 text-clamp-ellipsis">{$item.description}</p>
                     </a>
                 </div>
+{/compare}
+{/foreach}
             </div>
             <div class="col-12 col-md-8">
                 <ul class="row g-3 list-unstyled part-industry-right">
+{foreach $hotart as $item}
+{compare name="item['is_head']" value="1" type="notequal"}
                     <li class="col-12 col-md-6 part-industry-right-item">
                         <div class="overflow-hidden border-bottom-dashed">
-                            <a target="_blank" href="industry/1.html" class="text-reset text-decoration-none" title="机器视觉缺陷检测设备在各大行业中的应用介绍">
-                                <h3 class="transition text-ellipsis">机器视觉缺陷检测设备在各大行业中的应用介绍</h3>
-                                <p class="part-industry-detail"><span>发布时间：2022-01-17 </span>| <span>阅读量：1121 </span>| <span>作者：Kevin</span></p>
-                                <p class="text-clamp-2 text-clamp-ellipsis">在机器视觉技术的研发源于激光焊缝自动化带来的灵感，围绕着机器视觉和激光焊缝跟踪检测两大领域进行跨界创新，研发出了“机器视觉—激光焊缝自动跟踪及检测系统”。该系统选择激光视觉传感器作为焊缝自动跟踪系统的传感器，具有主动性、非接触、能获取物体的三维信息、灵敏度精度高、抗电磁场干扰能力强等优点</p>
+                            <a target="_blank" href="industry/{$item.id}.html" class="text-reset text-decoration-none" title="{$item.title}">
+                                <h3 class="transition text-ellipsis">{$item.title}</h3>
+                                <p class="part-industry-detail"><span>发布时间：{$item.create_time|date="Y-m-d"} </span>| <span>阅读量：{$item.click} </span>| <span>作者：{$item.author}</span></p>
+                                <p class="text-clamp-2 text-clamp-ellipsis">{$item.description}</p>
                             </a>
                         </div>
                     </li>
-                    <li class="col-12 col-md-6 part-industry-right-item">
-                        <div class="overflow-hidden border-bottom-dashed">
-                                <a target="_blank" href="industry/1.html" class="text-reset text-decoration-none" title="机器视觉缺陷检测设备在各大行业中的应用介绍">
-                                <h3 class="transition text-ellipsis">机器视觉缺陷检测设备在各大行业中的应用介绍</h3>
-                                <p class="part-industry-detail"><span>发布时间：2022-01-17 </span>| <span>阅读量：1121 </span>| <span>作者：Kevin</span></p>
-                                <p class="text-clamp-2 text-clamp-ellipsis">在机器视觉技术的研发源于激光焊缝自动化带来的灵感，围绕着机器视觉和激光焊缝跟踪检测两大领域进行跨界创新，研发出了“机器视觉—激光焊缝自动跟踪及检测系统”。该系统选择激光视觉传感器作为焊缝自动跟踪系统的传感器，具有主动性、非接触、能获取物体的三维信息、灵敏度精度高、抗电磁场干扰能力强等优点</p>
-                            </a>
-                        </div>
-                    </li>
-                    <li class="col-12 col-md-6 part-industry-right-item">
-                        <div class="overflow-hidden border-bottom-dashed">
-                            <a target="_blank" href="industry/1.html" class="text-reset text-decoration-none" title="机器视觉缺陷检测设备在各大行业中的应用介绍">
-                                <h3 class="transition text-ellipsis">机器视觉缺陷检测设备在各大行业中的应用介绍</h3>
-                                <p class="part-industry-detail"><span>发布时间：2022-01-17 </span>| <span>阅读量：1121 </span>| <span>作者：Kevin</span></p>
-                                <p class="text-clamp-2 text-clamp-ellipsis">在机器视觉技术的研发源于激光焊缝自动化带来的灵感，围绕着机器视觉和激光焊缝跟踪检测两大领域进行跨界创新，研发出了“机器视觉—激光焊缝自动跟踪及检测系统”。该系统选择激光视觉传感器作为焊缝自动跟踪系统的传感器，具有主动性、非接触、能获取物体的三维信息、灵敏度精度高、抗电磁场干扰能力强等优点</p>
-                            </a>
-                        </div>
-                    </li>
-                    <li class="col-12 col-md-6 part-industry-right-item">
-                        <div class="overflow-hidden border-bottom-dashed">
-                            <a target="_blank" href="industry/1.html" class="text-reset text-decoration-none" title="机器视觉缺陷检测设备在各大行业中的应用介绍">
-                                <h3 class="transition text-ellipsis">机器视觉缺陷检测设备在各大行业中的应用介绍</h3>
-                                <p class="part-industry-detail"><span>发布时间：2022-01-17 </span>| <span>阅读量：1121 </span>| <span>作者：Kevin</span></p>
-                                <p class="text-clamp-2 text-clamp-ellipsis">在机器视觉技术的研发源于激光焊缝自动化带来的灵感，围绕着机器视觉和激光焊缝跟踪检测两大领域进行跨界创新，研发出了“机器视觉—激光焊缝自动跟踪及检测系统”。该系统选择激光视觉传感器作为焊缝自动跟踪系统的传感器，具有主动性、非接触、能获取物体的三维信息、灵敏度精度高、抗电磁场干扰能力强等优点</p>
-                            </a>
-                        </div>
-                    </li>
-                    <li class="col-12 col-md-6 part-industry-right-item">
-                        <div class="overflow-hidden border-bottom-dashed">
-                            <a target="_blank" href="industry/1.html" class="text-reset text-decoration-none" title="机器视觉缺陷检测设备在各大行业中的应用介绍">
-                                <h3 class="transition text-ellipsis">机器视觉缺陷检测设备在各大行业中的应用介绍</h3>
-                                <p class="part-industry-detail"><span>发布时间：2022-01-17 </span>| <span>阅读量：1121 </span>| <span>作者：Kevin</span></p>
-                                <p class="text-clamp-2 text-clamp-ellipsis">在机器视觉技术的研发源于激光焊缝自动化带来的灵感，围绕着机器视觉和激光焊缝跟踪检测两大领域进行跨界创新，研发出了“机器视觉—激光焊缝自动跟踪及检测系统”。该系统选择激光视觉传感器作为焊缝自动跟踪系统的传感器，具有主动性、非接触、能获取物体的三维信息、灵敏度精度高、抗电磁场干扰能力强等优点</p>
-                            </a>
-                        </div>
-                    </li>
-                    <li class="col-12 col-md-6 part-industry-right-item">
-                        <div class="overflow-hidden border-bottom-dashed">
-                            <a target="_blank" href="industry/1.html" class="text-reset text-decoration-none" title="机器视觉缺陷检测设备在各大行业中的应用介绍">
-                                <h3 class="transition text-ellipsis">机器视觉缺陷检测设备在各大行业中的应用介绍</h3>
-                                <p class="part-industry-detail"><span>发布时间：2022-01-17 </span>| <span>阅读量：1121 </span>| <span>作者：Kevin</span></p>
-                                <p class="text-clamp-2 text-clamp-ellipsis">在机器视觉技术的研发源于激光焊缝自动化带来的灵感，围绕着机器视觉和激光焊缝跟踪检测两大领域进行跨界创新，研发出了“机器视觉—激光焊缝自动跟踪及检测系统”。该系统选择激光视觉传感器作为焊缝自动跟踪系统的传感器，具有主动性、非接触、能获取物体的三维信息、灵敏度精度高、抗电磁场干扰能力强等优点</p>
-                            </a>
-                        </div>
-                    </li>
+{/compare}
+{/foreach}
                 </ul>
             </div>
         </div>
+{if count($hotart) >= 7}
         <div class="more">
             <a role="button" target="_blank" href="industry/" class="btn btn-danger rounded-pill">查看更多</a>
         </div>
+{/if}
+{else /}
+        <p class="text-danger text-center">There is nothing</p>
+{/present}
     </div>
 </section>
 <!--新闻资讯部分 End-->
