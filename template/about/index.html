@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>田者高拍企业简介</title>
-    <meta name="keywords" content="田者高拍">
-    <meta name="description" content="田者高拍企业简介">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="author" content="https://www.brandsz.cn"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {load href="__STATIC__/static/style/main.css,__STATIC__/static/js/jquery-3.5.1.min.js,__STATIC__/static/js/bootstrap.min.js,__STATIC__/static/js/provinces.js,__STATIC__/static/js/main.js,https://webapi.amap.com/loader.js"}
-</head>
-<body>
-{include file="../basic/header"}
+{extend name="../base" /}
+{block name="title"}<title>田者高拍企业简介</title>{/block}
+{block name="keywords"}<meta name="keywords" content="田者高拍，田者高拍公司">{/block}
+{block name="description"}<meta name="description" content="田者高拍企业简介">{/block}
+{block name="pagejs"}{__block__}{load href="https://webapi.amap.com/loader.js"}{/block}
+{block name="main"}
 <!--企业介绍部分 Start-->
 <section>
     <div class="container">
@@ -160,7 +152,10 @@
     </div>
 </section>
 <!--企业介绍部分 End-->
-{include file="../basic/formModal,../basic/footer"}
+{/block}
+{block name="formModal"}{include file="../basic/formModal"}{/block}
+{block name="customjs"}
+<!--高德地图部分 Start-->
 <script type="text/javascript">
     // 固定导航栏
     $(function() { // FIXME:和首页导航栏冲突
@@ -219,5 +214,5 @@
         console.error(e)
     })
 </script>
-</body>
-</html>
+<!--高德地图部分 End-->
+{/block}

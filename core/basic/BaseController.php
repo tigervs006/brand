@@ -87,16 +87,13 @@ abstract class BaseController
         $this->page = $this->request->param('page/d', 1);
         $this->listRows = $this->request->param('listRows/d', 15);
 
-        // 只在index应用执行
+        // 只在特定应用执行
          App('http')->getName() === 'index' && $this->Channel();
     }
 
     /**
      * 网站栏目
      * @return void
-     * @throws \think\db\exception\DbException
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
      */
     private function Channel(): void
     {

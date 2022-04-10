@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>消费金融</title>
-    <meta name="keywords" content="消费金融">
-    <meta name="description" content="消费金融">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="author" content="https://www.brandsz.cn"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {load href="__STATIC__/static/style/main.css,__STATIC__/static/js/jquery-3.5.1.min.js,__STATIC__/static/js/bootstrap.min.js,__STATIC__/static/js/main.js"}
-</head>
-<body>
-{include file="../basic/header"}
-{include file="../basic/footer"}
-</body>
-</html>
+{extend name="../base" /}
+{block name="title"}<title>消费金融</title>{/block}
+{block name="keywords"}<meta name="keywords" content="消费金融">{/block}
+{block name="description"}<meta name="description" content="消费金融">{/block}
+{block name="pagejs"}{__block__}{/block}
+{block name="main"}{/block}
+{block name="formModal"}{include file="../basic/formModal"}{/block}

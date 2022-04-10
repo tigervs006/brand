@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>高拍仪，视频展台，高拍仪产品，书籍高拍仪 - 田者高拍新闻资讯</title>
-    <meta name="keywords" content="高拍仪,田者高拍,视频展台,高拍仪产品,书籍高拍仪,签批一体机,身份证阅读器">
-    <meta name="description" content="田者高拍在高拍仪行业深耕多年，基于对高拍仪、视频展台、签批一体机、身份证阅读器等产品具备独有的嗅觉及见解，为广大客户提供最新的行业资讯。掌握商机，方能洞察先机">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="author" content="https://www.brandsz.cn"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {load href="__STATIC__/static/style/main.css,__STATIC__/static/js/jquery-3.5.1.min.js,__STATIC__/static/js/bootstrap.min.js,__STATIC__/static/js/main.js"}
-</head>
-<body>
-{include file="../basic/header"}
+{extend name="../base" /}
+{block name="title"}<title>高拍仪，视频展台，高拍仪产品，书籍高拍仪 - 田者高拍新闻资讯</title>{/block}
+{block name="keywords"}<meta name="keywords" content="高拍仪,田者高拍,视频展台,高拍仪产品,书籍高拍仪,签批一体机,身份证阅读器">{/block}
+{block name="description"}<meta name="description" content="田者高拍在高拍仪行业深耕多年，基于对高拍仪、视频展台、签批一体机、身份证阅读器等产品具备独有的嗅觉及见解，为广大客户提供最新的行业资讯。掌握商机，方能洞察先机">{/block}
+{block name="pagejs"}{__block__}{/block}
+{block name="main"}
 <!--栏目banner部分 Start-->
 <section class="industry">
     <div class="d-flex channel container align-items-center">
@@ -37,7 +29,7 @@
                 <ul class="list-unstyled">
 {volist name="result" id="item" empty="<p class='text-danger'>There is nothing</p>"}
                     <li>
-                        <a href="/industry/{$item.id}.html" target="_blank" class="text-reset text-decoration-none" title="{$item.title}">
+                        <a href="{:url('article', ['id' => $item.id])}" target="_blank" class="text-reset text-decoration-none" title="{$item.title}">
                             <div class="row gx-0 img-animated part-artList-item border-bottom-dashed">
                                 <div class="col-5 col-md-3 exclude rounded overflow-hidden">
                                     <img alt="{$item.title}" class="img-fluid" title="{$item.title}" src="{$item.litpic}"/>
@@ -89,6 +81,4 @@
     </div>
 </section>
 <!--文章列表部分 End-->
-{include file="../basic/footer"}
-</body>
-</html>
+{/block}
