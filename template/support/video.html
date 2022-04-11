@@ -1,15 +1,15 @@
 {extend name="../base" /}
-{block name="title"}<title>高拍仪视频，高拍仪怎么用，高拍仪使用教程，高拍仪视频教程 - 田者高拍</title>{/block}
-{block name="keywords"}<meta name="keywords" content="田者高拍,高拍仪视频,高拍仪怎么用,高拍仪使用教程,高拍仪视频教程,书籍高拍仪视频">{/block}
-{block name="description"}<meta name="description" content="为了解决客户在日常使用高拍仪、书籍高拍仪、教学高拍仪等设备时遇到的各种问题，田者高拍将持续更新关于高拍仪设备使用的视频操作教程，客户可以通过相应的视频去了解及解决在使用时遇到的问题">{/block}
+{block name="title"}<title>{$info.title}</title>{/block}
+{block name="keywords"}<meta name="keywords" content="{$info.keywords}">{/block}
+{block name="description"}<meta name="description" content="{$info.description}">{/block}
 {block name="pagejs"}{__block__}{/block}
 {block name="main"}
 <!--栏目banner部分 Start-->
 <section class="services">
     <div class="d-flex channel container align-items-center">
         <div class="col col-md-6 mt-5 mt-md-0 text-white text-left">
-            <h1 class="mb-4">操作视频</h1>
-            <p class="text-clamp-3 text-clamp-ellipsis">为了解决客户在日常使用高拍仪、书籍高拍仪、教学高拍仪等设备时遇到的各种问题，田者高拍将持续更新关于高拍仪设备使用的视频操作教程，客户可以通过相应的视频去了解及解决在使用时遇到的问题</p>
+            <h1 class="mb-4">{$channelinfo.cname}</h1>
+            <p class="text-clamp-3 text-clamp-ellipsis">{$channelinfo.description}</p>
         </div>
     </div>
 </section>

@@ -24,4 +24,16 @@ class ChannelDao extends BaseDao
     {
         return $this->getData($map, $order, $field);
     }
+
+    /**
+     * 获取栏目ID
+     * @return mixed
+     * @param string $value
+     * @param string $filed
+     * @param string $valueKey
+     */
+    public function getCid(string $value, string $filed, string $valueKey): mixed
+    {
+        return $this->getModel()->getFieldValue($value, $filed, $valueKey);
+    }
 }

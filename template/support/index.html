@@ -1,15 +1,15 @@
 {extend name="../base" /}
-{block name="title"}<title>高拍仪软件，高拍仪驱动，高拍仪视频，高拍仪操作说明 - 田者高拍服务支持</title>{/block}
-{block name="keywords"}<meta name="keywords" content="高拍仪软件,高拍仪驱动,高拍仪视频,高拍仪操作说明,高拍仪技术支持,高拍仪使用方法">{/block}
-{block name="description"}<meta name="description" content="田者高拍具备完善的服务支持，其中包括高拍仪产品、签批一体机、签证阅读器等产品的软件驱动、操作视频以及使用方法，帮助客户第一时间将产品投入工作生产">{/block}
+{block name="title"}<title>{$channelinfo.title}</title>{/block}
+{block name="keywords"}<meta name="keywords" content="{$channelinfo.keywords}">{/block}
+{block name="description"}<meta name="description" content="{$channelinfo.description}">{/block}
 {block name="pagejs"}{__block__}{/block}
 {block name="main"}
 <!--栏目banner部分 Start-->
 <section class="services">
     <div class="d-flex channel container align-items-center">
         <div class="col col-md-6 mt-5 mt-md-0 text-white text-left">
-            <h1 class="mb-4">服务支持</h1>
-            <p class="text-clamp-3 text-clamp-ellipsis">田者高拍具备完善的服务支持，其中包括高拍仪产品、签批一体机、签证阅读器等产品的软件驱动、操作视频以及使用方法，帮助客户第一时间将产品投入工作生产</p>
+            <h1 class="mb-4">{$channelinfo.cname}</h1>
+            <p class="text-clamp-3 text-clamp-ellipsis">{$channelinfo.description}</p>
         </div>
     </div>
 </section>

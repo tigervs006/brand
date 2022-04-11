@@ -46,7 +46,7 @@ class ChannelServices extends BaseServices
     }
 
     /**
-     * 递归单个/批量删除栏目
+     * 删除单个/批量栏目
      * @return array
      * @param $data
      * @param $id
@@ -61,5 +61,18 @@ class ChannelServices extends BaseServices
             }
         }
         return $idsArr;
+    }
+
+    /**
+     * 获取栏目ID
+     * @return mixed
+     * @param string $value
+     * @param string $filed
+     * @param string $valueKey
+     */
+    public function getChannelInfo(string $value, string $filed, string $valueKey): mixed
+    {
+        $cid = $this->dao->getCid($value, $filed, $valueKey);
+        return  $this->dao->getOne(['id' => $cid, 'status' => 1], 'title, cname, keywords, description');
     }
 }

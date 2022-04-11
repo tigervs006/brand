@@ -48,6 +48,17 @@ abstract class BaseDao
     }
 
     /**
+     * 根据条件获取单数据
+     * @return mixed
+     * @param array $map 条件
+     * @param string|null $field 字段
+     */
+    public function getOne(array $map, ?string $field = '*'): mixed
+    {
+        return $this->getModel()->where($map)->field($field)->find();
+    }
+
+    /**
      * 根据条件获取数据
      * @return array|Collection
      * @param array $map 条件

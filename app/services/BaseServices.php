@@ -29,27 +29,6 @@ abstract class BaseServices
     protected object $dao;
 
     /**
-     * 获取分页配置
-     * @param bool $isPage
-     * @param bool $isRelieve
-     * @return int[]
-     */
-    public function getPageValue(bool $isPage = true, bool $isRelieve = true): array
-    {
-        $page = $limit = 0;
-        if ($isPage) {
-            $page = app()->request->param(Config::get('database.page.pageKey', 'page') . '/d', 0);
-            $limit = app()->request->param(Config::get('database.page.limitKey', 'limit') . '/d', 0);
-        }
-        $limitMax = Config::get('database.page.limitMax');
-        $defaultLimit = Config::get('database.page.defaultLimit', 10);
-        if ($limit > $limitMax && $isRelieve) {
-            $limit = $limitMax;
-        }
-        return [(int)$page, (int)$limit, (int)$defaultLimit];
-    }
-
-    /**
      * 数据库事务操作
      * @return mixed
      * @param bool $isTran

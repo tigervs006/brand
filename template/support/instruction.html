@@ -1,15 +1,15 @@
 {extend name="../base" /}
-{block name="title"}<title>高拍仪使用，高拍仪说明书，高拍仪使用说明，高拍仪操作说明书 - 田者高拍</title>{/block}
-{block name="keywords"}<meta name="keywords" content="田者高拍,高拍仪使用,高拍仪安装,高拍仪说明书,高拍仪使用方法,高拍仪操作说明书">{/block}
-{block name="description"}<meta name="description" content="基于高拍仪不同的型号以及功能上的区别，田者高拍提供了旗下众多高拍仪产品的操作说明书，包括高拍仪参数以及高拍仪使用安装说明">{/block}
+{block name="title"}<title>{$channelinfo.title}</title>{/block}
+{block name="keywords"}<meta name="keywords" content="{$channelinfo.keywords}">{/block}
+{block name="description"}<meta name="description" content="{$channelinfo.description}">{/block}
 {block name="pagejs"}{__block__}{/block}
 {block name="main"}
 <!--栏目banner部分 Start-->
 <section class="services">
     <div class="d-flex channel container align-items-center">
         <div class="col col-md-6 mt-5 mt-md-0 text-white text-left">
-            <h1 class="mb-4">操作说明手册</h1>
-            <p class="text-clamp-3 text-clamp-ellipsis">基于高拍仪不同的型号以及功能上的区别，田者高拍提供了旗下众多高拍仪产品的操作说明书，包括高拍仪参数以及高拍仪使用安装说明等</p>
+            <h1 class="mb-4">{$channelinfo.cname}</h1>
+            <p class="text-clamp-3 text-clamp-ellipsis">{$channelinfo.description}</p>
         </div>
     </div>
 </section>

@@ -34,8 +34,7 @@ class Industry extends BaseController
     final public function index(): string
     {
         $result = $this->services->paginate('id, cid, click, title, author, litpic, create_time, description', $this->rows);
-        $this->view::assign(['result' => $result]);
-        return $this->view::fetch('../industry/index');
+        return $this->view::fetch('../industry/index', ['result' => $result]);
     }
 
     /**
@@ -49,7 +48,6 @@ class Industry extends BaseController
         $result && $this->services->inc($result['id'], $this->incValue);
         // 上/下一篇文章
         $prenext = $this->services->prenext($result['id']);
-        $this->view::assign(['result' => $result, 'prenext' => $prenext]);
-        return $this->view::fetch('../industry/detail');
+        return $this->view::fetch('../industry/detail', ['result' => $result, 'prenext' => $prenext]);
     }
 }

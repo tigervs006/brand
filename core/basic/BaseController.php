@@ -99,8 +99,17 @@ abstract class BaseController
     {
         /** @var ChannelServices $services */
         $services = app()->make(ChannelServices::class);
+        $pathArr = explode('/', $this->request->pathinfo());
+        // 过滤空值数组
+        $pathFilter = array_filter($pathArr);
+        // 获取最后一个数组值作为当前栏目名
+        $channel = end($pathFilter) === false ? '0' : end($pathFilter);
+        // 完全匹配是英文字母的栏目，详情页如1.html是排除在外的
+        if (preg_match('/^[a-zA-Z]*$/', $channel)) {
+            $channelInfo = $channel ? $services->getChannelInfo($channel, 'name', 'id') : null;
+        }
         $result = $services->getChildren($services->index(['status' => 1], ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname'));
-        $this->view::assign('channel', $result);
+        $this->view::assign(['channel' => $result, 'channelinfo' => $channelInfo ?? []]);
     }
 
     /**

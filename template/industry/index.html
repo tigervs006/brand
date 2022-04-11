@@ -1,15 +1,15 @@
 {extend name="../base" /}
-{block name="title"}<title>高拍仪，视频展台，高拍仪产品，书籍高拍仪 - 田者高拍新闻资讯</title>{/block}
-{block name="keywords"}<meta name="keywords" content="高拍仪,田者高拍,视频展台,高拍仪产品,书籍高拍仪,签批一体机,身份证阅读器">{/block}
-{block name="description"}<meta name="description" content="田者高拍在高拍仪行业深耕多年，基于对高拍仪、视频展台、签批一体机、身份证阅读器等产品具备独有的嗅觉及见解，为广大客户提供最新的行业资讯。掌握商机，方能洞察先机">{/block}
+{block name="title"}<title>{$channelinfo.title}</title>{/block}
+{block name="keywords"}<meta name="keywords" content="{$channelinfo.keywords}">{/block}
+{block name="description"}<meta name="description" content="{$channelinfo.description}">{/block}
 {block name="pagejs"}{__block__}{/block}
 {block name="main"}
 <!--栏目banner部分 Start-->
 <section class="industry">
     <div class="d-flex channel container align-items-center">
         <div class="col col-md-6 mt-5 mt-md-0 text-white text-left">
-            <h1 class="mb-4">新闻资讯</h1>
-            <p class="p12">田者高拍资讯频道囊括机器视觉、人工智能、深度学习、人脸识别技术等领域，洞察待机方能把握商机！</p>
+            <h1 class="mb-4">{$channelinfo.cname}</h1>
+            <p class="p12">{$channelinfo.description}</p>
         </div>
     </div>
 </section>
@@ -20,7 +20,7 @@
         <nav aria-label="breadcrumb">
             <ol class="flex-nowrap breadcrumb">
                 <li class="breadcrumb-item"><a href="/">首页</a></li>
-                <li class="breadcrumb-item active" aria-current="page">新闻资讯</li>
+                <li class="breadcrumb-item active" aria-current="page">{$channelinfo.cname}</li>
             </ol>
         </nav>
         <div class="row">
