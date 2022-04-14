@@ -6,7 +6,6 @@ use think\App;
 use think\Request;
 use think\Validate;
 use think\facade\View;
-use app\services\channel\ChannelServices;
 
 /**
  * 控制器基础类
@@ -97,19 +96,35 @@ abstract class BaseController
      */
     private function Channel(): void
     {
-        /** @var ChannelServices $services */
-        $services = app()->make(ChannelServices::class);
+        /** @var \app\services\channel\ChannelServices $services */
+        $services = app()->make(\app\services\channel\ChannelServices::class);
         $pathArr = explode('/', $this->request->pathinfo());
         // 过滤空值数组
         $pathFilter = array_filter($pathArr);
-        // 获取最后一个数组值作为当前栏目名
-        $channel = end($pathFilter) === false ? '0' : end($pathFilter);
-        // 完全匹配是英文字母的栏目，详情页如1.html是排除在外的
-        if (preg_match('/^[a-zA-Z]*$/', $channel)) {
-            $channelInfo = $channel ? $services->getChannelInfo($channel, 'name', 'id') : null;
+        // 最后一个数组值作为当前栏目名
+        $channel = end($pathFilter);
+        if ($channel) {
+            $value = '';
+            $key = 'name';
+            static $field = 'id, pid, name, cname';
+            if (preg_match('/[\d]+/', $channel, $pathDetail)) { // 如果是详情页
+                $key = 'id';
+                /** @var \app\services\article\ArticleServices $artServices */
+                $artServices = app()->make(\app\services\article\ArticleServices::class);
+                $value = $artServices->getFieldValue($pathDetail[0], 'id', 'cid'); // 获取父级栏目ID
+            } else if (preg_match('/[a-zA-Z]+/', $channel, $pathCategory)) { // 如果是栏目页
+                $value = $pathCategory[0];
+            }
+            // 获取栏目信息
+            $pinfo = $services->getChannelInfo($key, $value, $field)->toArray();
+            $pdata = $services->getParentInfo(array($pinfo), $field);
+            // 获取面包屑导航
+            $crumbsData = $services->getParentCrumbs($pdata);
+            // 获取当前栏目SEO信息
+            $channelInfo = $services->getChannelInfo($key, $value, 'title, cname, keywords, description');
         }
         $result = $services->getChildren($services->index(['status' => 1], ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname'));
-        $this->view::assign(['channel' => $result, 'channelinfo' => $channelInfo ?? []]);
+        $this->view::assign(['channel' => $result, 'crumbs' => $crumbsData ?? [], 'channelinfo' => $channelInfo ?? []]);
     }
 
     /**
