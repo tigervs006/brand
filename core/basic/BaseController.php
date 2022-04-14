@@ -87,14 +87,15 @@ abstract class BaseController
         $this->listRows = $this->request->param('listRows/d', 15);
 
         // 只在特定应用执行
-         App('http')->getName() === 'index' && $this->Channel();
+         App('http')->getName() === 'index' && $this->channel();
     }
 
     /**
      * 网站栏目
+     * &面包屑导航
      * @return void
      */
-    private function Channel(): void
+    private function channel(): void
     {
         /** @var \app\services\channel\ChannelServices $services */
         $services = app()->make(\app\services\channel\ChannelServices::class);
@@ -106,7 +107,8 @@ abstract class BaseController
         if ($channel) {
             $value = '';
             $key = 'name';
-            static $field = 'id, pid, name, cname';
+            // 以下字段在获取栏目SEO信息及获取面包屑导航都需要用到
+            static $field = 'id, pid, name, title, cname, keywords, description';
             if (preg_match('/[\d]+/', $channel, $pathDetail)) { // 如果是详情页
                 $key = 'id';
                 /** @var \app\services\article\ArticleServices $artServices */
@@ -115,16 +117,15 @@ abstract class BaseController
             } else if (preg_match('/[a-zA-Z]+/', $channel, $pathCategory)) { // 如果是栏目页
                 $value = $pathCategory[0];
             }
-            // 获取栏目信息
+            // 获取当前栏目信息
             $pinfo = $services->getChannelInfo($key, $value, $field)->toArray();
+            // 获取父级栏目信息
             $pdata = $services->getParentInfo(array($pinfo), $field);
-            // 获取面包屑导航
+            // 通过低父级栏目信息生成面包屑导航
             $crumbsData = $services->getParentCrumbs($pdata);
-            // 获取当前栏目SEO信息
-            $channelInfo = $services->getChannelInfo($key, $value, 'title, cname, keywords, description');
         }
         $result = $services->getChildren($services->index(['status' => 1], ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname'));
-        $this->view::assign(['channel' => $result, 'crumbs' => $crumbsData ?? [], 'channelinfo' => $channelInfo ?? []]);
+        $this->view::assign(['channel' => $result, 'crumbs' => $crumbsData ?? [], 'channelinfo' => $pinfo ?? []]);
     }
 
     /**
