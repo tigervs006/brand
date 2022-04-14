@@ -13,7 +13,6 @@ namespace app\services;
 
 use think\facade\Db;
 use core\utils\JwtAuth;
-use think\facade\Config;
 use think\facade\Route as Url;
 
 /**

@@ -93,4 +93,16 @@ class ArticleDao extends BaseDao
         }
         return compact('pre', 'next');
     }
+
+    /**
+     * 获取某个字段值
+     * @return mixed
+     * @param string $value 值
+     * @param string $filed 字段
+     * @param string $valueKey 键值
+     */
+    public function getFieldValue(string $value, string $filed, string $valueKey): mixed
+    {
+        return $this->getModel()->getFieldValue($value, $filed, $valueKey);
+    }
 }
