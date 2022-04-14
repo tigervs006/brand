@@ -87,14 +87,15 @@ abstract class BaseController
         $this->listRows = $this->request->param('listRows/d', 15);
 
         // 只在特定应用执行
-         App('http')->getName() === 'index' && $this->Channel();
+         App('http')->getName() === 'index' && $this->channel();
     }
 
     /**
      * 网站栏目
+     * &面包屑导航
      * @return void
      */
-    private function Channel(): void
+    private function channel(): void
     {
         /** @var \app\services\channel\ChannelServices $services */
         $services = app()->make(\app\services\channel\ChannelServices::class);
