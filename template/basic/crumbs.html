@@ -1,19 +1,19 @@
         <!-- 面包屑导航 Start -->
         <nav aria-label="breadcrumb">
             <ol class="flex-nowrap breadcrumb">
-                <li class="breadcrumb-item"><a href="/">首页</a></li>
                 <?php
+                echo '<li class="breadcrumb-item"><a href="/">首页</a></li>';
                 foreach ($crumbs as $key => $val) {
-                    if ($key !== count($crumbs) -1) { // 二级+栏目
-                        echo '<li class="breadcrumb-item"><a href="' . $val['path'] . '">' . $val['cname']. '</a></li>';
+                    if ($key !== count($crumbs) - 1) { // 二级+栏目
+                        echo '<li class="breadcrumb-item"><a href="' . htmlentities($val['path']) . '">' . htmlentities($val['cname']) . '</a></li>';
                     } else if (count($crumbs) === 1) { // 二级栏目
                         if(isset($result['title'])) { // 如果是详情页
-                            echo '<li class="breadcrumb-item"><a href="' . $val['path'] . '">' . $val['cname']. '</a></li>' . '<li class="breadcrumb-item active" aria-current="page">' . $result['title']. '</a></li>';
+                            echo '<li class="breadcrumb-item"><a href="' . htmlentities($val['path']) . '">' . htmlentities($val['cname']). '</a></li>' . '<li class="breadcrumb-item active" aria-current="page">' . htmlentities($result['title']) . '</a></li>';
                         } else { // 如果不是详情页
-                            echo '<li class="breadcrumb-item active" aria-current="page">' . $val['cname']. '</a></li>';
+                            echo '<li class="breadcrumb-item active" aria-current="page">' . htmlentities($val['cname']) . '</a></li>';
                         }
                     } else { // 当前栏目
-                        echo '<li class="breadcrumb-item active" aria-current="page">' . $val['cname']. '</a></li>';
+                        echo '<li class="breadcrumb-item active" aria-current="page">' . htmlentities($val['cname']) . '</a></li>';
                     }
                 }
                 ?></ol>
