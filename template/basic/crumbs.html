@@ -7,10 +7,10 @@
                     if ($key !== count($crumbs) -1) { // 二级+栏目
                         echo '<li class="breadcrumb-item"><a href="' . $val['path'] . '">' . $val['cname']. '</a></li>';
                     } else if (count($crumbs) === 1) { // 二级栏目
-                        if(isset($result['title'])) { // 如果有详情页
+                        if(isset($result['title'])) { // 如果是详情页
                             echo '<li class="breadcrumb-item"><a href="' . $val['path'] . '">' . $val['cname']. '</a></li>' . '<li class="breadcrumb-item active" aria-current="page">' . $result['title']. '</a></li>';
-                        } else { // 如果没有详情页
-                            echo '<li class="breadcrumb-item"><a href="' . $val['path'] . '">' . $val['cname']. '</a></li>' . '<li class="breadcrumb-item"></li>';
+                        } else { // 如果不是详情页
+                            echo '<li class="breadcrumb-item active" aria-current="page">' . $val['cname']. '</a></li>';
                         }
                     } else { // 当前栏目
                         echo '<li class="breadcrumb-item active" aria-current="page">' . $val['cname']. '</a></li>';
