@@ -48,7 +48,7 @@ abstract class BaseDao
     }
 
     /**
-     * 根据条件获取单数据
+     * 根据条件获取单条数据
      * @return mixed
      * @param array $map 条件
      * @param string|null $field 字段
