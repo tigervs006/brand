@@ -7,7 +7,7 @@ use app\services\article\ArticleServices;
 
 class Article extends BaseController
 {
-    protected ArticleServices $services;
+    private ArticleServices $services;
 
     protected function initialize()
     {
