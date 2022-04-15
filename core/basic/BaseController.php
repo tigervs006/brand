@@ -126,7 +126,10 @@ abstract class BaseController
             // 通过低父级栏目信息生成面包屑导航
             $crumbsData = $services->getParentCrumbs($pdata);
         }
-        $result = $services->getChildren($services->index(['status' => 1], ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname'));
+        // 获取所有栏目数据
+        $channelDataa = $services->getData(['status' => 1], ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname');
+        // 获取网站栏目树状结构
+        $result = $services->getTreeData($channelDataa, '顶级栏目');
         $this->view::assign(['channel' => $result, 'crumbs' => $crumbsData ?? [], 'channelinfo' => $pinfo ?? []]);
     }
 

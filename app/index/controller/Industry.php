@@ -45,7 +45,7 @@ class Industry extends BaseController
     {
         $result = $this->services->article($this->id);
         // 阅读量自增
-        $result && $this->services->inc($result['id'], $this->incValue);
+        $result && $this->services->setInc($result['id'], $this->incValue);
         // 上/下一篇文章
         $prenext = $this->services->prenext($result['id']);
         return $this->view::fetch('../industry/detail', ['result' => $result, 'prenext' => $prenext]);

@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+
 namespace app\services\system;
 
 use think\Collection;
@@ -15,18 +15,4 @@ class ConfigServices extends BaseServices
     {
         $this->dao = $dao;
     }
-
-    /**
-     * @param array $map
-     * @param string|null $field
-     * @return array|Collection
-     * @throws DbException
-     * @throws DataNotFoundException
-     * @throws ModelNotFoundException
-     */
-    public function index(array $map, ?string $field): array|Collection
-    {
-         return $this->dao->getConfig($map, $field);
-    }
-
 }

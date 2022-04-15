@@ -13,39 +13,26 @@ class ArticleDao extends BaseDao
     }
 
     /**
-     * 自增阅读量
-     * @return bool
-     * @param int $id id
-     * @param int $incValue 步长
-     */
-    public function setInc(int $id, int $incValue): bool
-    {
-        $articleClick = $this->getModel()->find($id);
-        $articleClick->click += $incValue;
-        return $articleClick->isAutoWriteTimestamp(false)->save();
-    }
-
-    /**
      * 文章内容
-     * @return array
+     * @return mixed
      * @param int $id
      */
-    public function getArtContent(int $id): array
+    public function getArtContent(int $id): mixed
     {
-        return $this->getModel()->where(['status' => 1])->with(['content'])->find($id)->toArray();
+        return $this->getModel()->where(['status' => 1])->with(['content'])->find($id);
     }
 
     /**
      * 文章列表
-     * @return array
+     * @return array|\think\Collection
      * @param int $page 页数
      * @param int $listRows 列数
      * @param array|null $order 排序
      * @param string|null $field 字段
      */
-    public function getArtList(int $page, int $listRows, ?string $field = '*', ?array $order = ['id' => 'desc']): array
+    public function getArtList(int $page, int $listRows, ?string $field = '*', ?array $order = ['id' => 'desc']): array|\think\Collection
     {
-        return $this->getModel()->with(['channel'])->field($field)->order($order)->page($page, $listRows)->select()->toArray();
+        return $this->getModel()->with(['channel'])->field($field)->order($order)->page($page, $listRows)->select();
     }
 
     /**
@@ -92,17 +79,5 @@ class ArticleDao extends BaseDao
             );
         }
         return compact('pre', 'next');
-    }
-
-    /**
-     * 获取某个字段值
-     * @return mixed
-     * @param string $value 值
-     * @param string $filed 字段
-     * @param string $valueKey 键值
-     */
-    public function getFieldValue(string $value, string $filed, string $valueKey): mixed
-    {
-        return $this->getModel()->getFieldValue($value, $filed, $valueKey);
     }
 }

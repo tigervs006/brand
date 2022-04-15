@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+
 namespace app\services\article;
 
 use app\services\BaseServices;
@@ -34,31 +34,11 @@ class ArticleServices extends BaseServices
     }
 
     /**
-     * 自增阅读量
-     * @return bool
-     * @param int $id id
-     * @param int $incValue 步长
-     */
-    public function inc(int $id, int $incValue): bool
-    {
-        return $this->dao->setInc($id, $incValue);
-    }
-
-    /**
-     * 计算总数
-     * @return int
-     */
-    public function count(): int
-    {
-        return $this->dao->getCount();
-    }
-
-    /**
      * 文章内容
-     * @return array
+     * @return mixed
      * @param int $id
      */
-    public function article(int $id): array
+    public function article(int $id): mixed
     {
         return $this->dao->getArtContent($id);
     }
@@ -86,13 +66,13 @@ class ArticleServices extends BaseServices
 
     /**
      * 文章列表
-     * @return array
+     * @return array|\think\Collection
      * @param int $page
      * @param int $listRows
      * @param array|null $order
      * @param string|null $field
      */
-    public function getList(int $page, int $listRows, ?string $field = '*', ?array $order = ['id' => 'desc']): array
+    public function getList(int $page, int $listRows, ?string $field = '*', ?array $order = ['id' => 'desc']): array|\think\Collection
     {
         return $this->dao->getArtList($page, $listRows, $field, $order);
     }
@@ -129,17 +109,5 @@ class ArticleServices extends BaseServices
                 throw new ApiException('保存失败');
             }
         });
-    }
-
-    /**
-     * 获取某个字段值
-     * @return mixed
-     * @param string $value 值
-     * @param string $filed 字段
-     * @param string $valueKey 键值
-     */
-    public function getFieldValue(string $value, string $filed, string $valueKey): mixed
-    {
-        return $this->dao->getFieldValue($value, $filed, $valueKey);
     }
 }

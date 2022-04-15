@@ -1,19 +1,11 @@
 <?php
-// +----------------------------------------------------------------------
-// | CRMEB [ CRMEB赋能开发者，助力企业发展 ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2016~2020 https://www.crmeb.com All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed CRMEB并不是自由软件，未经许可不能去掉CRMEB相关版权
-// +----------------------------------------------------------------------
-// | Author: CRMEB Team <admin@crmeb.com>
-// +----------------------------------------------------------------------
-
+declare (strict_types = 1);
 namespace app\services;
 
 use think\facade\Db;
 use core\utils\JwtAuth;
 use think\facade\Route as Url;
+use core\traits\ServicesTrait;
 
 /**
  * Class BaseServices
@@ -21,6 +13,8 @@ use think\facade\Route as Url;
  */
 abstract class BaseServices
 {
+    use ServicesTrait;
+
     /**
      * 模型注入
      * @var object

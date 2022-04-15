@@ -1,4 +1,5 @@
 <?php
+declare (strict_types = 1);
 namespace app\dao;
 
 use think\Collection;
@@ -27,7 +28,7 @@ abstract class BaseDao
     /**
      * 设置join链表模型
      */
-    protected function setJoinModel() {}
+    protected function setJoinModel(): string {}
 
     /**
      * 获取模型
@@ -45,6 +46,20 @@ abstract class BaseDao
     protected function getPK(): string
     {
         return $this->getModel()->getPk();
+    }
+
+    /**
+     * 自增字段
+     * @return bool
+     * @param int $id id
+     * @param int $incValue 自增值
+     * @param string|null $field 自增字段
+     */
+    public function setInc(int $id, int $incValue, ?string $field = 'click'): bool
+    {
+        $data = $this->getModel()->find($id);
+        $data->$field += $incValue;
+        return $data->isAutoWriteTimestamp(false)->save();
     }
 
     /**
@@ -80,7 +95,7 @@ abstract class BaseDao
      * @param array|null $map 条件
      * @param string|null $field 字段
      */
-    public function getCount(?string $field = 'id', ?array $map = []): int
+    public function getCount(?array $map, ?string $field = 'id'): int
     {
         if ($map) {
             return $this->getModel()->where($map)->count();
@@ -151,5 +166,18 @@ abstract class BaseDao
     public function batchUpdate(array $ids, array $data, ?string $key): BaseModel
     {
         return $this->getModel()->whereIn(is_null($key) ? $this->getPK() : $key, $ids)->update($data);
+    }
+
+    /**
+     * 获取某个字段值
+     * @return mixed
+     * @param string $field 字段
+     * @param string $value 键值
+     * @param array|null $where 条件
+     * @param string|null $valueKey 键值
+     */
+    public function getFieldValue(string $value, string $field, ?string $valueKey, ?array $where = []): mixed
+    {
+        return $this->getModel()->getFieldValue($value, $field, $valueKey, $where);
     }
 }

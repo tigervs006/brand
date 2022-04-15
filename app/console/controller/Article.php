@@ -21,7 +21,7 @@ class Article extends BaseController
      */
     final public function index(): mixed
     {
-        $result = $this->services->article($this->id);
+        $result = $this->services->article($this->id)->toArray();
         return $this->json->successful('请求成功', $result);
     }
 
@@ -54,7 +54,7 @@ class Article extends BaseController
     {
         $orderField = $this->request->param('sortField/s', 'id');
         $sortOrder = $this->request->param('sortOrder/s', 'desc');
-        $total = $this->services->count(); // 获取数据总量
+        $total = $this->services->getCount(['status' => 1]); // 获取除删除外的所有文章总数
         $data = $this->services->getList($this->page, $this->listRows, '*', [$orderField => $sortOrder]);
         return $this->json->successful('请求成功', compact('total', 'data'));
     }
