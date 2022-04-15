@@ -77,11 +77,16 @@ abstract class BaseDao
     /**
      * 计算数据总量
      * @return int
-     * @param string|null $field
+     * @param array|null $map 条件
+     * @param string|null $field 字段
      */
-    public function getCount(?string $field = 'id'): int
+    public function getCount(?string $field = 'id', ?array $map = []): int
     {
-        return $this->getModel()->count($field);
+        if ($map) {
+            return $this->getModel()->where($map)->count();
+        } else {
+            return $this->getModel()->count($field);
+        }
     }
 
     /**
