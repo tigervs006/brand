@@ -11,6 +11,7 @@ namespace core\traits;
  * @method bool delete(int|array $id, ?string $key = null) 删除一条或多条数据
  * @method mixed getOne(array $map, ?string $field = '*') 根据条件获取单条数据
  * @method bool setInc(int $id, int $incValue, ?string $field = 'click') 自增阅读量或其它
+ * @method array getColumn(array $where, string $field, string $key = '') 获取某个列的数组
  * @method \core\basic\BaseModel batchUpdate(array $ids, array $data, ?string $key) 批量更新数据
  * @method array|\think\Collection getData(array $map, ?array $order, ?string $field = '*') 根据条件获取数据
  * @method \core\basic\BaseModel updateOne(int|array|string $id, array $data, ?string $key = null) 更新一条数据

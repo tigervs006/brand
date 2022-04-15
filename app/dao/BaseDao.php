@@ -112,6 +112,18 @@ abstract class BaseDao
     }
 
     /**
+     * 获取某个列数组
+     * @return array
+     * @param array $map 条件
+     * @param string $field 字段
+     * @param string|null $key 索引
+     */
+    public function getColumn(array $map, string $field, ?string $key =''): array
+    {
+        return $this->getModel()->where($map)->column($field, $key);
+    }
+
+    /**
      * 新增一条数据
      * @return BaseModel
      * @param array $data
