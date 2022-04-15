@@ -96,6 +96,7 @@ abstract class BaseController
      * 网站栏目
      * &面包屑导航
      * @return void
+     * @noinspection PhpFullyQualifiedNameUsageInspection
      */
     private function channel(): void
     {
@@ -111,7 +112,7 @@ abstract class BaseController
             $key = 'name';
             // 以下字段在获取栏目SEO信息及获取面包屑导航都需要用到
             static $field = 'id, pid, name, title, cname, keywords, description';
-            if (preg_match('/[\d]+/', $channel, $pathDetail)) { // 如果是详情页
+            if (preg_match('/\d+/', $channel, $pathDetail)) { // 如果是详情页
                 $key = 'id';
                 /** @var \app\services\article\ArticleServices $artServices */
                 $artServices = app()->make(\app\services\article\ArticleServices::class);
