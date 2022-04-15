@@ -78,7 +78,9 @@ abstract class BaseController
         $this->initialize();
     }
 
-    // 初始化
+    /**
+     * initialize
+     */
     protected function initialize()
     {
         $this->json = App('json');
