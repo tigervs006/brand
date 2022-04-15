@@ -20,15 +20,14 @@ class ArticleServices extends BaseServices
     /**
      * 删除文章
      * @return void
-     * @param int|array $id
+     * @param int|array|string $id
      */
-    public function del(int|array $id): void
+    public function delete(int|array|string $id): void
     {
         /** @var  ArticleContentServices $articleContentService */
         $articleContentService = app()->make(ArticleContentServices::class);
         $this->transaction(function () use ($id, $articleContentService) {
-            $result = $this->dao->delete($id);
-            $result = $result && $articleContentService->del($id);
+            $result = $this->dao->delete($id) && $articleContentService->delete($id);
             !$result && throw new ApiException('删除文章失败');
         });
     }
@@ -36,9 +35,9 @@ class ArticleServices extends BaseServices
     /**
      * 文章内容
      * @return mixed
-     * @param int $id
+     * @param int|string $id
      */
-    public function article(int $id): mixed
+    public function article(int|string $id): mixed
     {
         return $this->dao->getArtContent($id);
     }

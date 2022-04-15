@@ -21,14 +21,4 @@ class ArticleContentServices extends BaseServices
     {
         $this->dao = $dao;
     }
-
-    /**
-     * 删除文章
-     * @return bool
-     * @param int|array $id
-     */
-    public function del(int|array $id): bool
-    {
-        return $this->dao->delete($id);
-    }
 }

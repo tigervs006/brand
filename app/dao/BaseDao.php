@@ -134,16 +134,16 @@ abstract class BaseDao
     /**
      * 删除一条或多条数据
      * @return boolean
-     * @param int|array $id
+     * @param int|array|string $id
      */
-    public function delete(int|array $id, ?string $key = null): bool
+    public function delete(int|array|string $id, ?string $key = null): bool
     {
         if (is_array($id)) {
             $where = $id;
         } else {
             $where = [is_null($key) ? $this->getPk() : $key => $id];
         }
-        return $this->getModel()::where($where)->useSoftDelete('delete_time',time())->delete();
+        return $this->getModel()::where($where)->useSoftDelete('delete_time',time())->delete() == 1;
     }
 
     /**

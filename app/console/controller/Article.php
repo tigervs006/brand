@@ -31,7 +31,7 @@ class Article extends BaseController
      */
     final public function delete(): mixed
     {
-        $this->services->del($this->id);
+        $this->services->delete($this->id);
         return $this->json->successful('删除成功');
     }
 

@@ -15,9 +15,9 @@ class ArticleDao extends BaseDao
     /**
      * 文章内容
      * @return mixed
-     * @param int $id
+     * @param int|string $id
      */
-    public function getArtContent(int $id): mixed
+    public function getArtContent(int|string $id): mixed
     {
         return $this->getModel()->where($this->status)->with(['content'])->find($id);
     }
