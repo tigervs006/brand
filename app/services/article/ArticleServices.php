@@ -36,9 +36,9 @@ class ArticleServices extends BaseServices
     /**
      * 文章内容
      * @return mixed
-     * @param int $id
+     * @param int|string $id
      */
-    public function article(int $id): mixed
+    public function article(int|string $id): mixed
     {
         return $this->dao->getArtContent($id);
     }
