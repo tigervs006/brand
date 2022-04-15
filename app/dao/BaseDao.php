@@ -2,7 +2,6 @@
 declare (strict_types = 1);
 namespace app\dao;
 
-use think\Collection;
 use core\basic\BaseModel;
 
 abstract class BaseDao
@@ -20,6 +19,12 @@ abstract class BaseDao
     protected string $joinAlias;
 
     /**
+     * 默认状态
+     * @var array|int[]
+     */
+    protected array $status = ['status' => 1];
+
+    /**
      * 设置当前模型
      * @return string
      */
@@ -28,7 +33,9 @@ abstract class BaseDao
     /**
      * 设置join链表模型
      */
-    protected function setJoinModel(): string {}
+    protected function setJoinModel(): string {
+        return app()->make($this->setModel());
+    }
 
     /**
      * 获取模型
@@ -75,12 +82,12 @@ abstract class BaseDao
 
     /**
      * 根据条件获取数据
-     * @return array|Collection
+     * @return array|\think\Collection
      * @param array $map 条件
      * @param array|null $order 排序
      * @param string|null $field 字段
      */
-    public function getData(array $map, ?array $order, ?string $field = '*'): array|Collection
+    public function getData(array $map, ?array $order, ?string $field = '*'): array|\think\Collection
     {
         if ($order) {
             return $this->getModel()->where($map)->order($order)->field($field)->select();

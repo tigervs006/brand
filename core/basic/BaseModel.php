@@ -11,5 +11,6 @@ class BaseModel extends Model
     use ModelTrait;
     //启用软删除
     use SoftDelete;
+
     protected string $deleteTime = 'delete_time';
 }

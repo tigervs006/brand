@@ -57,11 +57,16 @@ abstract class BaseController
     protected int|array|string $id;
 
     /**
-     * 是否批量验证
+     * 批量验证
      * @var bool
      */
     protected bool $batchValidate = false;
 
+    /**
+     * 默认状态
+     * @var array|int[]
+     */
+    protected array $status = ['status' => 1];
 
     /**
      * 构造方法
@@ -121,16 +126,16 @@ abstract class BaseController
                 $value = $pathCategory[0];
             }
             // 获取当前栏目信息
-            $pinfo = $services->getChannelInfo($key, $value, $field)->toArray();
+            $pinfo = $services->getOne(array_merge([$key => $value], $this->status), $field)->toArray();
             // 获取父级栏目信息
             $pdata = $services->getParentInfo(array($pinfo), $field);
             // 通过低父级栏目信息生成面包屑导航
             $crumbsData = $services->getParentCrumbs($pdata);
         }
         // 获取所有栏目数据
-        $channelDataa = $services->getData(['status' => 1], ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname');
+        $channelData = $services->getData($this->status, ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname');
         // 获取网站栏目树状结构
-        $result = $services->getTreeData($channelDataa, '顶级栏目');
+        $result = $services->getTreeData($channelData, '顶级栏目');
         $this->view::assign(['channel' => $result, 'crumbs' => $crumbsData ?? [], 'channelinfo' => $pinfo ?? []]);
     }
 

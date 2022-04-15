@@ -12,7 +12,7 @@ function crumbs (string $channel): array
     /** @var app\services\channel\ChannelServices $services */
     $services = app()->make(app\services\channel\ChannelServices::class);
     // 获取栏目信息
-    $pinfo = $services->getChannelInfo($channel, $field)->toArray();
+    $pinfo = $services->getOne(array('name' => $channel, 'status' => 1), $field)->toArray();
     // 获取父栏目数据
     $pdata = $services->getParentInfo(array($pinfo), $field);
     // 获取面包屑导航

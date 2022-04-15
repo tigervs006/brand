@@ -19,7 +19,7 @@ class ArticleDao extends BaseDao
      */
     public function getArtContent(int $id): mixed
     {
-        return $this->getModel()->where(['status' => 1])->with(['content'])->find($id);
+        return $this->getModel()->where($this->status)->with(['content'])->find($id);
     }
 
     /**
@@ -44,7 +44,7 @@ class ArticleDao extends BaseDao
      */
     public function getPaginate(string $field, int $rows, ?array $order = null): \think\Paginator
     {
-        return $this->getModel()->with(['channel'])->where(['status' => 1])->field($field)->order($order)->paginate($rows);
+        return $this->getModel()->with(['channel'])->where($this->status)->field($field)->order($order)->paginate($rows);
     }
 
     /**

@@ -22,6 +22,12 @@ abstract class BaseServices
     protected object $dao;
 
     /**
+     * 默认状态
+     * @var array|int[]
+     */
+    protected array $status = ['status' => 1];
+
+    /**
      * 数据库事务操作
      * @return mixed
      * @param bool $isTran

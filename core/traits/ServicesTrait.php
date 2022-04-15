@@ -19,11 +19,29 @@ namespace core\traits;
 trait ServicesTrait
 {
     /**
-     * 生成树状结构
+     * 获取树状结构ID
+     * @return array
+     * @param int $id id
+     * @param array $data data
+     */
+    public function getTreeId(array $data, int $id): array
+    {
+        static $idArr = [];
+        foreach ($data as $val) {
+            if ($id == $val['pid']) {
+                $idArr[] = $val['id'];
+                self::getTreeId($data, $val['id']);
+            }
+        }
+        return $idArr;
+    }
+
+    /**
+     * 生成树状数据结构
      * @return array
      * @param int $pid 父级pid
-     * @param string|null $plevel 所属栏目名称
-     * @param array|\think\Collection $data 栏目数据
+     * @param string|null $plevel 父级名称
+     * @param array|\think\Collection $data data
      */
     public function getTreeData(array|\think\Collection $data, ?string $plevel, int $pid = 0): array
     {

@@ -54,7 +54,7 @@ class Article extends BaseController
     {
         $orderField = $this->request->param('sortField/s', 'id');
         $sortOrder = $this->request->param('sortOrder/s', 'desc');
-        $total = $this->services->getCount(['status' => 1]); // 获取除删除外的所有文章总数
+        $total = $this->services->getCount($this->status); // 获取除删除外的所有文章总数
         $data = $this->services->getList($this->page, $this->listRows, '*', [$orderField => $sortOrder]);
         return $this->json->successful('请求成功', compact('total', 'data'));
     }
