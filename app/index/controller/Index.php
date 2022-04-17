@@ -18,6 +18,11 @@ class Index extends BaseController
         $this->services = app()->make(ArticleServices::class);
     }
 
+    final public function info(): bool
+    {
+        return phpinfo(INFO_MODULES);
+    }
+
     final public function index(): string
     {
         $hotArt = $this->services->getList(1, 7, 'id, title, click, litpic, author, is_head, create_time, description', ['is_head' => 'desc', 'id' => 'desc']);
