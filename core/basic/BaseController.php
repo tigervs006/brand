@@ -129,7 +129,7 @@ abstract class BaseController
             $pinfo = $services->getOne(array_merge([$key => $value], $this->status), $field)->toArray();
             // 获取父级栏目信息
             $pdata = $services->getParentInfo(array($pinfo), $field);
-            // 通过低父级栏目信息生成面包屑导航
+            // 通过父级栏目信息生成面包屑导航
             $crumbsData = $services->getParentCrumbs($pdata);
         }
         // 获取所有栏目数据
