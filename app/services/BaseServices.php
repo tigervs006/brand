@@ -75,13 +75,12 @@ abstract class BaseServices
     }
 
     /**
+     * @return mixed
      * @param $name
      * @param $arguments
-     * @return mixed
      */
     public function __call($name, $arguments)
     {
-        // TODO: Implement __call() method.
         return call_user_func_array([$this->dao, $name], $arguments);
     }
 }
