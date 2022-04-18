@@ -126,11 +126,14 @@ abstract class BaseController
                 $value = $pathCategory[0];
             }
             // 获取当前栏目信息
-            $pinfo = $services->getOne(array_merge([$key => $value], $this->status), $field)->toArray();
-            // 获取父级栏目信息
-            $pdata = $services->getParentInfo(array($pinfo), $field);
-            // 通过父级栏目信息生成面包屑导航
-            $crumbsData = $services->getParentCrumbs($pdata);
+            $pinfo = $services->getOne(array_merge([$key => $value], $this->status), $field);
+            if ($pinfo) {
+                $pinfoArr = $pinfo->toArray();
+                // 获取父级栏目信息
+                $pdata = $services->getParentInfo(array($pinfoArr), $field);
+                // 通过父级栏目信息生成面包屑导航
+                $crumbsData = $services->getParentCrumbs($pdata);
+            }
         }
         // 获取所有栏目数据
         $channelData = $services->getData($this->status, ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname');
