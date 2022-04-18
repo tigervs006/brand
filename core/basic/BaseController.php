@@ -136,9 +136,9 @@ abstract class BaseController
             }
         }
         // 获取所有栏目数据
-        $channelData = $services->getData($this->status, ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, level, cname');
+        $channelData = $services->getData($this->status, ['id' => 'asc', 'sort' => 'desc'], 'id, pid, name, cname');
         // 获取网站栏目树状结构
-        $result = $services->getTreeData($channelData, '顶级栏目');
+        $result = $services->getTreeData($channelData, 0, null);
         $this->view::assign(['channel' => $result, 'crumbs' => $crumbsData ?? [], 'channelinfo' => $pinfo ?? []]);
     }
 

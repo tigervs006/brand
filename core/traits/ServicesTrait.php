@@ -41,17 +41,17 @@ trait ServicesTrait
     /**
      * 生成树状数据结构
      * @return array
-     * @param int $pid 父级pid
-     * @param string|null $plevel 父级名称
+     * @param int|null $pid 父级id
+     * @param string|null $pname 父级名称
      * @param array|\think\Collection $data data
      */
-    public function getTreeData(array|\think\Collection $data, ?string $plevel, int $pid = 0): array
+    public function getTreeData(array|\think\Collection $data, ?int $pid = 0, ?string $pname = '顶级栏目'): array
     {
         $tree = [];
         foreach ($data as $val) {
-            if ($val['pid'] == $pid) {
-                $plevel && $val['belongsto'] = $plevel;
-                $children = self::getTreeData($data, $plevel??null, $val['id']);
+            if ($pid == $val['pid']) {
+                $pname && $val['parent'] = $pname;
+                $children = self::getTreeData($data, $val['id'], $pname ? $val['cname'] : null);
                 $children && $val['children'] = $children;
                 $tree[] = $val;
             }
