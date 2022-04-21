@@ -1,5 +1,4 @@
 <?php
-use think\Response;
 use think\facade\Route;
 
 Route::group(function () {
@@ -13,6 +12,4 @@ Route::group(function () {
     Route::rule('product/:id', 'product/detail')->name('productDetail');        // 商品详情
     Route::rule('support/:name', 'support/:name')->name('supportDetail');       // 视频教程
 
-    // Miss Route
-    Route::miss(function () { return Response::create()->code(404); });
 })->option(['method' => 'get', 'https' => true])->pattern(['id' => '\d+', 'name' => '[a-zA-Z]+']);
