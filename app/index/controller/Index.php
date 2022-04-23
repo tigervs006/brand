@@ -12,21 +12,39 @@ class Index extends BaseController
      */
     private ArticleServices $services;
 
+    /**
+     * @var array|string[] 排序
+     */
+    private array $order = ['is_head' => 'desc', 'id' => 'desc'];
+
+    /**
+     * @var string 字段
+     */
+    private string $field = 'id, title, click, litpic, author, is_head, create_time, description';
+
     protected function initialize()
     {
         parent::initialize();
         $this->services = app()->make(ArticleServices::class);
     }
 
+    /**
+     * 系统环境
+     * @return string
+     */
     final public function info(): string
     {
         $content = phpinfo(INFO_MODULES);
         return $this->view::display((string) $content);
     }
 
+    /**
+     * 文章列表
+     * @return string
+     */
     final public function index(): string
     {
-        $hotArt = $this->services->getList(1, 7, 'id, title, click, litpic, author, is_head, create_time, description', ['is_head' => 'desc', 'id' => 'desc']);
+        $hotArt = $this->services->getList(1, 7, $this->field, $this->order);
         return $this->view::fetch('/index', ['hotart' => $hotArt]);
     }
 }
