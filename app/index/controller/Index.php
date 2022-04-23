@@ -18,9 +18,10 @@ class Index extends BaseController
         $this->services = app()->make(ArticleServices::class);
     }
 
-    final public function info(): bool
+    final public function info(): string
     {
-        return phpinfo(INFO_MODULES);
+        $content = phpinfo(INFO_MODULES);
+        return $this->view::display((string) $content);
     }
 
     final public function index(): string
