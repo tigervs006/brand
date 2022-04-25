@@ -52,10 +52,12 @@ class Article extends BaseController
      */
     final public function lists(): mixed
     {
+        // 需提取的字段
+        $field = 'id, cid, click, title, author, status, create_time, update_time, is_head, is_recom, is_collect';
         $orderField = $this->request->param('sortField/s', 'id');
         $sortOrder = $this->request->param('sortOrder/s', 'desc');
         $total = $this->services->getCount($this->status); // 获取除删除外的所有文章总数
-        $data = $this->services->getList($this->current, $this->pageSize, '*', [$orderField => $sortOrder]);
+        $data = $this->services->getList($this->current, $this->pageSize, $field, [$orderField => $sortOrder]);
         return $this->json->successful('请求成功', compact('total', 'data'));
     }
 }
