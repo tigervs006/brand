@@ -25,11 +25,6 @@ abstract class BaseController
     protected App $app;
 
     /**
-     * @var int
-     */
-    protected int $page;
-
-    /**
      * 界面渲染
      * @var View
      */
@@ -41,9 +36,16 @@ abstract class BaseController
     protected object $json;
 
     /**
+     * 当前页
      * @var int
      */
-    protected int $listRows;
+    protected int $current;
+
+    /**
+     * 每页数量
+     * @var int
+     */
+    protected int $pageSize;
 
     /**
      * 阅读量步长
@@ -90,8 +92,8 @@ abstract class BaseController
     {
         $this->json = App('json');
         $this->id = $this->request->param('id', 1);
-        $this->page = $this->request->param('page/d', 1);
-        $this->listRows = $this->request->param('listRows/d', 15);
+        $this->current = $this->request->param('current/d', 1);
+        $this->pageSize = $this->request->param('pageSize/d', 15);
 
         // 只在特定应用执行
          App('http')->getName() === 'index' && $this->channel();

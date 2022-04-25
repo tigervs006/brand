@@ -8,12 +8,6 @@ use app\services\article\ArticleServices;
 class Industry extends BaseController
 {
     /**
-     * 数量
-     * @var int
-     */
-    private int $rows = 10;
-
-    /**
      * @var ArticleServices
      */
     private ArticleServices $services;
@@ -24,7 +18,7 @@ class Industry extends BaseController
         $this->services = app()->make(ArticleServices::class);
         // 热门文章
         $this->view::assign('hotArt', $this->services->getList(
-            $this->page, $this->rows,'id, click, title, litpic, create_time', ['click' => 'desc']));
+            $this->current, $this->pageSize,'id, click, title, litpic, create_time', ['click' => 'desc']));
     }
 
     /**
