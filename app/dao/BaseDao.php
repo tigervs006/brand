@@ -159,7 +159,8 @@ abstract class BaseDao
         } else {
             $where = [is_null($key) ? $this->getPk() : $key => $id];
         }
-        return $this->getModel()::where($where)->useSoftDelete('delete_time',time())->delete() == 1;
+        // delete方法实际返回的是int类型，ThinkPHP的bug
+        return $this->getModel()::where($where)->useSoftDelete('delete_time',time())->delete() >= 1;
     }
 
     /**
