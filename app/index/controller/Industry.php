@@ -16,9 +16,7 @@ class Industry extends BaseController
     {
         parent::initialize();
         $this->services = $this->app->make(ArticleServices::class);
-        // 热门文章
-        $this->view::assign('hotArt', $this->services->getList(
-            $this->current, $this->pageSize,$this->status, 'id, click, title, litpic, create_time', ['click' => 'desc']));
+        $this->view::assign('hotArt', $this->hortArt());// 获取热门文章
     }
 
     /**
@@ -43,5 +41,14 @@ class Industry extends BaseController
         // 上/下一篇文章
         $prenext = $this->services->prenext($result['id']);
         return $this->view::fetch('../industry/detail', ['result' => $result, 'prenext' => $prenext]);
+    }
+
+    /**
+     * 热门文章
+     * @return array|\think\Collection
+     */
+    final public function hortArt(): array|\think\Collection
+    {
+        return $this->services->getList($this->current, $this->pageSize,$this->status, 'id, click, title, litpic, create_time', ['click' => 'desc']);
     }
 }
