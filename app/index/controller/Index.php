@@ -13,11 +13,6 @@ class Index extends BaseController
     private ArticleServices $services;
 
     /**
-     * @var array|string[] 排序
-     */
-    private array $order = ['is_head' => 'desc', 'id' => 'desc'];
-
-    /**
      * @var string 字段
      */
     private string $field = 'id, title, click, litpic, author, is_head, create_time, description';
@@ -44,7 +39,7 @@ class Index extends BaseController
      */
     final public function index(): string
     {
-        $hotArt = $this->services->getList(1, 7, $this->field, $this->order);
+        $hotArt = $this->services->getList(1, 7, $this->status, $this->field, ['is_head' => 'desc', 'id' => 'desc']);
         return $this->view::fetch('/index', ['hotart' => $hotArt]);
     }
 }
