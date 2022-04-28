@@ -71,6 +71,12 @@ abstract class BaseController
     protected array $status = ['status' => 1];
 
     /**
+     * 默认排序
+     * @var array|string[]
+     */
+    protected array $order = ['id' => 'desc'];
+
+    /**
      * 构造方法
      * @access public
      * @param  App  $app  应用对象
