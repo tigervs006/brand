@@ -159,7 +159,7 @@ abstract class BaseDao
         } else {
             $where = [is_null($key) ? $this->getPk() : $key => $id];
         }
-        // delete方法实际返回的是int类型，ThinkPHP的bug
+        // FIXME: delete方法实际返回的是int类型，ThinkPHP的bug
         return $this->getModel()::where($where)->useSoftDelete('delete_time',time())->delete() >= 1;
     }
 
@@ -177,7 +177,7 @@ abstract class BaseDao
         } else {
             $where =[is_null($key) ? $this->getPk() : $key => $id];
         }
-        return $this->getModel()::update($data, $where);
+        return $this->getModel()::update($data, $where); // FIXME: update静态方法返回的是model实例，无法判断是否更新成功，ThinkPHP的bug
     }
 
     /**
