@@ -83,16 +83,16 @@ abstract class BaseDao
     /**
      * 根据条件获取数据
      * @return array|\think\Collection
-     * @param array $map 条件
+     * @param array|null $map 条件
      * @param array|null $order 排序
      * @param string|null $field 字段
      */
-    public function getData(array $map, ?array $order, ?string $field = '*'): array|\think\Collection
+    public function getData(?array $map = null, ?array $order = ['id' => 'desc'], ?string $field = '*'): array|\think\Collection
     {
-        if ($order) {
-            return $this->getModel()->where($map)->order($order)->field($field)->select();
+        if (is_null($map)) {
+            return $this->getModel()->order($order)->field($field)->select();
         } else {
-            return $this->getModel()->where($map)->field($field)->select();
+            return $this->getModel()->where($map)->order($order)->field($field)->select();
         }
     }
 
@@ -104,23 +104,27 @@ abstract class BaseDao
      */
     public function getCount(?array $map, ?string $field = 'id'): int
     {
-        if ($map) {
-            return $this->getModel()->where($map)->count();
-        } else {
+        if (is_null($map)) {
             return $this->getModel()->count($field);
+        } else {
+            return $this->getModel()->where($map)->count();
         }
     }
 
     /**
      * 获取某个列数组
      * @return array
-     * @param array $map 条件
+     * @param array|null $map 条件
      * @param string $field 字段
      * @param string|null $key 索引
      */
-    public function getColumn(array $map, string $field, ?string $key =''): array
+    public function getColumn(string $field, ?array $map = null, ?string $key = ''): array
     {
-        return $this->getModel()->where($map)->column($field, $key);
+        if (is_null($map)) {
+            return $this->getModel()->column($field, $key);
+        } else {
+            return $this->getModel()->where($map)->column($field, $key);
+        }
     }
 
     /**
