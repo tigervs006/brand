@@ -8,8 +8,8 @@ namespace core\traits;
  * @method int saveAll(array $data) 批量新增数据
  * @method \core\basic\BaseModel saveOne(array $data) 新增一条数据
  * @method int getCount(?array $map, ?string $field = 'id') 计算数据总量
- * @method bool delete(int|array $id, ?string $key = null) 删除一条或多条数据
  * @method mixed getOne(array $map, ?string $field = '*') 根据条件获取单条数据
+ * @method bool delete(int|array|string $id, ?string $key = null) 删除一条或多条数据
  * @method bool setInc(int $id, int $incValue, ?string $field = 'click') 自增阅读量或其它
  * @method array getColumn(string $field, ?array $where = null, string $key = '') 获取某个列的数组
  * @method \core\basic\BaseModel batchUpdate(array $ids, array $data, ?string $key) 批量更新数据
