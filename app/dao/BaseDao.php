@@ -177,6 +177,7 @@ abstract class BaseDao
         } else {
             $where =[is_null($key) ? $this->getPk() : $key => $id];
         }
+        // FIXME: update静态方法返回的是model实例，无法判断是否更新成功，ThinkPHP的bug
         return $this->getModel()::update($data, $where);
     }
 
