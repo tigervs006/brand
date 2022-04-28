@@ -25,12 +25,44 @@ class User extends BaseController
     }
 
     /**
+     * 获取用户信息
+     * @return mixed
+     */
+    public function index(): mixed
+    {
+        $data = $this->services->getOne(['id' => $this->id], $this->field);
+        if (null === $data) {
+            return $this->json->fail('查无此人...');
+        } else {
+            return $this->json->successful('请求成功', compact('data'));
+        }
+    }
+
+    /**
      * 获取用户列表
      * @return mixed
      */
     public function lists(): mixed
     {
         $data = $this->services->getData(null, $this->order, $this->field);
-        return $this->json->successful('请求成功', compact('data'));
+        if ($data->isEmpty()) {
+            return $this->json->fail('There is nothing...');
+        } else {
+            return $this->json->successful('请求成功', compact('data'));
+        }
+    }
+
+    /**
+     * 单个/批量删除
+     * @return mixed
+     */
+    public function delete(): mixed
+    {
+        $data = $this->services->delete($this->id);
+        if (!$data) {
+            return $this->json->fail('删除用户失败');
+        } else {
+            return $this->json->successful('删除用户成功');
+        }
     }
 }
