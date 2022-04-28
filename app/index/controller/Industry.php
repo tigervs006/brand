@@ -18,7 +18,7 @@ class Industry extends BaseController
         $this->services = app()->make(ArticleServices::class);
         // 热门文章
         $this->view::assign('hotArt', $this->services->getList(
-            $this->current, $this->pageSize,'id, click, title, litpic, create_time', ['click' => 'desc']));
+            $this->current, $this->pageSize,$this->status, 'id, click, title, litpic, create_time', ['click' => 'desc']));
     }
 
     /**
@@ -27,7 +27,7 @@ class Industry extends BaseController
      */
     final public function index(): string
     {
-        $result = $this->services->paginate('id, cid, click, title, author, litpic, create_time, description', $this->rows);
+        $result = $this->services->paginate('id, cid, click, title, author, litpic, create_time, description', $this->pageSize);
         return $this->view::fetch('../industry/index', ['result' => $result]);
     }
 
