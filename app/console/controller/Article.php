@@ -54,10 +54,39 @@ class Article extends BaseController
     {
         // 需提取的字段
         $field = 'id, cid, click, title, author, status, create_time, update_time, is_head, is_recom, is_collect';
-        $orderField = $this->request->param('sortField/s', 'id');
-        $sortOrder = $this->request->param('sortOrder/s', 'desc');
-        $total = $this->services->getCount($this->status); // 获取除删除外的所有文章总数
-        $data = $this->services->getList($this->current, $this->pageSize, $field, [$orderField => $sortOrder]);
+        // 获取排序字段
+        $order = $this->request->only(['click', 'create_time', 'update_time'], 'get', 'strOrderFilter');
+        // 排除字段后获得map
+        $map = $this->request->except(['click', 'current', 'pageSize', 'create_time', 'update_time'], 'get');
+        // 提取数据总数
+        $total = $this->services->getCount($map ?: null);
+        // 提取文章列表
+        $data = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $order ?: $this->order);
         return $this->json->successful('请求成功', compact('total', 'data'));
+    }
+
+    /**
+     * 获取作者
+     * @return mixed
+     */
+    final public function getAuthor(): mixed
+    {
+        /** @var \app\services\user\UserServices $userServices */
+        $userServices = $this->app->make(\app\services\user\UserServices::class);
+        // 获取系统用户作为文章作者
+        $data = $userServices->getData($this->status, $this->order, 'name, cname');
+        return $this->json->successful('获取作者成功', compact('data'));
+    }
+
+    /**
+     * 文章状态
+     * @return mixed
+     */
+    final public function setStatus(): mixed
+    {
+        $data = $this->request->post(['status']);
+        $message = $data['status'] ? '显示' : '隐藏';
+        $this->services->updateOne($this->id, $data);
+        return $this->json->successful($message . '文章成功');
     }
 }

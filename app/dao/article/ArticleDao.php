@@ -25,19 +25,24 @@ class ArticleDao extends BaseDao
     /**
      * 文章列表
      * @return array|\think\Collection
-     * @param int $page 页数
-     * @param int $listRows 列数
+     * @param int $current 页数
+     * @param int $pageSize 列数
+     * @param array|null $map 条件
      * @param array|null $order 排序
      * @param string|null $field 字段
      */
-    public function getArtList(int $page, int $listRows, ?string $field = '*', ?array $order = ['id' => 'desc']): array|\think\Collection
+    public function getArtList(int $current, int $pageSize, ?array $map = null, ?string $field = '*', ?array $order = ['id' => 'desc']): array|\think\Collection
     {
-        return $this->getModel()->with(['channel'])->field($field)->order($order)->page($page, $listRows)->select();
+        if (is_null($map)) {
+            return $this->getModel()->with(['channel'])->field($field)->order($order)->page($current, $pageSize)->select();
+        } else {
+            return $this->getModel()->with(['channel'])->where($map)->field($field)->order($order)->page($current, $pageSize)->select();
+        }
     }
 
     /**
-     * @return \think\Paginator
      * 前端分页列表
+     * @return \think\Paginator
      * @param int $rows 数量
      * @param string $field 字段
      * @param array|null $order 排序

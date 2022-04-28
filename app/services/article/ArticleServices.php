@@ -66,14 +66,15 @@ class ArticleServices extends BaseServices
     /**
      * 文章列表
      * @return array|\think\Collection
-     * @param int $page
-     * @param int $listRows
-     * @param array|null $order
-     * @param string|null $field
+     * @param int $current 当前页
+     * @param int $pageSize 数量
+     * @param array|null $map 条件
+     * @param array|null $order 排序
+     * @param string|null $field 字段
      */
-    public function getList(int $page, int $listRows, ?string $field = '*', ?array $order = ['id' => 'desc']): array|\think\Collection
+    public function getList(int $current, int $pageSize, ?array $map, ?string $field, ?array $order): array|\think\Collection
     {
-        return $this->dao->getArtList($page, $listRows, $field, $order);
+        return $this->dao->getArtList($current, $pageSize, $map, $field, $order);
     }
 
     /**
