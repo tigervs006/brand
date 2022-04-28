@@ -15,7 +15,7 @@ class Industry extends BaseController
     protected function initialize()
     {
         parent::initialize();
-        $this->services = app()->make(ArticleServices::class);
+        $this->services = $this->app->make(ArticleServices::class);
         // 热门文章
         $this->view::assign('hotArt', $this->services->getList(
             $this->current, $this->pageSize,$this->status, 'id, click, title, litpic, create_time', ['click' => 'desc']));

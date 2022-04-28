@@ -20,7 +20,7 @@ class Index extends BaseController
     protected function initialize()
     {
         parent::initialize();
-        $this->services = app()->make(ArticleServices::class);
+        $this->services = $this->app->make(ArticleServices::class);
     }
 
     /**

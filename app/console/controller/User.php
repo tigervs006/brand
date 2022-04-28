@@ -21,7 +21,7 @@ class User extends BaseController
     public function initialize()
     {
         parent::initialize();
-        $this->services = app()->make(UserServices::class);
+        $this->services = $this->app->make(UserServices::class);
     }
 
     /**

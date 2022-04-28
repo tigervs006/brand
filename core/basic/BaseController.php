@@ -114,7 +114,7 @@ abstract class BaseController
     private function channel(): void
     {
         /** @var \app\services\channel\ChannelServices $services */
-        $services = app()->make(\app\services\channel\ChannelServices::class);
+        $services = $this->app->make(\app\services\channel\ChannelServices::class);
         $pathArr = explode('/', $this->request->pathinfo());
         // 过滤空值数组
         $pathFilter = array_filter($pathArr);
@@ -128,7 +128,7 @@ abstract class BaseController
             if (preg_match('/\d+/', $channel, $pathDetail)) { // 如果是详情页
                 $key = 'id';
                 /** @var \app\services\article\ArticleServices $artServices */
-                $artServices = app()->make(\app\services\article\ArticleServices::class);
+                $artServices = $this->app->make(\app\services\article\ArticleServices::class);
                 $value = $artServices->getFieldValue($pathDetail[0], 'id', 'cid'); // 获取父级栏目ID
             } else if (preg_match('/[a-zA-Z]+/', $channel, $pathCategory)) { // 如果是栏目页
                 $value = $pathCategory[0];
