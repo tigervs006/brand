@@ -86,7 +86,7 @@ class ArticleServices extends BaseServices
     {
         /** @var ArticleContentServices $articleContentService */
         $articleContentService = app()->make(ArticleContentServices::class);
-        $id = $data['id'];
+        $id = $data['id'] ?? 0;
         $content['content'] = $data['content'];
         unset($data['content'], $data['id']);
         return $this->transaction(function () use ($id, $data, $articleContentService, $content) {

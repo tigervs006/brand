@@ -47,7 +47,8 @@ class Article extends BaseController
     {
         $data = $this->request->param();
         $this->services->saveArticle($data);
-        return $this->json->successful('请求成功', $this->request->param());
+        $msg = isset($data['id']) ? '编辑' : '新增';
+        return $this->json->successful($msg . '文章成功');
     }
 
     /**
