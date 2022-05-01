@@ -21,11 +21,11 @@ class Article extends BaseController
      */
     final public function index(): mixed
     {
-        $data = $this->services->article($this->id);
-        if (null === $data) {
+        $info = $this->services->article($this->id);
+        if (null === $info) {
             return $this->json->fail('There is nothing...');
         } else {
-            return $this->json->successful('请求成功', compact('data'));
+            return $this->json->successful('请求成功', compact('info'));
         }
     }
 
@@ -66,11 +66,11 @@ class Article extends BaseController
         // 提取数据总数
         $total = $this->services->getCount($map ?: null);
         // 提取文章列表
-        $data = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $order ?: $this->order);
-        if ($data->isEmpty()) {
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $order ?: $this->order);
+        if ($list->isEmpty()) {
             return $this->json->fail('There is nothing...');
         } else {
-            return $this->json->successful('请求成功', compact('total', 'data'));
+            return $this->json->successful('请求成功', compact('total', 'list'));
         }
     }
 
@@ -83,11 +83,11 @@ class Article extends BaseController
         /** @var \app\services\user\UserServices $userServices */
         $userServices = $this->app->make(\app\services\user\UserServices::class);
         // 获取系统用户作为文章作者
-        $data = $userServices->getData($this->status, $this->order, 'name, cname');
-        if ($data->isEmpty()) {
+        $list = $userServices->getData($this->status, $this->order, 'name, cname');
+        if ($list->isEmpty()) {
             return $this->json->fail('There is nothing...');
         } else {
-            return $this->json->successful('请求成功', compact('data'));
+            return $this->json->successful('请求成功', compact('list'));
         }
     }
 
