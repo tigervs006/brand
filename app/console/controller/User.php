@@ -30,11 +30,11 @@ class User extends BaseController
      */
     public function index(): mixed
     {
-        $data = $this->services->getOne(['id' => $this->id], $this->field);
-        if (null === $data) {
+        $info = $this->services->getOne(['id' => $this->id], $this->field);
+        if (null === $info) {
             return $this->json->fail('查无此人...');
         } else {
-            return $this->json->successful('请求成功', compact('data'));
+            return $this->json->successful('请求成功', compact('info'));
         }
     }
 
@@ -44,11 +44,11 @@ class User extends BaseController
      */
     public function lists(): mixed
     {
-        $data = $this->services->getData(null, $this->order, $this->field);
-        if ($data->isEmpty()) {
+        $list = $this->services->getData(null, $this->order, $this->field);
+        if ($list->isEmpty()) {
             return $this->json->fail('There is nothing...');
         } else {
-            return $this->json->successful('请求成功', compact('data'));
+            return $this->json->successful('请求成功', compact('list'));
         }
     }
 
