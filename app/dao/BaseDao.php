@@ -155,12 +155,12 @@ abstract class BaseDao
     public function delete(int|array|string $id, ?string $key = null): bool
     {
         if (is_array($id)) {
-            $where = $id;
+            return $this->getModel()::useSoftDelete('delete_time',time())->delete($id) >= 1;
         } else {
             $where = [is_null($key) ? $this->getPk() : $key => $id];
+            // FIXME: delete方法实际返回的是int类型，ThinkPHP的bug
+            return $this->getModel()::where($where)->useSoftDelete('delete_time',time())->delete() >= 1;
         }
-        // FIXME: delete方法实际返回的是int类型，ThinkPHP的bug
-        return $this->getModel()::where($where)->useSoftDelete('delete_time',time())->delete() >= 1;
     }
 
     /**
