@@ -25,6 +25,7 @@ Route::group(function () {
         Route::post('del', 'delete');           // 删除文章
         Route::get('author', 'getAuthor');      // 文章作者
         Route::post('status', 'setStatus');     // 文章状态
+        Route::get('channel', 'getChannel');    // 新闻栏目
     })->prefix('article/');
     // 商品部分
     Route::group('product', function () {

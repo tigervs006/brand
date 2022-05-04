@@ -13,6 +13,21 @@ class ChannelServices extends BaseServices
     }
 
     /**
+     * 获取子栏目信息
+     * @return array
+     * @param array $map 条件
+     * @param string $field 字段
+     * @param array|null $order 排序
+     * TODO: 仅支持二级栏目，更深层级的栏目需要用到递归
+     */
+    public function getChildInfo(array $map, string $field, ?array $order = ['id' => 'asc']): array
+    {
+        $info = $this->dao->getOne($map, $field)->toArray();
+        $childInfo = $this->dao->getData(['pid' => $info['id']], $order, $field)->toArray();
+        return array_merge(array($info), $childInfo);
+    }
+
+    /**
      * 获取父栏目信息
      * @return array
      * @param array $info 栏目信息
