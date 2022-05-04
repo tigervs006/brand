@@ -39,7 +39,7 @@ class Article extends BaseModel
      */
     public function channel(): HasOne
     {
-        return $this->hasOne(Channel::class, 'id', 'cid')->field('id, cname');
+        return $this->hasOne(Channel::class, 'id', 'cid')->field('id, name, cname');
     }
 
     /**
