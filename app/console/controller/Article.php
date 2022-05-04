@@ -54,6 +54,7 @@ class Article extends BaseController
     /**
      * 文章列表
      * @return mixed
+     * FIXME: 组装的搜索条件不兼容$map内的其它搜索条件
      */
     final public function lists(): mixed
     {
@@ -63,6 +64,17 @@ class Article extends BaseController
         $order = $this->request->only(['click', 'create_time', 'update_time'], 'get', 'strOrderFilter');
         // 排除字段后获得map
         $map = $this->request->except(['click', 'current', 'pageSize', 'create_time', 'update_time'], 'get');
+        // 组装按时间段搜索条件
+        if (isset($map['startTime']) && isset($map['endTime'])) {
+            $map[] = ['create_time', 'between time', [$map['startTime'], $map['endTime']]];
+            unset($map['startTime']);
+            unset($map['endTime']);
+        }
+        // 组装文章标题搜索条件
+        if (isset($map['title'])) {
+            $map[] = ['title', 'like', '%' . $map['title'] . '%'];
+            unset($map['title']);
+        }
         // 提取数据总数
         $total = $this->services->getCount($map ?: null);
         // 提取文章列表
@@ -85,6 +97,22 @@ class Article extends BaseController
         // 获取系统用户作为文章作者
         $list = $userServices->getData($this->status, $this->order, 'name, cname');
         if ($list->isEmpty()) {
+            return $this->json->fail('There is nothing...');
+        } else {
+            return $this->json->successful('请求成功', compact('list'));
+        }
+    }
+
+    /**
+     * 新闻栏目
+     * @return mixed
+     */
+    final public function getChannel (): mixed
+    {
+        /** @var \app\services\channel\ChannelServices $channelServices */
+        $channelServices = $this->app->make(\app\services\channel\ChannelServices::class);
+        $list = $channelServices->getChildInfo(['id' => 4], 'id, name, cname');
+        if (empty($list)) {
             return $this->json->fail('There is nothing...');
         } else {
             return $this->json->successful('请求成功', compact('list'));
