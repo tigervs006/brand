@@ -44,7 +44,7 @@ class ApiExceptionHandle extends Handle
         } else if ($e instanceof AuthException || $e instanceof ApiException || $e instanceof ValidateException) {
             return app('json')->fail($e->getMessage());
         } else {
-            return app('json')->fail('出现未知错误', Env::get('app_debug', false) ? [
+            return app('json')->fail('未知错误', Env::get('app_debug', false) ? [
                 'file' => $e->getFile(),
                 'code' => $e->getCode(),
                 'line' => $e->getLine(),
