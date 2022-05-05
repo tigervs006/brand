@@ -22,7 +22,7 @@ class ArticleServices extends BaseServices
      * @return void
      * @param int|array|string $id
      */
-    public function delete(int|array|string $id): void
+    public function remove(int|array|string $id): void
     {
         /** @var  ArticleContentServices $articleContentService */
         $articleContentService = app()->make(ArticleContentServices::class);
@@ -30,16 +30,6 @@ class ArticleServices extends BaseServices
             $result = $this->dao->delete($id) && $articleContentService->delete($id);
             !$result && throw new ApiException('删除文章失败');
         });
-    }
-
-    /**
-     * 文章内容
-     * @return mixed
-     * @param int|string $id
-     */
-    public function article(int|string $id): mixed
-    {
-        return $this->dao->getArtContent($id);
     }
 
     /**
@@ -61,20 +51,6 @@ class ArticleServices extends BaseServices
     public function paginate(string $field, int $rows, ?array $order = ['id' => 'desc']): \think\Paginator
     {
         return $this->dao->getPaginate($field, $rows, $order);
-    }
-
-    /**
-     * 文章列表
-     * @return array|\think\Collection
-     * @param int $current 当前页
-     * @param int $pageSize 数量
-     * @param array|null $map 条件
-     * @param array|null $order 排序
-     * @param string|null $field 字段
-     */
-    public function getList(int $current, int $pageSize, ?array $map, ?string $field, ?array $order): array|\think\Collection
-    {
-        return $this->dao->getArtList($current, $pageSize, $map, $field, $order);
     }
 
     /**
