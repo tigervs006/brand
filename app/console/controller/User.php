@@ -2,6 +2,7 @@
 declare (strict_types = 1);
 namespace app\console\controller;
 
+use think\response\Json;
 use core\basic\BaseController;
 use app\services\user\UserServices;
 
@@ -26,9 +27,9 @@ class User extends BaseController
 
     /**
      * 获取用户信息
-     * @return mixed
+     * @return Json
      */
-    public function index(): mixed
+    public function index(): Json
     {
         $info = $this->services->getOne(['id' => $this->id], $this->field);
         if (null === $info) {
@@ -40,9 +41,9 @@ class User extends BaseController
 
     /**
      * 获取用户列表
-     * @return mixed
+     * @return Json
      */
-    public function lists(): mixed
+    public function lists(): Json
     {
         $list = $this->services->getData(null, $this->order, $this->field);
         if ($list->isEmpty()) {
@@ -54,9 +55,9 @@ class User extends BaseController
 
     /**
      * 单个/批量删除
-     * @return mixed
+     * @return Json
      */
-    public function delete(): mixed
+    public function delete(): Json
     {
         $data = $this->services->delete($this->id);
         if (!$data) {

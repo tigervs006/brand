@@ -2,6 +2,7 @@
 declare (strict_types = 1);
 namespace app\console\controller;
 
+use think\response\Json;
 use core\basic\BaseController;
 use app\services\article\ArticleServices;
 
@@ -17,9 +18,9 @@ class Article extends BaseController
 
     /**
      * 获取文章
-     * @return mixed
+     * @return Json
      */
-    final public function index(): mixed
+    final public function index(): Json
     {
         $info = $this->services->getOne(['id' => $this->id], null, ['content']);
         if (null === $info) {
@@ -31,9 +32,9 @@ class Article extends BaseController
 
     /**
      * 删除文章
-     * @return mixed
+     * @return Json
      */
-    final public function delete(): mixed
+    final public function delete(): Json
     {
         $this->services->remove($this->id);
         return $this->json->successful('删除成功');
@@ -41,9 +42,9 @@ class Article extends BaseController
 
     /**
      * 新增|编辑
-     * @return mixed
+     * @return Json
      */
-    final public function save(): mixed
+    final public function save(): Json
     {
         $data = $this->request->param();
         $this->services->saveArticle($data);
@@ -53,10 +54,10 @@ class Article extends BaseController
 
     /**
      * 文章列表
-     * @return mixed
+     * @return Json
      * FIXME: 组装的搜索条件不兼容$map内的其它搜索条件
      */
-    final public function lists(): mixed
+    final public function lists(): Json
     {
         // 获取搜索标题
         $title = $this->request->get('title/s');
@@ -85,9 +86,9 @@ class Article extends BaseController
 
     /**
      * 获取作者
-     * @return mixed
+     * @return Json
      */
-    final public function getAuthor(): mixed
+    final public function getAuthor(): Json
     {
         /** @var \app\services\user\UserServices $userServices */
         $userServices = $this->app->make(\app\services\user\UserServices::class);
@@ -102,9 +103,9 @@ class Article extends BaseController
 
     /**
      * 新闻栏目
-     * @return mixed
+     * @return Json
      */
-    final public function getChannel (): mixed
+    final public function getChannel(): Json
     {
         /** @var \app\services\channel\ChannelServices $channelServices */
         $channelServices = $this->app->make(\app\services\channel\ChannelServices::class);
@@ -118,9 +119,9 @@ class Article extends BaseController
 
     /**
      * 文章状态
-     * @return mixed
+     * @return Json
      */
-    final public function setStatus(): mixed
+    final public function setStatus(): Json
     {
         $data = $this->request->post(['status']);
         $message = $data['status'] ? '显示' : '隐藏';
