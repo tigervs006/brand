@@ -250,13 +250,13 @@ abstract class BaseDao
     }
 
     /**
-     * @return BaseModel
+     * @return mixed
      * 根据搜索器获取搜索内容
      * @param array $withSearch
      * @param array|null $data
      * @throws \ReflectionException
      */
-    protected function withSearchSelect(array $withSearch, ?array $data = []): BaseModel
+    protected function withSearchSelect(array $withSearch, ?array $data = []): mixed
     {
         [$with] = $this->getSearchData($withSearch);
         return $this->getModel()->withSearch($with, $data);
@@ -264,10 +264,10 @@ abstract class BaseDao
 
     /**
      * 使用搜索器
-     * @return BaseModel
+     * @return mixed
      * @param array|null $map 条件
      */
-    public function search(?array $map): BaseModel
+    public function search(?array $map): mixed
     {
         if (is_null($map)) {
             return $this->getModel();
