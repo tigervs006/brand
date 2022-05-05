@@ -236,17 +236,17 @@ abstract class BaseDao
     private function getSearchData(array $withSearch): array
     {
         $with = [];
-        $whereKey = [];
+        $mapKey = [];
         $respones = new \ReflectionClass($this->setModel());
         foreach ($withSearch as $fieldName) {
             $method = 'search' . Str::studly($fieldName) . 'Attr';
             if ($respones->hasMethod($method)) {
                 $with[] = $fieldName;
             } else {
-                $whereKey[] = $fieldName;
+                $mapKey[] = $fieldName;
             }
         }
-        return [$with, $whereKey];
+        return [$with, $mapKey];
     }
 
     /**
@@ -265,14 +265,14 @@ abstract class BaseDao
     /**
      * 使用搜索器
      * @return BaseModel
-     * @param array $where
+     * @param array|null $map 条件
      */
-    public function search(array $where = []): BaseModel
+    public function search(?array $map): BaseModel
     {
-        if ($where) {
-            return $this->withSearchSelect(array_keys($where), $where);
-        } else {
+        if (is_null($map)) {
             return $this->getModel();
+        } else {
+            return $this->withSearchSelect(array_keys($map), $map);
         }
     }
 
