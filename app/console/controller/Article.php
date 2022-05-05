@@ -21,7 +21,7 @@ class Article extends BaseController
      */
     final public function index(): mixed
     {
-        $info = $this->services->article($this->id);
+        $info = $this->services->getOne(['id' => $this->id], null, ['content']);
         if (null === $info) {
             return $this->json->fail('There is nothing...');
         } else {
@@ -35,7 +35,7 @@ class Article extends BaseController
      */
     final public function delete(): mixed
     {
-        $this->services->delete($this->id);
+        $this->services->remove($this->id);
         return $this->json->successful('删除成功');
     }
 
@@ -58,27 +58,24 @@ class Article extends BaseController
      */
     final public function lists(): mixed
     {
+        // 获取搜索标题
+        $title = $this->request->get('title/s');
+        // 获取时间范围
+        $dateRange = $this->request->only(['startTime', 'endTime'], 'get');
         // 需提取的字段
         $field = 'id, cid, click, title, author, status, create_time, update_time, is_head, is_recom, is_collect';
         // 获取排序字段
         $order = $this->request->only(['click', 'create_time', 'update_time'], 'get', 'strOrderFilter');
         // 排除字段后获得map
-        $map = $this->request->except(['click', 'current', 'pageSize', 'create_time', 'update_time'], 'get');
+        $map = $this->request->except(['title', 'click', 'current', 'pageSize','startTime', 'endTime', 'create_time', 'update_time'], 'get');
         // 组装按时间段搜索条件
-        if (isset($map['startTime']) && isset($map['endTime'])) {
-            $map[] = ['create_time', 'between time', [$map['startTime'], $map['endTime']]];
-            unset($map['startTime']);
-            unset($map['endTime']);
-        }
+        $dateRange && $map[] = ['create_time', 'between time', [$dateRange['startTime'], $dateRange['endTime']]];
         // 组装文章标题搜索条件
-        if (isset($map['title'])) {
-            $map[] = ['title', 'like', '%' . $map['title'] . '%'];
-            unset($map['title']);
-        }
+        $title && $map[] = ['title', 'like', '%' . $title . '%'];
         // 提取数据总数
         $total = $this->services->getCount($map ?: null);
         // 提取文章列表
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $order ?: $this->order);
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $order ?: $this->order, ['channel']);
         if ($list->isEmpty()) {
             return $this->json->fail('There is nothing...');
         } else {
