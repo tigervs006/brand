@@ -36,7 +36,7 @@ class ApiExceptionHandle extends Handle
     {
         // 添加自定义异常处理机制
         if ($e instanceof DbException) {
-            return app('json')->fail('数据获取失败', [
+            return app('json')->fail('数据获取异常', [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'message' => $e->getMessage()
