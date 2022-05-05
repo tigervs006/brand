@@ -6,6 +6,7 @@ namespace core\traits;
  * Trait ServicesTrait
  * @package core\traits
  * @method int saveAll(array $data) 批量新增数据
+ * @method \core\basic\BaseModel search(?array $map) 使用搜索器
  * @method \core\basic\BaseModel saveOne(array $data) 新增一条数据
  * @method int getCount(?array $map, ?string $field = 'id') 计算数据总量
  * @method bool delete(int|array|string $id, ?string $key = null) 删除一条或多条数据
