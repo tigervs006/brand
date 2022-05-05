@@ -3,6 +3,7 @@ declare (strict_types = 1);
 namespace app\dao;
 
 use core\basic\BaseModel;
+use think\helper\Str;
 
 abstract class BaseDao
 {
@@ -35,6 +36,25 @@ abstract class BaseDao
      */
     protected function setJoinModel(): string {
         return app()->make($this->setModel());
+    }
+
+    /**
+     * 获取单条数据
+     * @param int|string|array $id id
+     * @param string|null $field 字段
+     * @param array|null $with 关联模型
+     * @return array|BaseModel|\think\Model|null
+     */
+    public function get(int|string|array $id, ?string $field, ?array $with = []): array|BaseModel|\think\Model|null
+    {
+        if (is_array($id)) {
+            $map = $id;
+        } else {
+            $map = [$this->getPk() => $id];
+        }
+        return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) {
+            $query->with($with);
+        })->field($field ?? '*')->find();
     }
 
     /**
@@ -71,17 +91,18 @@ abstract class BaseDao
 
     /**
      * 根据条件获取单条数据
-     * @return mixed
+     * @return \think\Model|array|BaseModel|null
      * @param array $map 条件
      * @param string|null $field 字段
+     * @param array|null $with  关联模型
      */
-    public function getOne(array $map, ?string $field = '*'): mixed
+    public function getOne(array $map, ?string $field, ?array $with = []): \think\Model|array|null|BaseModel
     {
-        return $this->getModel()->where($map)->field($field)->find();
+        return $this->get($map, $field, $with);
     }
 
     /**
-     * 根据条件获取数据
+     * 根据条件获取所有数据
      * @return array|\think\Collection
      * @param array|null $map 条件
      * @param array|null $order 排序
@@ -151,15 +172,16 @@ abstract class BaseDao
      * 删除一条或多条数据
      * @return boolean
      * @param int|array|string $id
+     * @param string|null $key key
      */
     public function delete(int|array|string $id, ?string $key = null): bool
     {
         if (is_array($id)) {
-            return $this->getModel()::useSoftDelete('delete_time',time())->delete($id) >= 1;
+            return $this->getModel()->useSoftDelete('delete_time',time())->delete($id) >= 1;
         } else {
             $where = [is_null($key) ? $this->getPk() : $key => $id];
             // FIXME: delete方法实际返回的是int类型，ThinkPHP的bug
-            return $this->getModel()::where($where)->useSoftDelete('delete_time',time())->delete() >= 1;
+            return $this->getModel()->where($where)->useSoftDelete('delete_time',time())->delete() >= 1;
         }
     }
 
@@ -203,5 +225,73 @@ abstract class BaseDao
     public function getFieldValue(string $value, string $field, ?string $valueKey, ?array $where = []): mixed
     {
         return $this->getModel()->getFieldValue($value, $field, $valueKey, $where);
+    }
+
+    /**
+     * @return array[]
+     * 获取搜索器和搜索条件key
+     * @param array $withSearch
+     * @throws \ReflectionException
+     */
+    private function getSearchData(array $withSearch): array
+    {
+        $with = [];
+        $whereKey = [];
+        $respones = new \ReflectionClass($this->setModel());
+        foreach ($withSearch as $fieldName) {
+            $method = 'search' . Str::studly($fieldName) . 'Attr';
+            if ($respones->hasMethod($method)) {
+                $with[] = $fieldName;
+            } else {
+                $whereKey[] = $fieldName;
+            }
+        }
+        return [$with, $whereKey];
+    }
+
+    /**
+     * @return BaseModel
+     * 根据搜索器获取搜索内容
+     * @param array $withSearch
+     * @param array|null $data
+     * @throws \ReflectionException
+     */
+    protected function withSearchSelect(array $withSearch, ?array $data = []): BaseModel
+    {
+        [$with] = $this->getSearchData($withSearch);
+        return $this->getModel()->withSearch($with, $data);
+    }
+
+    /**
+     * 使用搜索器
+     * @return BaseModel
+     * @param array $where
+     */
+    public function search(array $where = []): BaseModel
+    {
+        if ($where) {
+            return $this->withSearchSelect(array_keys($where), $where);
+        } else {
+            return $this->getModel();
+        }
+    }
+
+    /**
+     * 获取带分页或者有关联模型的列表
+     * @return array|\think\Collection
+     * @param int $current 当前页
+     * @param int $pageSize 容量
+     * @param array|null $map 条件
+     * @param string|null $field 字段
+     * @param array|null $order 排序
+     * @param array|null $with  关联模型
+     */
+    public function getList(int $current, int $pageSize, ?array $map, ?string $field, ?array $order = ['id' => 'desc'], ?array $with = []): array|\think\Collection
+    {
+        if (is_null($map)) {
+            return $this->getModel()->when(count($with), function ($query) use ($with) { $query->with($with); })->field($field ?? '*')->order($order)->page($current, $pageSize)->select();
+        } else {
+            return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) { $query->with($with); })->field($field ?? '*')->order($order)->page($current, $pageSize)->select();
+        }
     }
 }
