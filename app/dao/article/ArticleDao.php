@@ -13,41 +13,13 @@ class ArticleDao extends BaseDao
     }
 
     /**
-     * 文章内容
-     * @return mixed
-     * @param int|string $id
-     */
-    public function getArtContent(int|string $id): mixed
-    {
-        return $this->getModel()->where($this->status)->with(['content'])->find($id);
-    }
-
-    /**
-     * 文章列表
-     * @return array|\think\Collection
-     * @param int $current 页数
-     * @param int $pageSize 列数
-     * @param array|null $map 条件
-     * @param array|null $order 排序
-     * @param string|null $field 字段
-     */
-    public function getArtList(int $current, int $pageSize, ?array $map = null, ?string $field = '*', ?array $order = ['id' => 'desc']): array|\think\Collection
-    {
-        if (is_null($map)) {
-            return $this->getModel()->with(['channel'])->field($field)->order($order)->page($current, $pageSize)->select();
-        } else {
-            return $this->getModel()->with(['channel'])->where($map)->field($field)->order($order)->page($current, $pageSize)->select();
-        }
-    }
-
-    /**
      * 前端分页列表
      * @return \think\Paginator
      * @param int $rows 数量
      * @param string $field 字段
      * @param array|null $order 排序
      */
-    public function getPaginate(string $field, int $rows, ?array $order = null): \think\Paginator
+    public function getPaginate(string $field, int $rows, ?array $order = ['id' => 'desc']): \think\Paginator
     {
         return $this->getModel()->with(['channel'])->where($this->status)->field($field)->order($order)->paginate($rows);
     }
