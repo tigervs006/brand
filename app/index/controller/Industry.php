@@ -35,7 +35,7 @@ class Industry extends BaseController
      */
     final public function detail(): string
     {
-        $result = $this->services->article($this->id);
+        $result = $this->services->get($this->id, null, ['content']);
         // 阅读量自增
         $result && $this->services->setInc($result['id'], $this->incValue);
         // 上/下一篇文章
