@@ -97,7 +97,7 @@ abstract class BaseController
     protected function initialize()
     {
         $this->json = App('json');
-        $this->id = $this->request->param('id', 1);
+         $this->id = $this->request->param('id', 0);
         $this->current = $this->request->param('current/d', 1);
         $this->pageSize = $this->request->param('pageSize/d', 15);
 
