@@ -566,16 +566,16 @@
         },
         {
             "name": "aliyuncs/oss-sdk-php",
-            "version": "v2.4.3",
+            "version": "v2.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
-                "reference": "4ccead614915ee6685bf30016afb01aabd347e46"
+                "reference": "f0413667d765855eb0aaa728b596801464ffdb06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/4ccead614915ee6685bf30016afb01aabd347e46",
-                "reference": "4ccead614915ee6685bf30016afb01aabd347e46",
+                "url": "https://api.github.com/repos/aliyun/aliyun-oss-php-sdk/zipball/f0413667d765855eb0aaa728b596801464ffdb06",
+                "reference": "f0413667d765855eb0aaa728b596801464ffdb06",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -611,9 +611,9 @@
             "homepage": "http://www.aliyun.com/product/oss/",
             "support": {
                 "issues": "https://github.com/aliyun/aliyun-oss-php-sdk/issues",
-                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.4.3"
+                "source": "https://github.com/aliyun/aliyun-oss-php-sdk/tree/v2.5.0"
             },
-            "time": "2021-08-25T13:03:58+00:00"
+            "time": "2022-05-13T07:41:28+00:00"
         },
         {
             "name": "guzzlehttp/command",
@@ -3429,5 +3429,5 @@
         "php": ">=8.0.15"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
