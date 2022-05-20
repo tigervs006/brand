@@ -2,12 +2,11 @@
 
 namespace core\exceptions;
 
-
 use Throwable;
 
 /**
  * Class AuthException
- * @package crmeb\exceptions
+ * @package core\exceptions
  */
 class UploadException extends \RuntimeException
 {
@@ -20,7 +19,6 @@ class UploadException extends \RuntimeException
                 $code = $errInfo[0] ?? 400;
             }
         }
-
         parent::__construct($message, $code, $previous);
     }
 }
