@@ -1,119 +1,53 @@
 <?php
-
+declare (strict_types = 1);
 namespace core\basic;
 
 use think\facade\Config;
 
 /**
  * Class BaseUpload
- * @package crmeb\basic
+ * @package core\basic
  */
 abstract class BaseUpload extends BaseStorage
 {
     /**
-     * 缩略图
-     * @var string[]
-     */
-    protected $thumb = ['big', 'mid', 'small'];
-
-    /**
-     * 缩略图配置
-     * @var array
-     */
-    protected $thumbConfig = [
-        'thumb_big_height' => 800,
-        'thumb_big_width' => 800,
-        'thumb_mid_height' => 300,
-        'thumb_mid_width' => 300,
-        'thumb_small_height' => 100,
-        'thumb_small_width' => 100,
-    ];
-    /**
-     * 水印配置
-     * @var array
-     */
-    protected $waterConfig = [
-        'image_watermark_status' => 0,
-        'watermark_type' => 1,
-        'watermark_image' => '',
-        'watermark_opacity' => 0,
-        'watermark_position' => 1,
-        'watermark_rotate' => 0,
-        'watermark_text' => '',
-        'watermark_text_angle' => "",
-        'watermark_text_color' => '#000000',
-        'watermark_text_size' => '5',
-        'watermark_text_font' => '',
-        'watermark_x' => 0,
-        'watermark_y' => 0
-    ];
-    /**
      * 图片信息
-     * @var array
      */
-    protected $fileInfo;
-    /**
-     * 下载图片信息
-     */
-    protected $downFileInfo;
+    protected array $fileInfo;
 
     /**
      * 要生成缩略图、水印的图片地址
      * @var string
      */
-    protected $filePath;
+    protected string $filePath;
 
     /**
      * 验证配置
      * @var string
      */
-    protected $validate;
+    protected string $validate;
 
     /**
      * 保存路径
      * @var string
      */
-    protected $path = '';
+    protected string $path = '';
 
     /**
-     * 是否自动裁剪
-     * @var bool
+     * 下载图片信息
      */
-    protected $authThumb = true;
+    protected array $downFileInfo;
 
-    protected function initialize(array $config)
-    {
-        $this->fileInfo = $this->downFileInfo = new \StdClass();
-        $thumbConfig = $this->thumbConfig;
-        $config['thumb'] = $config['thumb'] ?? [];
-        $this->thumbConfig = $config['thumb'] ?? [];
-        foreach ($config['thumb'] as $item) {
-            if ($item == '' || $item == 0) {
-                $this->thumbConfig = $thumbConfig;
-            }
-        }
-        $this->waterConfig = array_merge($this->waterConfig, $config['water'] ?? []);
-    }
+    public function initialize(array $config):void {}
 
     /**
      * 设置处理缩略图、水印图片路径
      * @param string $filePath
      * @return $this
      */
-    public function setFilepath(string $filePath)
+    public function setFilepath(string $filePath): static
     {
-        $this->filePath = substr($filePath, 0, 1) === '.' ? substr($filePath, 1) : $filePath;
-        return $this;
-    }
-
-    /**
-     * 是否自动裁剪
-     * @param bool $auth
-     * @return $this
-     */
-    public function setAuthThumb(bool $auth)
-    {
-        $this->authThumb = $auth;
+        $this->filePath = str_starts_with($filePath, '.') ? substr($filePath, 1) : $filePath;
         return $this;
     }
 
@@ -122,7 +56,7 @@ abstract class BaseUpload extends BaseStorage
      * @param string $path
      * @return $this
      */
-    public function to(string $path)
+    public function to(string $path): static
     {
         $this->path = $path;
         return $this;
@@ -132,7 +66,7 @@ abstract class BaseUpload extends BaseStorage
      * 获取文件信息
      * @return array
      */
-    public function getFileInfo()
+    public function getFileInfo(): array
     {
         return $this->fileInfo;
     }
@@ -142,7 +76,7 @@ abstract class BaseUpload extends BaseStorage
      * @param $filePath
      * @return bool
      */
-    protected function checkImage($filePath)
+    protected function checkImage($filePath): bool
     {
         //获取图像信息
         $info = @getimagesize($filePath);
@@ -154,23 +88,10 @@ abstract class BaseUpload extends BaseStorage
     }
 
     /**
-     * 验证合法上传域名
-     * @param string $url
-     * @return string
-     */
-    protected function checkUploadUrl(string $url)
-    {
-        if ($url && strstr($url, 'http') === false) {
-            $url = 'http://' . $url;
-        }
-        return $url;
-    }
-
-    /**
      * 获取系统配置
      * @return mixed
      */
-    protected function getConfig()
+    protected function getConfig(): mixed
     {
         $config = Config::get($this->configFile . '.stores.' . $this->name, []);
         if (empty($config)) {
@@ -186,7 +107,7 @@ abstract class BaseUpload extends BaseStorage
      * @param array|null $validate
      * @return $this
      */
-    public function validate(?array $validate = null)
+    public function validate(?array $validate = null): static
     {
         if (is_null($validate)) {
             $validate = $this->getConfig();
@@ -196,23 +117,21 @@ abstract class BaseUpload extends BaseStorage
     }
 
     /**
-     * 验证目录是否正确
-     * @param string $key
-     * @return false|string
+     * 设置上传路径
+     * @return string
+     * @param string $fileName
      */
-    protected function getUploadPath(string $key)
+    protected function setUploadPath(string $fileName): string
     {
-        $path = ($this->path ? $this->path . '/' : '') . $key;
-        if ($path && $path[0] === '/') {
-            $path = substr($path, 1);
-        }
-        return $path;
+        return ($this->path ? $this->path . '/' . date('Y-m-d', time()) . '/' : date('Y-m-d', time()) . '/') . $fileName;
     }
 
     /**
      * 提取上传验证
+     * @return void
+     * @param array $validateArray
      */
-    protected function extractValidate(array $validateArray)
+    protected function extractValidate(array $validateArray): void
     {
         $validate = [];
         foreach ($validateArray as $key => $value) {
@@ -223,14 +142,14 @@ abstract class BaseUpload extends BaseStorage
     }
 
     /**
-     * 提取文件名
-     * @param string $path
-     * @param string $ext
+     * 设置文件名
      * @return string
+     * @param string|null $path 路径
+     * @param string $ext 文件扩展名
      */
-    protected function saveFileName(string $path = null, string $ext = 'jpg')
+    protected function setFileName(string $path = null, string $ext = 'jpg'): string
     {
-        return ($path ? substr(md5($path), 0, 5) : '') . date('YmdHis') . rand(0, 9999) . '.' . $ext;
+        return ($path ? substr(md5($path), 0, 8) : '') . time() . '.' . $ext;
     }
 
     /**
@@ -238,7 +157,7 @@ abstract class BaseUpload extends BaseStorage
      * @param string $path
      * @return false|string[]
      */
-    protected function getFileName(string $path)
+    protected function getFileName(string $path): array|bool
     {
         $_empty = ['', ''];
         if (!$path) return $_empty;
@@ -259,7 +178,7 @@ abstract class BaseUpload extends BaseStorage
      * @param bool $is_parse_url
      * @return string
      */
-    protected function getFilePath(string $filePath = '', bool $is_parse_url = false)
+    protected function getFilePath(string $filePath = '', bool $is_parse_url = false): string
     {
         $path = $filePath ?: $this->filePath;
         if ($is_parse_url) {
@@ -280,7 +199,7 @@ abstract class BaseUpload extends BaseStorage
      * @param bool $isData
      * @return array
      */
-    protected function getFileHeaders(string $url, $isData = true)
+    protected function getFileHeaders(string $url, bool $isData = true): array
     {
         stream_context_set_default(['ssl' => ['verify_peer' => false, 'verify_peer_name' => false]]);
         $header['size'] = 0;
@@ -311,10 +230,10 @@ abstract class BaseUpload extends BaseStorage
      * 获取上传信息
      * @return array
      */
-    public function getUploadInfo()
+    public function getUploadInfo(): array
     {
         if (isset($this->fileInfo->filePath)) {
-            if (strstr($this->fileInfo->filePath, 'http') === false) {
+            if (!str_contains($this->fileInfo->filePath, 'http')) {
                 $url = request()->domain() . $this->fileInfo->filePath;
             } else {
                 $url = $this->fileInfo->filePath;
@@ -326,11 +245,6 @@ abstract class BaseUpload extends BaseStorage
                 'size' => $headers['size'] ?? 0,
                 'type' => $headers['type'] ?? 'image/jpeg',
                 'dir' => $this->fileInfo->filePath,
-                'thumb_path' => $this->fileInfo->filePath,
-                'thumb_path_big' => $this->fileInfo->filePathBig ?? '',
-                'thumb_path_mid' => $this->fileInfo->filePathMid ?? '',
-                'thumb_path_small' => $this->fileInfo->filePathSmall ?? '',
-                'thumb_path_water' => $this->fileInfo->filePathWater ?? '',
                 'time' => time(),
             ];
         } else {
@@ -339,119 +253,37 @@ abstract class BaseUpload extends BaseStorage
     }
 
     /**
-     * 获取下载信息
-     * @return array
+     * 实例化app
+     * @return mixed
      */
-    public function getDownloadInfo()
-    {
-        if (isset($this->downFileInfo->downloadFilePath)) {
-            if (strstr($this->downFileInfo->downloadFilePath, 'http') === false) {
-                $url = request()->domain() . $this->downFileInfo->downloadFilePath;
-            } else {
-                $url = $this->downFileInfo->downloadFilePath;
-            }
-            $headers = $this->getFileHeaders($url);
-            return [
-                'name' => $this->downFileInfo->downloadFileName,
-                'real_name' => $this->downFileInfo->downloadRealName ?? '',
-                'size' => $headers['size'] ?? 0,
-                'type' => $headers['type'] ?? 'image/jpeg',
-                'dir' => $this->downFileInfo->downloadFilePath ?? '',
-                'thumb_path' => $this->downFileInfo->downloadFilePath ?? '',
-                'time' => time(),
-            ];
-        } else {
-            return [];
-        }
-    }
+    abstract protected function app(): mixed;
 
     /**
      * 文件上传
-     * @return mixed
+     * @return bool|array
+     * @param string $file
      */
-    abstract public function move(string $file = 'file');
+    abstract public function move(string $file = 'file'): bool|array;
 
     /**
      * 文件流上传
-     * @return mixed
+     * @return bool|array
+     * @param string $fileContent
+     * @param string|null $fileName
      */
-    abstract public function stream(string $fileContent, string $key = null);
+    abstract public function stream(string $fileContent, string $fileName = null): bool|array;
 
     /**
      * 删除文件
-     * @return mixed
+     * @return bool|object
+     * @param string $filePath
      */
-    abstract public function delete(string $filePath);
+    abstract public function delete(string $filePath): bool|object;
 
-    /**
-     * 实例化上传
-     * @return mixed
-     */
-    abstract protected function app();
-
-    /**
-     * 拉取空间
-     * @param string $region
-     * @param bool $line
-     * @param bool $shared
-     * @return mixed
-     */
-    abstract public function listbuckets(string $region, bool $line = false, bool $shared = false);
-
-    /**
-     * 创建空间
-     * @param string $name
-     * @param string $region
-     * @return mixed
-     */
-    abstract public function createBucket(string $name, string $region);
-
-    /**
-     * 获得区域
-     * @return mixed
-     */
-    abstract public function getRegion();
-
-    /**
-     * 删除空间
-     * @param string $name
-     * @return mixed
-     */
-    abstract public function deleteBucket(string $name);
-
-    /**
-     * 绑定自定义域名
-     * @param string $name
-     * @param string $domain
-     * @param string|null $region
-     * @return mixed
-     */
-    abstract public function bindDomian(string $name, string $domain, string $region = null);
-
-    /**
-     * 设置跨域
-     * @param string $name
-     * @param string $region
-     * @return mixed
-     */
-    abstract public function setBucketCors(string $name, string $region);
 
     /**
      * 获取上传密钥
-     * @return mixed
+     * @return array
      */
-    abstract public function getTempKeys();
-
-    /**
-     * 获取缩略图
-     * @return mixed
-     */
-    abstract public function thumb(string $filePath = '');
-
-    /**
-     * 添加水印
-     * @return mixed
-     */
-    abstract public function water(string $filePath = '');
-
+    abstract public function getTempKeys(): array;
 }
