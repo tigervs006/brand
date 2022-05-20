@@ -1,12 +1,12 @@
 <?php
 declare (strict_types = 1);
-namespace app\console\controller;
+namespace app\console\controller\article;
 
 use think\response\Json;
 use core\basic\BaseController;
 use app\services\article\ArticleServices;
 
-class Article extends BaseController
+class ArticleController extends BaseController
 {
     private ArticleServices $services;
 

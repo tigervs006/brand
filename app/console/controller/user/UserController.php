@@ -1,12 +1,12 @@
 <?php
 declare (strict_types = 1);
-namespace app\console\controller;
+namespace app\console\controller\user;
 
 use think\response\Json;
 use core\basic\BaseController;
 use app\services\user\UserServices;
 
-class User extends BaseController
+class UserController extends BaseController
 {
     /**
      * @var UserServices
