@@ -1,12 +1,12 @@
 <?php
-
+declare (strict_types = 1);
 namespace core\basic;
 
 use core\traits\ErrorTrait;
 
 /**
  * Class BaseStorage
- * @package crmeb\basic
+ * @package core\basic
  */
 abstract class BaseStorage
 {
@@ -39,9 +39,8 @@ abstract class BaseStorage
 
     /**
      * 初始化
+     * @return void
      * @param array $config
-     * @return mixed
      */
-    abstract protected function initialize(array $config): mixed;
-
+    abstract protected function initialize(array $config): void;
 }
