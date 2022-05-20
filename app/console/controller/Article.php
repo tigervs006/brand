@@ -4,6 +4,7 @@ namespace app\console\controller;
 
 use think\response\Json;
 use core\basic\BaseController;
+use core\services\UploadService;
 use app\services\article\ArticleServices;
 
 class Article extends BaseController
@@ -50,6 +51,20 @@ class Article extends BaseController
         $this->services->saveArticle($data);
         $msg = isset($data['id']) ? '编辑' : '新增';
         return $this->json->successful($msg . '文章成功');
+    }
+
+    /**
+     * 上传接口
+     */
+    final public function upload(): Json
+    {
+        try {
+            $upload = UploadService::init();
+            $fileInfo = $upload->to('routine/product')->validate()->move();
+            return $this->json->successful('文件上传成功', compact('fileInfo'));
+        } catch (\Exception $e) {
+            return $this->json->fail($e->getMessage());
+        }
     }
 
     /**
