@@ -23,6 +23,7 @@ Route::group(function () {
         Route::get('list', 'lists');            // 文章列表
         Route::post('save', 'save');            // 新增编辑
         Route::post('del', 'delete');           // 删除文章
+        Route::post('upload', 'upload');        // 删除文章
         Route::get('author', 'getAuthor');      // 文章作者
         Route::post('status', 'setStatus');     // 文章状态
         Route::get('channel', 'getChannel');    // 新闻栏目
