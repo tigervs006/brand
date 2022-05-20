@@ -147,7 +147,7 @@ abstract class BaseUpload extends BaseStorage
      * @param string|null $path 路径
      * @param string $ext 文件扩展名
      */
-    protected function setFileName(string $path = null, string $ext = 'jpg'): string
+    protected function setFileName(string $path = null, string $ext = 'png'): string
     {
         return ($path ? substr(md5($path), 0, 8) : '') . time() . '.' . $ext;
     }
