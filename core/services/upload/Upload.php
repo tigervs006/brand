@@ -1,5 +1,5 @@
 <?php
-
+declare (strict_types = 1);
 namespace core\services\upload;
 
 use think\facade\Config;
@@ -7,7 +7,7 @@ use core\basic\BaseManager;
 
 /**
  * Class Upload
- * @package crmeb\services\upload
+ * @package core\services\upload
  * @mixin \core\services\upload\storage\OSS
  * @mixin \core\services\upload\storage\COS
  */
@@ -27,6 +27,4 @@ class Upload extends BaseManager
     {
         return Config::get('upload.default', 'local');
     }
-
-
 }
