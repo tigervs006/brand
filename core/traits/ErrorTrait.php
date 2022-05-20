@@ -4,8 +4,8 @@ namespace core\traits;
 
 /**
  *
- * Class BaseError
- * @package core\basic
+ * Class ErrorTrait
+ * @package core\traits
  */
 trait ErrorTrait
 {
