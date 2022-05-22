@@ -65,5 +65,6 @@ Route::group(function () {
     // 公共接口
     Route::group('public', function () {
         Route::post('upload', 'upload');        // 文件上传接口
+        Route::post('remove', 'remove');        // 文件删除接口
     })->prefix('publicController/');
 })->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+'])->middleware(think\middleware\AllowCrossDomain::class);
