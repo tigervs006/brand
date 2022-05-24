@@ -18,7 +18,7 @@ class JwtAuth
      * @param array $params
      * @return array
      */
-    public function getToekn(int $id, string $type, array $params=[]): array
+    public static function getToekn(int $id, string $type, array $params=[]): array
     {
         $time = time();
         $host = app()->request->host();
@@ -43,7 +43,7 @@ class JwtAuth
      * @return array
      * @param string $jwt
      */
-    public function parseToken(string $jwt): array
+    public static function parseToken(string $jwt): array
     {
         return [];
     }
@@ -52,7 +52,7 @@ class JwtAuth
      * 验证token
      * @return void
      */
-    public function verifyToken():void
+    public static function verifyToken():void
     {
 
     }
