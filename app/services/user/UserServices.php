@@ -4,7 +4,6 @@ namespace app\services\user;
 
 use app\dao\user\UserDao;
 use app\services\BaseServices;
-use core\exceptions\ApiException;
 
 class UserServices extends BaseServices
 {
