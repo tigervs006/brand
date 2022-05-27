@@ -57,33 +57,24 @@ class ArticleServices extends BaseServices
      * 新增|编辑
      * @return mixed
      * @param array $data
+     * @param string $message
      */
-    public function saveArticle(array $data): mixed
+    public function saveArticle(array $data, string $message): mixed
     {
+        $id = $data['id'] ?? 0;
+        $content = $data['content'];
+        unset($data['id'], $data['content']);
         /** @var ArticleContentServices $articleContentService */
         $articleContentService = app()->make(ArticleContentServices::class);
-        $id = $data['id'] ?? 0;
-        $content['content'] = $data['content'];
-        unset($data['content'], $data['id']);
-        return $this->transaction(function () use ($id, $data, $articleContentService, $content) {
-            switch (true) {
-                case $id:
-                    $info = $this->dao->updateOne($id, $data);
-                    $content['aid'] = $id;
-                    $res = $info && $articleContentService->update($id, $content, 'aid');
-                    break;
-                default:
-                    unset($data['id']);
-                    $data['add_time'] = time();
-                    $info = $this->dao->saveAll($data);
-                    $content['aid'] = $info->id;
-                    $res = $info && $articleContentService->save($content);
-            }
-            if ($res) {
-                return $info;
+        return $this->transaction(function () use ($id, $data, $content, $message, $articleContentService) {
+            if ($id) {
+                $info = $this->dao->updateOne($id, $data, 'id');
+                $res = $info && $articleContentService->updateOne($id, ['content' => $content], 'aid');
             } else {
-                throw new ApiException('保存失败');
+                $info = $this->dao->saveOne($data);
+                $res = $info && $articleContentService->saveOne(['aid' => $info->id, 'content' => $content]);
             }
+            !$res && throw new ApiException($message . '文章失败');
         });
     }
 }
