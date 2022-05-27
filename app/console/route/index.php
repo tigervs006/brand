@@ -3,10 +3,12 @@ use think\facade\Route;
 
 // 未授权接口
 Route::group(function () {
+    Route::group('public', function () {
+        Route::post('login', 'login');        // 登录接口
+        Route::post('logout', 'logout');      // 登出接口
+    })->prefix('publicController/');
     // 登录接口
-    Route::post('login', 'login/index');        // 登录接口
-    Route::post('logout', 'login/logout');      // 登出接口
-})->option(['ext' => 'html', 'https' => true]);
+})->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+']);
 
 // 需授权接口
 Route::group(function () {
@@ -67,4 +69,6 @@ Route::group(function () {
         Route::post('upload', 'upload');        // 文件上传接口
         Route::post('remove', 'remove');        // 文件删除接口
     })->prefix('publicController/');
-})->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+'])->middleware(think\middleware\AllowCrossDomain::class);
+})->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+'])
+    ->middleware(think\middleware\AllowCrossDomain::class)
+    ->middleware(app\http\middleware\AuthTokenMiddleware::class);
