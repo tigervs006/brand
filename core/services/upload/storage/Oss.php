@@ -112,7 +112,8 @@ class Oss extends BaseUpload
             if (!isset($uploadInfo['info']['url'])) {
                 return $this->setError('Failed to upload to OSS');
             }
-            $this->fileInfo['originalName'] = $fileHandle->getOriginalName();
+            $this->fileInfo['fileName'] = $fileName;
+            $this->fileInfo['uid'] = $uploadInfo['x-oss-request-id'];
             $this->fileInfo['relativePath'] = $filePath;
             $this->fileInfo['fullPath'] = $this->uploadUrl . '/' . $filePath;
             $this->fileInfo['ossPath'] = $uploadInfo['info']['url'];
@@ -140,7 +141,8 @@ class Oss extends BaseUpload
             if (!isset($uploadInfo['info']['url'])) {
                 return $this->setError('Upload failure');
             }
-            $this->fileInfo['originalName'] = $filePath;;
+            $this->fileInfo['originalName'] = $filePath;
+            $this->fileInfo['uid'] = $uploadInfo['x-oss-request-id'];
             $this->fileInfo['relativePath'] = $filePath;
             $this->fileInfo['fullPath'] = $this->uploadUrl . '/' . $filePath;
             $this->fileInfo['ossPath'] = $uploadInfo['info']['url'];
@@ -158,7 +160,8 @@ class Oss extends BaseUpload
     public function delete(string $filePath): bool
     {
         try {
-            return $this->app()->deleteObject($this->storageName, $filePath);
+            $removeInfo = $this->app()->deleteObject($this->storageName, $filePath);
+            return isset($removeInfo['info']['url']);
         } catch (OssException $e) {
             return $this->setError($e->getMessage());
         }
