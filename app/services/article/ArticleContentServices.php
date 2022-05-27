@@ -8,8 +8,8 @@ use app\dao\article\ArticleContentDao;
 /**
  * Class ArticleContentServices
  * @package app\services\article
- * @method save(array $data) 保存内容
- * @method update($id, array $data, ?string $key = null)
+ * @method \core\basic\BaseModel  saveOne(array $data) 新增内容
+ * @method \core\basic\BaseModel updateOne(int|array|string $id, array $data, ?string $key = null) 更新内容
  */
 class ArticleContentServices extends BaseServices
 {
