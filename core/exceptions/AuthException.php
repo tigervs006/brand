@@ -19,7 +19,6 @@ class AuthException extends \RuntimeException
                 $code = $errInfo[0] ?? 400;
             }
         }
-
         parent::__construct($message, $code, $previous);
     }
 }
