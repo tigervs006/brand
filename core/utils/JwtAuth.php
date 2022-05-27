@@ -2,59 +2,165 @@
 
 namespace core\utils;
 
-use think\facade\Env;
+use DateTimeImmutable;
+use Lcobucci\Clock\SystemClock;
+use Lcobucci\JWT\Configuration;
+use Lcobucci\JWT\UnencryptedToken;
+use core\exceptions\AuthException;
+use Lcobucci\JWT\Signer\Hmac\Sha384;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Validation\Constraint\IssuedBy;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Constraint\IdentifiedBy;
+use Lcobucci\JWT\Validation\Constraint\PermittedFor;
+use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
+use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 
 class JwtAuth
 {
     /**
-     * @var string token
+     * Claim
+     * @var array
      */
-    protected string $token;
+    private array $claim;
 
     /**
-     * 获取token
-     * @param int $id
-     * @param string $type
-     * @param array $params
-     * @return array
+     * 签发时间
+     * @var DateTimeImmutable
      */
-    public static function getToekn(int $id, string $type, array $params=[]): array
+    private DateTimeImmutable $issuedAt;
+
+    /**
+     * 失效时间
+     * @var DateTimeImmutable
+     */
+    private DateTimeImmutable $expiresAt;
+
+    /**
+     * jwt编号
+     * @var string
+     */
+    private string $identified = 'yEbgoir0QOwf13VrSJ';
+
+    /**
+     * jwt签发者
+     * @var string
+     */
+    private string $issuedBy = 'https://demo.brandsz.cn';
+
+    /**
+     * jwt密钥串
+     * @var string
+     */
+    private string $jwtSercet = 'YvZubJZqZK0QI5YhWp7EP1Ytm9X3hJzL';
+
+    public function __construct()
     {
-        $time = time();
-        $host = app()->request->host();
-        $exp_time = strtotime('+ 30day');
-
-        $params += [
-            'iss' => $host,
-            'aud' => $host,
-            'iat' => $time,
-            'nbf' => $time,
-            'exp' => $exp_time,
+        $this->claim = [
+            'ipaddress' => app()->request->ip(),
+            'userAgent' => app()->request->header('USER_AGENT')
         ];
+        $this->issuedAt = new DateTimeImmutable();
+        $this->expiresAt = $this->issuedAt->modify('+1 hour');
+    }
 
-        $params['jti'] = compact('id', 'type');
+    /**
+     * 生成配置项
+     * @return Configuration
+     */
+    public function createJwtObject(): Configuration
+    {
+        return Configuration::forSymmetricSigner(new Sha384(), InMemory::base64Encoded($this->jwtSercet));
+    }
 
-        $token = JWT::encode($params, Env::get('app.app_key', 'default'));
-        return compact('token', 'params');
+    /**
+     * 创建Token字符串
+     * @return string
+     * @param int $uid 用户id
+     * @param  string $audience 当前用户
+     */
+    public function createToken(int $uid = 0, string $audience = 'szbrand'): string
+    {
+        $config = $this->createJwtObject();
+        $builder = $config->builder();
+
+        foreach($this->claim as $k => $v){
+            $builder->withClaim($k, $v);
+        }
+
+        $token = $builder
+            ->permittedFor($audience)
+            ->issuedBy($this->issuedBy)
+            ->issuedAt($this->issuedAt)
+            ->expiresAt($this->expiresAt)
+            ->withClaim('uid', $uid)
+            ->identifiedBy($this->identified)
+            ->canOnlyBeUsedAfter($this->issuedAt->modify('+1 second'))
+            ->getToken($config->signer(), $config->signingKey());
+
+        return $token->toString();
     }
 
     /**
      * 解析token
-     * @return array
-     * @param string $jwt
+     * @return mixed
+     * @param string $token
      */
-    public static function parseToken(string $jwt): array
+    public function parseToken(string $token): mixed
     {
-        return [];
+        try {
+            $config = $this->createJwtObject();
+            $decodeToken = $config->parser()->parse($token);
+            return json_decode(base64_decode($decodeToken->claims()->toString()), true);
+        } catch (\Exception $e) {
+            throw new AuthException($e->getMessage());
+        }
     }
 
     /**
-     * 验证token
+     * 验证Token
      * @return void
+     * @param string $token
      */
-    public static function verifyToken():void
+    public function verifyToken(string $token): void
     {
+        $config = $this->createJwtObject();
 
+        try {
+            $token = $config->parser()->parse($token);
+            assert($token instanceof UnencryptedToken);
+        } catch (\Exception $e) {
+            throw new AuthException($e->getMessage());
+        }
+
+        // validateExp
+        $timezone = new \DateTimeZone('Asia/Shanghai');
+        $time = new SystemClock($timezone);
+        $validateExp = new StrictValidAt($time);
+        // validateJti
+        $validateJti = new IdentifiedBy($this->identified);
+        // validateAud
+        $audience = $token->claims()->get('aud');
+        $validateAud = new PermittedFor($audience[0] ?? 'brand');
+        // validateIssued
+        $validateIssued = new IssuedBy($this->issuedBy);
+        // validatorSigned
+        $validatorSigned = new SignedWith(new Sha384(),InMemory::base64Encoded($this->jwtSercet));
+        $config->setValidationConstraints($validateJti, $validateExp, $validateAud, $validateIssued, $validatorSigned);
+        $constraints = $config->validationConstraints();
+        try {
+            $config->validator()->assert($token, ...$constraints);
+        } catch(RequiredConstraintsViolated $e) {
+            throw new AuthException(substr($e->getMessage(), 58) . ', Please try login again');
+        }
+
+        // Gets the userAgent from current token
+        $userAgent = $token->claims()->get('userAgent');
+        // Gets the ipaddress from current token
+        $ipaddress = $token->claims()->get('ipaddress');
+        // Validate the userAgent from current token and now userAgent
+        $userAgent !== $this->claim['userAgent'] && throw new AuthException('UserAgent have been changed, Please try login again');
+        // Validate the ipaddress from current token and now ipaddress
+        $ipaddress !== $this->claim['ipaddress'] && throw new AuthException('Ipaddress have been changed, Please try login again');
     }
-
 }
