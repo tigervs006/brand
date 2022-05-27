@@ -4,11 +4,20 @@ namespace app\console\controller\article;
 
 use think\response\Json;
 use core\basic\BaseController;
+use core\exceptions\ApiException;
+use core\utils\StringHandler as Str;
+use think\exception\ValidateException;
 use app\services\article\ArticleServices;
 
 class ArticleController extends BaseController
 {
     private ArticleServices $services;
+
+    /**
+     * 验证器
+     * @var string
+     */
+    private string $validater = 'app\console\validate\Article.save';
 
     protected function initialize()
     {
@@ -46,10 +55,44 @@ class ArticleController extends BaseController
      */
     final public function save(): Json
     {
-        $data = $this->request->param();
-        $this->services->saveArticle($data);
-        $msg = isset($data['id']) ? '编辑' : '新增';
-        return $this->json->successful($msg . '文章成功');
+        $data = $this->request->post(
+            [
+                'id',
+                'cid',
+                'status',
+                'author',
+                'title',
+                'keywords',
+                'description',
+                'content',
+                'litpic',
+                'author',
+                'is_head',
+                'is_recom',
+                'is_litpic'
+            ]
+        );
+        // 验证必要数据
+        try {
+            $this->validate($data, $this->validater);
+        } catch (ValidateException $e) {
+            throw new ApiException($e->getError());
+        }
+        // 处理特殊符号
+        $data['keywords'] = Str::strSymbol($data['keywords']);
+        if (isset($data['id'])) {
+            $message = '编辑';
+        } else {
+            $message = '新增';
+            $data['click'] = mt_rand(246, 579);
+        }
+        // 只有一篇是头条
+        if (isset($data['is_head']) && $data['is_head']) {
+            $aid = $this->services->getFieldValue($data['is_head'], 'is_head', 'id');
+            $aid && $this->services->updateOne($aid, ['is_head' => 0], 'id');
+        }
+        $this->services->saveArticle($data, $message);
+        return $this->json->successful($message . '文章成功');
     }
 
     /**
@@ -59,10 +102,10 @@ class ArticleController extends BaseController
      */
     final public function lists(): Json
     {
-        // 获取搜索标题
-        $title = $this->request->get('title/s');
         // 获取时间范围
         $dateRange = $this->request->only(['startTime', 'endTime'], 'get');
+        // 获取搜索标题
+        $title = $this->request->get('title/s', null, 'trim');
         // 需提取的字段
         $field = 'id, cid, click, title, author, status, create_time, update_time, is_head, is_recom, is_collect';
         // 获取排序字段
