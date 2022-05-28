@@ -70,7 +70,7 @@ class ArticleController extends BaseController
                 'is_head',
                 'is_recom',
                 'is_litpic'
-            ]
+            ], null, 'trim'
         );
         // 验证必要数据
         try {
