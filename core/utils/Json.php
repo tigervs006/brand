@@ -77,16 +77,16 @@ class Json
      * @return Response
      * @param string|array $msg 信息
      * @param array|null $data data
+     * @param int|null $code 状态码
      * @param bool|null $success AntDesignPro
      */
-    public function fail(string|array $msg = 'fail', ?array $data = null, ?bool $success = false): Response
+    public function fail(string|array $msg = 'fail', ?int $code = 400, ?array $data = null, ?bool $success = false): Response
     {
         if (is_array($msg)) {
             $data = $msg;
             $msg = 'ok';
         }
-
-        return $this->make(400, $msg, $data, $success);
+        return $this->make($code, $msg, $data, $success);
     }
 
     /**
