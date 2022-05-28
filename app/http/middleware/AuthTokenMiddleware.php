@@ -39,9 +39,11 @@ class AuthTokenMiddleware implements MiddlewareInterface
      */
     public function handle(Request $request, \Closure $next): Response
     {
-        $token = $request->header('Authorization');
-        !$token && throw new AuthException('Token have been losted!');
-        $this->isCheckToken && $this->jwtService->verifyToken(trim($token));
+        if ($this->isCheckToken) {
+            $token = $request->header('Authorization');
+            !$token && throw new AuthException('Token have been losted!');
+            $this->jwtService->verifyToken(trim($token));
+        }
 
         return $next($request);
     }
