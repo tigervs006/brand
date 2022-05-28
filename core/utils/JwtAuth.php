@@ -163,10 +163,10 @@ class JwtAuth
         // Gets the ipaddress from current token
         $ipaddress = $token->claims()->get('ipaddress');
         // Validate the sessionId from current token and now sessionId
-        $sessionId !== $this->claim['sessionId'] && throw new AuthException('sessionId have been changed, Please try login again');
+        $sessionId !== $this->claim['sessionId'] && throw new AuthException('Unauthorized operation, sessionId have been changed');
         // Validate the userAgent from current token and now userAgent
-        $userAgent !== $this->claim['userAgent'] && throw new AuthException('UserAgent have been changed, Please try login again');
+        $userAgent !== $this->claim['userAgent'] && throw new AuthException('Unauthorized operation, UserAgent have been changed');
         // Validate the ipaddress from current token and now ipaddress
-        $ipaddress !== $this->claim['ipaddress'] && throw new AuthException('Ipaddress have been changed, Please try login again');
+        $ipaddress !== $this->claim['ipaddress'] && throw new AuthException('Unauthorized operation, Ipaddress have been changed');
     }
 }
