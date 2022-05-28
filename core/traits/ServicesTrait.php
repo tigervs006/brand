@@ -18,6 +18,7 @@ namespace core\traits;
  * @method mixed getFieldValue(string $value, string $field, ?string $valueKey, ?array $where = []) 获取某个字段值
  * @method array|\core\basic\BaseModel|\think\Model|null get(int|string|array $id, ?string $field, ?array $with = []) 获取单条数据
  * @method array|\think\Collection getData(?array $map = null, ?array $order = ['id' => 'desc'], ?string $field = '*') 获取数据列表
+ * @method \think\Paginator getPaginate(array $map, int $rows = 15, ?string $field = '*', ?array $order = ['id' => 'desc'], ?array $with = []) 用于前端的分页列表
  * @method array|\think\Collection getList(int $current, int $pageSize, ?array $map, ?string $field, ?array $order = ['id' => 'desc'], ?array $with = []) 获取带分页或者有关联模型的列表
  */
 trait ServicesTrait

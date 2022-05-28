@@ -277,6 +277,20 @@ abstract class BaseDao
     }
 
     /**
+     * 用于前端的分页列表
+     * @return \think\Paginator
+     * @param int $rows 数据量
+     * @param array $map 条件
+     * @param string|null $field 字段
+     * @param array|null $order 排序
+     * @param array|null $with 关联模型
+     */
+    public function getPaginate(array $map, int $rows = 15, ?string $field = '*', ?array $order = ['id' => 'desc'], ?array $with = []): \think\Paginator
+    {
+        return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) { $query->with($with); })->field($field)->order($order)->paginate($rows);
+    }
+
+    /**
      * 获取带分页或者有关联模型的列表
      * @return array|\think\Collection
      * @param int $current 当前页
