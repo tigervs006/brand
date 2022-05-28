@@ -69,6 +69,14 @@ Route::group(function () {
         Route::post('upload', 'upload');        // 文件上传接口
         Route::post('remove', 'remove');        // 文件删除接口
     })->prefix('publicController/');
+    // 数据看板
+    Route::group('dashboard', function () {
+        Route::get('monitor', 'MonitorController/index');
+        Route::get('analysis', 'AnalysisController/index');
+        Route::get('notice', 'WorkplaceController/notice');
+        Route::get('workplace', 'WorkplaceController/index');
+        Route::get('activities', 'WorkplaceController/activities');
+    })->prefix('dashboard.');
 })->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+'])
     ->middleware(think\middleware\AllowCrossDomain::class)
     ->middleware(app\http\middleware\AuthTokenMiddleware::class);
