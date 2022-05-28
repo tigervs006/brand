@@ -34,7 +34,7 @@ class PublicController extends BaseController
         $userInfo = $userService->getOne(['name' => $data['name']], null, ['token']);
         is_null($userInfo) && throw new ApiException('查无此人，用户不存在');
         !$userInfo['status'] && throw new ApiException("用户：${data['name']} >>已禁用");
-        $data['password'] !== $userInfo['password'] && throw new ApiException('密码验证失败');
+        $data['password'] !== $userInfo['password'] && throw new ApiException('用户/密码验证失败');
         $token = app()->make(\core\utils\JwtAuth::class)->createToken($userInfo['id'], $userInfo['name']);
 
         /** @var JwtTokenServices $jwtService */
