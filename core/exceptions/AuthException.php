@@ -10,14 +10,12 @@ use Throwable;
  */
 class AuthException extends \RuntimeException
 {
-    public function __construct($message = "", $code = 0, Throwable $previous = null)
+    public function __construct(array|string $message = "", int $code = 401, Throwable $previous = null)
     {
         if (is_array($message)) {
             $errInfo = $message;
-            $message = $errInfo[1] ?? '未知错误';
-            if ($code === 0) {
-                $code = $errInfo[0] ?? 400;
-            }
+            $code = $errInfo[0] ?? $code;
+            $message = $errInfo[1] ?? 'Unauthorized';
         }
         parent::__construct($message, $code, $previous);
     }
