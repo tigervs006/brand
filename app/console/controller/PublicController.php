@@ -4,7 +4,7 @@ namespace app\console\controller;
 
 use think\response\Json;
 use core\basic\BaseController;
-use core\exceptions\AuthException;
+use core\exceptions\ApiException;
 use app\services\user\UserServices;
 use app\services\user\JwtTokenServices;
 
@@ -26,15 +26,15 @@ class PublicController extends BaseController
                 ['name.require' => '用户名不得为空', 'password.require' => '密码不得为空']
             );
         } catch (\think\exception\ValidateException $e) {
-            throw new AuthException($e->getError());
+            throw new ApiException($e->getError());
         }
 
         /** @var UserServices $userService */
         $userService = $this->app->make(UserServices::class);
         $userInfo = $userService->getOne(['name' => $data['name']], null, ['token']);
-        is_null($userInfo) && throw new AuthException('查无此人，用户不存在');
-        !$userInfo['status'] && throw new AuthException("用户：${data['name']} >>已禁用");
-        $data['password'] !== $userInfo['password'] && throw new AuthException('密码验证失败');
+        is_null($userInfo) && throw new ApiException('查无此人，用户不存在');
+        !$userInfo['status'] && throw new ApiException("用户：${data['name']} >>已禁用");
+        $data['password'] !== $userInfo['password'] && throw new ApiException('密码验证失败');
         $token = app()->make(\core\utils\JwtAuth::class)->createToken($userInfo['id'], $userInfo['name']);
 
         /** @var JwtTokenServices $jwtService */
