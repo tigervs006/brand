@@ -9,14 +9,12 @@ namespace core\exceptions;
  */
 class ApiException extends \RuntimeException
 {
-    public function __construct($message, $code = 0, \Throwable $previous = null)
+    public function __construct(array|string $message, int $code = 400, \Throwable $previous = null)
     {
         if (is_array($message)) {
             $errInfo = $message;
-            $message = $errInfo[1] ?? '未知错误';
-            if ($code === 0) {
-                $code = $errInfo[0] ?? 400;
-            }
+            $code = $errInfo[0] ?? $code;
+            $message = $errInfo[1] ?? 'Unknow Error';
         }
 
         parent::__construct($message, $code, $previous);
