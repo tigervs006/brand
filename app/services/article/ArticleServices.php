@@ -43,17 +43,6 @@ class ArticleServices extends BaseServices
     }
 
     /**
-     * 分页列表，用于前端
-     * @param int $rows 数量
-     * @param string $field 字段
-     * @param array|null $order 排序
-     */
-    public function paginate(string $field, int $rows, ?array $order = ['id' => 'desc']): \think\Paginator
-    {
-        return $this->dao->getPaginate($field, $rows, $order);
-    }
-
-    /**
      * 新增|编辑
      * @return mixed
      * @param array $data

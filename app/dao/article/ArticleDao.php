@@ -13,18 +13,6 @@ class ArticleDao extends BaseDao
     }
 
     /**
-     * 前端分页列表
-     * @return \think\Paginator
-     * @param int $rows 数量
-     * @param string $field 字段
-     * @param array|null $order 排序
-     */
-    public function getPaginate(string $field, int $rows, ?array $order = ['id' => 'desc']): \think\Paginator
-    {
-        return $this->getModel()->with(['channel'])->where($this->status)->field($field)->order($order)->paginate($rows);
-    }
-
-    /**
      * 上/下一篇文章
      * @return array
      * @param int $id id
