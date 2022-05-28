@@ -25,7 +25,8 @@ class Industry extends BaseController
      */
     final public function index(): string
     {
-        $result = $this->services->paginate('id, cid, click, title, author, litpic, create_time, description', $this->pageSize);
+        $field = 'id, cid, click, title, author, litpic, create_time, description';
+        $result = $this->services->getPaginate($this->status, $this->pageSize, $field, $this->order, ['channel']);
         return $this->view::fetch('../industry/index', ['result' => $result]);
     }
 
