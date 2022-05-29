@@ -22,7 +22,7 @@ class Industry extends BaseController
     {
         parent::initialize();
         $this->services = $this->app->make(ArticleServices::class);
-        $this->view::assign('hotArt', $this->hortArt());// 获取热门文章
+        $this->view::assign('hotArt', $this->hortArt()); // 获取热门文章
         $this->channelServices = $this->app->make(ChannelServices::class);
     }
 
@@ -35,7 +35,7 @@ class Industry extends BaseController
         $map = $this->status;
         $field = 'id,cid,click,title,author,litpic,create_time,description';
         $name = $this->request->param('name/s', null, 'trim');
-        $channelId = $this->channelServices->getFieldValue($name, 'name', 'id');
+        $name && $channelId = $this->channelServices->getFieldValue($name, 'name', 'id');
         $name && $channelId && $map['cid'] = $channelId; // 当$name和$channelId都为true的时赋值$map['cid']
         $result = $this->services->getPaginate($map, $this->pageSize, $field, $this->order, ['channel']);
         return $this->view::fetch('../industry/index', ['result' => $result]);
@@ -61,6 +61,6 @@ class Industry extends BaseController
      */
     final public function hortArt(): array|\think\Collection
     {
-        return $this->services->getList($this->current, $this->pageSize,$this->status, 'id, click, title, litpic, create_time', ['click' => 'desc']);
+        return $this->services->getList($this->current, $this->pageSize, $this->status, 'id, click, title, litpic, create_time', ['click' => 'desc']);
     }
 }
