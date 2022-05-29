@@ -277,6 +277,41 @@ abstract class BaseDao
     }
 
     /**
+     * 上/下一篇文章
+     * @return array
+     * @param int $id id
+     * @param null|string $field 字段
+     * @param string|null $firstPre 第一篇
+     * @param string|null $lastNext 最后一篇
+     */
+    public function getPrenext(int $id, ?string $field = 'id, title', ?string $firstPre = '已经是第一篇了', ?string $lastNext = '这是最后一篇了'): array
+    {
+        $next = $this->getModel()->where('id', '>', $id)->field($field)->limit(1)->select();
+        $pre = $this->getModel()->where('id', '<', $id)->field($field)->order('id', 'desc')->limit(1)->select();
+        if ($pre->isEmpty()) {
+            $pre = array(
+                'title' => $firstPre
+            );
+        } else {
+            $pre = array(
+                'id' => $pre[0]['id'],
+                'title' => $pre[0]['title']
+            );
+        }
+        if ($next->isEmpty()) {
+            $next = array(
+                'title' => $lastNext
+            );
+        } else {
+            $next = array(
+                'id' => $next[0]['id'],
+                'title' => $next[0]['title']
+            );
+        }
+        return compact('pre', 'next');
+    }
+
+    /**
      * 用于前端的分页列表
      * @return \think\Paginator
      * @param int $rows 数据量
