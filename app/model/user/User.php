@@ -8,8 +8,8 @@ use think\model\relation\HasOne;
 class User extends BaseModel
 {
     protected $pk = 'id';
-    // 只读字段
-    protected $readonly = ['create_time'];
+
+    protected $updateTime = 'last_login';
 
     public function token(): HasOne
     {
