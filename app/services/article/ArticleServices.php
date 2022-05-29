@@ -33,16 +33,6 @@ class ArticleServices extends BaseServices
     }
 
     /**
-     * 上/下一篇文章
-     * @return array
-     * @param int $id id
-     */
-    public function prenext(int $id): array
-    {
-        return $this->dao->getPrenext($id);
-    }
-
-    /**
      * 新增|编辑
      * @return mixed
      * @param array $data
