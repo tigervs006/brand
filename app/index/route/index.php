@@ -4,10 +4,10 @@ use think\facade\Route;
 Route::group(function () {
     Route::rule('/', 'index');
     Route::rule('info', 'index/info');
-    Route::rule('area', 'area/index');
-    Route::rule('about', 'about/index');
-    Route::rule('support', 'support/index');
-    Route::rule('case', 'cases/index')->name('caseList');                       // 案例列表
+    Route::rule('area/$', 'area/index');
+    Route::rule('about/$', 'about/index');
+    Route::rule('support/$', 'support/index');
+    Route::rule('case/$', 'cases/index')->name('caseList');                     // 案例列表
     Route::rule('tags/:id', 'tags/index')->name('tagsDetail');                  // 标签列表
     Route::rule('case/:id', 'cases/detail')->name('caseDetail');                // 案例详情
     Route::rule('area/<name?>', 'area/:name')->name('areaDeatil');              // 行业应用
