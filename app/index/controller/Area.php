@@ -6,6 +6,11 @@ use core\basic\BaseController;
 
 class Area extends BaseController
 {
+    final public function index(): string
+    {
+        return $this->view::fetch('../area/office');
+    }
+
     final public function office(): string
     {
         return $this->view::fetch('../area/office');
