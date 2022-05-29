@@ -4,7 +4,7 @@
                 <?php
                 echo '<li class="breadcrumb-item"><a href="/">首页</a></li>';
                 foreach ($crumbs as $key => $val) {
-                    if ($key !== count($crumbs) - 1) { // 二级+栏目
+                    if ($key !== count($crumbs) - 1) { // 二级以上栏目
                         echo '<li class="breadcrumb-item"><a href="' . htmlentities($val['path']) . '">' . htmlentities($val['cname']) . '</a></li>';
                     } else if (count($crumbs) === 1) { // 二级栏目
                         if(isset($result['title'])) { // 如果是详情页
