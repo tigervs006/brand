@@ -3,6 +3,7 @@ declare (strict_types = 1);
 namespace app\index\controller;
 
 use core\basic\BaseController;
+use app\services\channel\ChannelServices;
 use app\services\article\ArticleServices;
 
 class Industry extends BaseController
@@ -12,11 +13,17 @@ class Industry extends BaseController
      */
     private ArticleServices $services;
 
+    /**
+     * @var ChannelServices
+     */
+    private ChannelServices $channelServices;
+
     protected function initialize()
     {
         parent::initialize();
         $this->services = $this->app->make(ArticleServices::class);
         $this->view::assign('hotArt', $this->hortArt());// 获取热门文章
+        $this->channelServices = $this->app->make(ChannelServices::class);
     }
 
     /**
@@ -25,8 +32,12 @@ class Industry extends BaseController
      */
     final public function index(): string
     {
-        $field = 'id, cid, click, title, author, litpic, create_time, description';
-        $result = $this->services->getPaginate($this->status, $this->pageSize, $field, $this->order, ['channel']);
+        $map = $this->status;
+        $field = 'id,cid,click,title,author,litpic,create_time,description';
+        $name = $this->request->param('name/s', null, 'trim');
+        $channelId = $this->channelServices->getFieldValue($name, 'name', 'id');
+        $name && $channelId && $map['cid'] = $channelId; // 当$name和$channelId都为true的时赋值$map['cid']
+        $result = $this->services->getPaginate($map, $this->pageSize, $field, $this->order, ['channel']);
         return $this->view::fetch('../industry/index', ['result' => $result]);
     }
 
