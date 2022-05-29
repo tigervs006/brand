@@ -111,18 +111,18 @@ class ArticleController extends BaseController
         // 获取排序字段
         $order = $this->request->only(['click', 'create_time', 'update_time'], 'get', 'strOrderFilter');
         // 排除字段后获得map
-        $map = $this->request->except(['title', 'click', 'current', 'pageSize','startTime', 'endTime', 'create_time', 'update_time'], 'get');
+        $map = $this->request->except(['title', 'click', 'current', 'pageSize', 'startTime', 'endTime', 'create_time', 'update_time'], 'get');
         // 组装按时间段搜索条件
         $dateRange && $map[] = ['create_time', 'between time', [$dateRange['startTime'], $dateRange['endTime']]];
         // 组装文章标题搜索条件
         $title && $map[] = ['title', 'like', '%' . $title . '%'];
-        // 提取数据总数
-        $total = $this->services->getCount($map ?: null);
         // 提取文章列表
         $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $order ?: $this->order, ['channel']);
         if ($list->isEmpty()) {
             return $this->json->fail('There is nothing...');
         } else {
+            // 提取数据总数
+            $total = $this->services->getCount($map ?: null);
             return $this->json->successful('请求成功', compact('total', 'list'));
         }
     }
