@@ -35,6 +35,8 @@ class UserController extends BaseController
         if (null === $info) {
             return $this->json->fail('查无此人...');
         } else {
+            // 取出并解析Int格式的ip地址
+            $info['ipaddress'] = long2ip($info['ipaddress']);
             return $this->json->successful('请求成功', compact('info'));
         }
     }
