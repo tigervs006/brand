@@ -13,12 +13,6 @@ use think\facade\View;
 abstract class BaseController
 {
     /**
-     * Request实例
-     * @var Request
-     */
-    protected Request $request;
-
-    /**
      * 应用实例
      * @var App
      */
@@ -46,6 +40,12 @@ abstract class BaseController
      * @var int
      */
     protected int $pageSize;
+
+    /**
+     * Request实例
+     * @var Request
+     */
+    protected Request $request;
 
     /**
      * 阅读量步长
@@ -86,8 +86,7 @@ abstract class BaseController
         $this->app     = $app;
         $this->view    = $view;
         $this->request = $this->app->request;
-
-        // 控制器初始化
+        // 初始化
         $this->initialize();
     }
 
@@ -184,5 +183,14 @@ abstract class BaseController
         }
 
         return $v->failException(true)->check($data);
+    }
+
+    /**
+     * 空控制器
+     * @return string
+     */
+    public function __call($method, $args)
+    {
+        return '404 Not Found!';
     }
 }
