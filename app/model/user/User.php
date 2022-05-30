@@ -9,8 +9,6 @@ class User extends BaseModel
 {
     protected $pk = 'id';
 
-    protected $updateTime = 'last_login';
-
     public function token(): HasOne
     {
         return $this->hasOne(JwtToken::class, 'uid', 'id')->field('uid, user');
