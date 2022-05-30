@@ -17,6 +17,7 @@ class PublicController extends BaseController
      */
     final public function login(): Json
     {
+        $ipAddress = $this->request->ip();
         $data = $this->request->post(['name', 'password'], null, 'trim');
 
         try {
@@ -32,11 +33,11 @@ class PublicController extends BaseController
         /** @var UserServices $userService */
         $userService = $this->app->make(UserServices::class);
         $userInfo = $userService->getOne(['name' => $data['name']], null, ['token']);
-        is_null($userInfo) && throw new ApiException('查无此人，用户不存在');
-        !$userInfo['status'] && throw new ApiException("用户：${data['name']} >>已禁用");
-        $data['password'] !== $userInfo['password'] && throw new ApiException('用户/密码验证失败');
+        is_null($userInfo) && throw new ApiException('查无此人，用户不存在，请重新输入');
+        !$userInfo['status'] && throw new ApiException("用户：${data['name']} 已禁用");
+        $data['password'] !== $userInfo['password'] && throw new ApiException('密码验证失败');
         // 更新登录时间和ip地址
-        $userService->updateOne($userInfo['id'], ['ipaddress' => ip2long($this->request->ip())], 'id');
+        $userService->updateOne($userInfo['id'], ['ipaddress' => ip2long($ipAddress), 'last_login' => time()]);
         // 验证通过后签发token
         $token = app()->make(\core\utils\JwtAuth::class)->createToken($userInfo['id'], $userInfo['name']);
 
@@ -57,7 +58,7 @@ class PublicController extends BaseController
     final public function logout(): Json
     {
         $user = $this->request->post('name/s');
-        return $this->json->successful('用户：' . $user . ' >> 退出登录');
+        return $this->json->successful('用户：' . $user . ' 退出登录');
     }
 
     /**
