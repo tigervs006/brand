@@ -80,7 +80,7 @@ class PublicController extends BaseController
                 return $fileInfo ? $this->json->successful('File uploaded successfully', $uploadInfo) : $this->json->fail('File upload failed');
             }
         } catch (\Exception $e) {
-            return $this->json->fail($e->getMessage());
+            throw new ApiException($e->getMessage());
         }
     }
 
