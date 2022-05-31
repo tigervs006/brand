@@ -42,6 +42,7 @@ Route::group(function () {
         Route::get('list', 'lists');            // 用户列表
         Route::post('save', 'save');            // 新增编辑
         Route::post('del', 'delete');           // 删除用户
+        Route::post('status', 'setStatus');     // 用户状态
     })->prefix('user.userController/');
     // 栏目部分
     Route::group('channel', function () {
