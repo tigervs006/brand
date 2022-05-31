@@ -32,13 +32,7 @@ class UserController extends BaseController
     public function index(): Json
     {
         $info = $this->services->getOne(['id' => $this->id], $this->field);
-        if (null === $info) {
-            return $this->json->fail('查无此人...');
-        } else {
-            // 取出并解析Int格式的ip地址
-            $info['ipaddress'] = long2ip($info['ipaddress']);
-            return $this->json->successful('请求成功', compact('info'));
-        }
+        return null === $info ? $this->json->fail('查无此人...') : $this->json->successful(compact('info'));
     }
 
     /**
@@ -47,11 +41,17 @@ class UserController extends BaseController
      */
     public function lists(): Json
     {
-        $list = $this->services->getData(null, $this->order, $this->field);
+        // 获得map条件
+        $map = $this->request->only(['status'], 'get');
+        // 获取排序字段
+        $order = $this->request->only(['create_time', 'last_login'], 'get', 'strOrderFilter');
+        $list = $this->services->getList($this->current, $this->pageSize, $map?: null, $this->field, $order);
         if ($list->isEmpty()) {
             return $this->json->fail('There is nothing...');
         } else {
-            return $this->json->successful('请求成功', compact('list'));
+            // 计算数据总量
+            $total = $this->services->getCount($map ?: null);
+            return $this->json->successful(compact('total', 'list'));
         }
     }
 
@@ -62,10 +62,17 @@ class UserController extends BaseController
     public function delete(): Json
     {
         $data = $this->services->delete($this->id);
-        if (!$data) {
-            return $this->json->fail('删除用户失败');
-        } else {
-            return $this->json->successful('删除用户成功');
-        }
+        return !$data ? $this->json->fail('删除用户失败') : $this->json->successful('删除用户成功');
+    }
+
+    /**
+     * 用户状态
+     * @return Json
+     */
+    final public function setStatus(): Json
+    {
+        $data = $this->request->post(['status']);
+        $this->services->updateOne($this->id, $data, 'id');
+        return $this->json->successful($data['status'] ? '用户启用成功' : '用户禁用成功');
     }
 }
