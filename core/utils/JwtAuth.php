@@ -3,7 +3,6 @@
 namespace core\utils;
 
 use DateTimeImmutable;
-use think\facade\Session;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\UnencryptedToken;
@@ -58,7 +57,6 @@ class JwtAuth
     public function __construct()
     {
         $this->claim = [
-            'sessionId' => Session::getId(),
             'ipaddress' => app()->request->ip(),
             'userAgent' => app()->request->header('USER_AGENT')
         ];
@@ -156,14 +154,10 @@ class JwtAuth
             throw new AuthException(substr($e->getMessage(), 58) . ', Please try login again');
         }
 
-        // Gets the sessionId from current token
-        $sessionId = $token->claims()->get('sessionId');
         // Gets the userAgent from current token
         $userAgent = $token->claims()->get('userAgent');
         // Gets the ipaddress from current token
         $ipaddress = $token->claims()->get('ipaddress');
-        // Validate the sessionId from current token and now sessionId
-        $sessionId !== $this->claim['sessionId'] && throw new AuthException('Unauthorized operation, sessionId have been changed');
         // Validate the userAgent from current token and now userAgent
         $userAgent !== $this->claim['userAgent'] && throw new AuthException('Unauthorized operation, UserAgent have been changed');
         // Validate the ipaddress from current token and now ipaddress
