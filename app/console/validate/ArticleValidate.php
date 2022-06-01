@@ -4,7 +4,7 @@ namespace app\console\validate;
 
 use think\validate;
 
-class Article extends Validate
+class ArticleValidate extends Validate
 {
     protected $rule =   [
         'cid'  => 'require',
