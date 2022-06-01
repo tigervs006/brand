@@ -4,7 +4,9 @@ namespace app\console\controller\user;
 
 use think\response\Json;
 use core\basic\BaseController;
+use core\exceptions\ApiException;
 use app\services\user\UserServices;
+use think\exception\ValidateException;
 
 class UserController extends BaseController
 {
@@ -12,6 +14,8 @@ class UserController extends BaseController
      * @var UserServices
      */
     private UserServices $services;
+    private string $validater = 'app\console\validate\UserValidate.';
+
 
     /**
      * 提取字段
@@ -29,17 +33,48 @@ class UserController extends BaseController
      * 获取用户信息
      * @return Json
      */
-    public function index(): Json
+    final public function index(): Json
     {
         $info = $this->services->getOne(['id' => $this->id], $this->field);
         return null === $info ? $this->json->fail('查无此人...') : $this->json->successful(compact('info'));
     }
 
-    /**
+    final public function save(): Json
+    {
+        $post = $this->request->post(
+            [
+                'id',
+                'gid',
+                'name',
+                'cname',
+                'email',
+                'avatar',
+                'password',
+                'confirmPassword'
+            ], null, 'trim'
+        );
+        // 过滤空值字段
+        $data = array_filter($post, function ($val) {
+            // 避免过滤0、boolean值
+            return !("" === $val || null === $val);
+        });
+        $scene = isset($data['id']) ? 'edit' : 'save';
+        $message = isset($data['id']) ? '编辑' : '新增';
+        // 验证必要数据
+        try {
+            $this->validate($data, $this->validater . $scene);
+        } catch (ValidateException $e) {
+            throw new ApiException($e->getError());
+        }
+        $this->services->saveUser($data, $message);
+        return $this->json->successful($message . '用户成功');
+    }
+
+        /**
      * 获取用户列表
      * @return Json
      */
-    public function lists(): Json
+    final public function lists(): Json
     {
         // 获得map条件
         $map = $this->request->only(['status'], 'get');
@@ -59,7 +94,7 @@ class UserController extends BaseController
      * 单个/批量删除
      * @return Json
      */
-    public function delete(): Json
+    final public function delete(): Json
     {
         $data = $this->services->delete($this->id);
         return !$data ? $this->json->fail('删除用户失败') : $this->json->successful('删除用户成功');
@@ -71,8 +106,8 @@ class UserController extends BaseController
      */
     final public function setStatus(): Json
     {
-        $data = $this->request->post(['status']);
-        $this->services->updateOne($this->id, $data, 'id');
-        return $this->json->successful($data['status'] ? '用户启用成功' : '用户禁用成功');
+        $post = $this->request->post(['status']);
+        $this->services->updateOne($this->id, $post, 'id');
+        return $this->json->successful($post['status'] ? '启用成功' : '禁用成功');
     }
 }
