@@ -89,7 +89,7 @@ class PublicController extends BaseController
      * 删除文件
      * @return Json
      */
-    final public function remove(): Json
+    final public function removeFile(): Json
     {
         $remove = \core\services\UploadService::init();
         $fileInfo = $remove->delete($this->request->param('filePath/s'));
