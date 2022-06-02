@@ -8,7 +8,6 @@ use core\basic\BaseUpload;
 use core\exceptions\UploadException;
 use think\exception\ValidateException;
 
-
 /**
  * 阿里云OSS上传
  * Class OSS
