@@ -57,8 +57,8 @@ class JwtAuth
     public function __construct()
     {
         $this->claim = [
-            'ipaddress' => app()->request->ip(),
-            'userAgent' => app()->request->header('USER_AGENT')
+            'ipaddress' => ip2long(app()->request->ip()),
+            'userAgent' => md5(app()->request->header('USER_AGENT'))
         ];
         $this->issuedAt = new DateTimeImmutable();
         $this->expiresAt = $this->issuedAt->modify('+24 hour');
