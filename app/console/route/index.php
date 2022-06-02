@@ -70,6 +70,14 @@ Route::group(function () {
         Route::post('upload', 'upload');        // 文件上传接口
         Route::post('remove', 'removeFile');    // 文件删除接口
     })->prefix('publicController/');
+    // 个人中心
+    Route::group('account', function () {
+        Route::get('center', 'index');
+        Route::get('fakelist', 'fakeList');
+        Route::get('settings', 'settings');
+        Route::get('province', 'province');
+        Route::get('city<code?>$', 'city');
+    })->prefix('user.AccountController/');
     // 数据看板
     Route::group('dashboard', function () {
         Route::get('monitor', 'MonitorController/index');
