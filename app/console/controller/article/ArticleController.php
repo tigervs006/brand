@@ -35,7 +35,7 @@ class ArticleController extends BaseController
         if (null === $info) {
             return $this->json->fail('There is nothing...');
         } else {
-            return $this->json->successful('请求成功', compact('info'));
+            return $this->json->successful(compact('info'));
         }
     }
 
@@ -123,7 +123,7 @@ class ArticleController extends BaseController
         } else {
             // 提取数据总数
             $total = $this->services->getCount($map ?: null);
-            return $this->json->successful('请求成功', compact('total', 'list'));
+            return $this->json->successful(compact('total', 'list'));
         }
     }
 
@@ -140,7 +140,7 @@ class ArticleController extends BaseController
         if ($list->isEmpty()) {
             return $this->json->fail('There is nothing...');
         } else {
-            return $this->json->successful('请求成功', compact('list'));
+            return $this->json->successful(compact('list'));
         }
     }
 
@@ -156,7 +156,7 @@ class ArticleController extends BaseController
         if (empty($list)) {
             return $this->json->fail('There is nothing...');
         } else {
-            return $this->json->successful('请求成功', compact('list'));
+            return $this->json->successful(compact('list'));
         }
     }
 

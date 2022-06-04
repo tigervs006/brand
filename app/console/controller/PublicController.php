@@ -48,7 +48,7 @@ class PublicController extends BaseController
             ? $jwtService->updateOne($userInfo['id'], ['token' => $token])
             : $jwtService->saveOne(['uid' => $userInfo['id'], 'user' => $userInfo['name'], 'token' => $token]);
 
-        return $this->json->successful('用户登录成功', ['info' => ['uid' => $userInfo['id'], 'name' => $userInfo['name'], 'avatar' => $userInfo['avatar'], 'authorization' => $token]]);
+        return $this->json->successful('Login successful', ['info' => ['uid' => $userInfo['id'], 'name' => $userInfo['name'], 'avatar' => $userInfo['avatar'], 'authorization' => $token]]);
     }
 
     /**
@@ -58,7 +58,7 @@ class PublicController extends BaseController
     final public function logout(): Json
     {
         $user = $this->request->post('name/s');
-        return $this->json->successful('用户：' . $user . ' 退出登录');
+        return $this->json->successful('User：' . $user . ' logout');
     }
 
     /**

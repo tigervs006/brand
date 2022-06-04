@@ -54,11 +54,11 @@ class Json
      * @param array|null $data  data
      * @param bool|null $success AntDesignPro
      */
-    public function success(string|array $msg = 'ok', ?array $data = null, ?bool $success = true): Response
+    public function success(string|array $msg = 'Request succeeded', ?array $data = null, ?bool $success = true): Response
     {
         if (is_array($msg)) {
             $data = $msg;
-            $msg = 'ok';
+            $msg = 'Request succeeded';
         }
 
         return $this->make(200, $msg, $data, $success);
@@ -80,11 +80,11 @@ class Json
      * @param int|null $code 状态码
      * @param bool|null $success AntDesignPro
      */
-    public function fail(string|array $msg = 'fail', ?int $code = 400, ?array $data = null, ?bool $success = false): Response
+    public function fail(string|array $msg = 'Request failed', ?int $code = 400, ?array $data = null, ?bool $success = false): Response
     {
         if (is_array($msg)) {
             $data = $msg;
-            $msg = 'ok';
+            $msg = 'Request failed';
         }
         return $this->make($code, $msg, $data, $success);
     }
@@ -100,7 +100,7 @@ class Json
         $status = strtoupper($status);
         if (is_array($msg)) {
             $result = $msg;
-            $msg = 'ok';
+            $msg = 'Request succeeded';
         }
         return app('json')->success($msg, compact('status', 'result'));
     }
