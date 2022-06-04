@@ -70,7 +70,7 @@ class UserController extends BaseController
         return $this->json->successful($message . '用户成功');
     }
 
-        /**
+    /**
      * 获取用户列表
      * @return Json
      */
