@@ -50,6 +50,7 @@ Route::group(function () {
         Route::get('list', 'lists');            // 栏目列表
         Route::post('save', 'save');            // 新增编辑
         Route::post('del', 'delete');           // 删除栏目
+        Route::post('status', 'setStatus');     // 栏目状态
     })->prefix('channel.channelController/');
     // 友链部分
     Route::group('links', function () {
