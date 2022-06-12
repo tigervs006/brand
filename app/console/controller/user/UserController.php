@@ -14,7 +14,7 @@ class UserController extends BaseController
      * @var UserServices
      */
     private UserServices $services;
-    private string $validater = 'app\console\validate\UserValidator.';
+    private string $validator = 'app\console\validate\UserValidator.';
 
 
     /**
@@ -62,7 +62,7 @@ class UserController extends BaseController
         $message = isset($data['id']) ? '编辑' : '新增';
         // 验证必要数据
         try {
-            $this->validate($data, $this->validater . $scene);
+            $this->validate($data, $this->validator . $scene);
         } catch (ValidateException $e) {
             throw new ApiException($e->getError());
         }

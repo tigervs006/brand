@@ -17,7 +17,7 @@ class ArticleController extends BaseController
      * 验证器
      * @var string
      */
-    private string $validater = 'app\console\validate\ArticleValidator.save';
+    private string $validator = 'app\console\validate\ArticleValidator.save';
 
     protected function initialize()
     {
@@ -74,7 +74,7 @@ class ArticleController extends BaseController
         );
         // 验证必要数据
         try {
-            $this->validate($data, $this->validater);
+            $this->validate($data, $this->validator);
         } catch (ValidateException $e) {
             throw new ApiException($e->getError());
         }
