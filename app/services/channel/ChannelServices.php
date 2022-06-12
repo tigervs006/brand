@@ -4,12 +4,41 @@ namespace app\services\channel;
 
 use app\services\BaseServices;
 use app\dao\channel\ChannelDao;
+use core\exceptions\ApiException;
 
 class ChannelServices extends BaseServices
 {
     public function __construct(ChannelDao $dao)
     {
         $this->dao = $dao;
+    }
+
+    /**
+     * 单个/批量删除
+     * @return void
+     * @param int|array|string $id
+     */
+    public function remove(int|array|string $id): void
+    {
+        $this->transaction(function () use ($id) {
+            $this->dao->delete($id);
+        });
+    }
+
+    /**
+     * 新增/编辑栏目
+     * @return void
+     * @param array $data 数据
+     * @param string $message 新增/编辑
+     */
+    public function saveChannel(array $data, string $message): void
+    {
+        $id = $data['id'] ?? 0;
+        unset($data['id']); // 释放$data中的id
+        $this->transaction(function () use ($id, $data, $message) {
+            $res = $id ? $this->dao->updateOne($id, $data, 'id') : $this->dao->saveOne($data);
+            !$res && throw new ApiException($message . '栏目失败');
+        });
     }
 
     /**
