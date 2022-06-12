@@ -3,8 +3,6 @@ declare (strict_types = 1);
 namespace app\services;
 
 use think\facade\Db;
-use core\utils\JwtAuth;
-use think\facade\Route as Url;
 use core\traits\ServicesTrait;
 
 /**
@@ -39,37 +37,12 @@ abstract class BaseServices
     }
 
     /**
-     * 创建token
-     * @param int $id
-     * @param $type
-     * @return array
-     */
-    public function createToken(int $id, $type): array
-    {
-        /** @var JwtAuth $jwtAuth */
-        $jwtAuth = app()->make(JwtAuth::class);
-        return $jwtAuth->createToken($id, $type);
-    }
-
-    /**
-     * 获取路由地址
-     * @return string
-     * @param string $path
-     * @param bool $suffix
-     * @param array $params
-     * @param bool $isDomain
-     */
-    public function url(string $path, array $params = [], bool $suffix = false, bool $isDomain = false): string
-    {
-        return Url::buildUrl($path, $params)->suffix($suffix)->domain($isDomain)->build();
-    }
-
-    /**
      * 密码hash加密
+     * @return string
      * @param string $password
-     * @return false|string|null
+     * todo: 后期的登录密码验证要用上
      */
-    public function passwordHash(string $password): bool|string|null
+    public function passwordHash(string $password): string
     {
         return password_hash($password, PASSWORD_BCRYPT);
     }
