@@ -14,7 +14,7 @@ class UserController extends BaseController
      * @var UserServices
      */
     private UserServices $services;
-    private string $validater = 'app\console\validate\UserValidate.';
+    private string $validater = 'app\console\validate\UserValidator.';
 
 
     /**

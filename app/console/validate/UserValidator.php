@@ -4,7 +4,7 @@ namespace app\console\validate;
 
 use think\validate;
 
-class UserValidate extends validate
+class UserValidator extends validate
 {
     protected $rule = [
         'id' => 'require',

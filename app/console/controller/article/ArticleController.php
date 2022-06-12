@@ -17,7 +17,7 @@ class ArticleController extends BaseController
      * 验证器
      * @var string
      */
-    private string $validater = 'app\console\validate\ArticleValidate.save';
+    private string $validater = 'app\console\validate\ArticleValidator.save';
 
     protected function initialize()
     {
