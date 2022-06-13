@@ -92,7 +92,7 @@ class PublicController extends BaseController
     final public function removeFile(): Json
     {
         $remove = \core\services\UploadService::init();
-        $fileInfo = $remove->delete($this->request->param('filePath/s'));
+        $fileInfo = $remove->delete($this->request->param('filePath/s', null, 'trim'));
         return $fileInfo ? $this->json->successful('File deleted successfully') : $this->json->fail('File deleted failed');
     }
 }
