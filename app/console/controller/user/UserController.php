@@ -66,6 +66,8 @@ class UserController extends BaseController
         } catch (ValidateException $e) {
             throw new ApiException($e->getError());
         }
+        // hash散列加密
+        isset($data['password']) && $data['password'] = $this->services->passwordHash($data['password']);
         $this->services->saveUser($data, $message);
         return $this->json->successful($message . '用户成功');
     }

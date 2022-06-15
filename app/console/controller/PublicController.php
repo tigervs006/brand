@@ -35,7 +35,7 @@ class PublicController extends BaseController
         $userInfo = $userService->getOne(['name' => $data['name']], null, ['token']);
         is_null($userInfo) && throw new ApiException('查无此人，用户不存在，请重新输入');
         !$userInfo['status'] && throw new ApiException("用户：${data['name']} 已禁用");
-        $data['password'] !== $userInfo['password'] && throw new ApiException('密码验证失败');
+        !password_verify($data['password'], $userInfo['password']) && throw new ApiException('密码验证失败');
         // 更新登录时间和ip地址
         $userService->updateOne($userInfo['id'], ['ipaddress' => ip2long($ipAddress), 'last_login' => time()]);
         // 验证通过后签发token

@@ -37,10 +37,9 @@ abstract class BaseServices
     }
 
     /**
-     * 密码hash加密
+     * hash散列加密
      * @return string
      * @param string $password
-     * todo: 后期的登录密码验证要用上
      */
     public function passwordHash(string $password): string
     {
