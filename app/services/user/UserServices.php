@@ -24,6 +24,8 @@ class UserServices extends BaseServices
         $id = $data['id'] ?? 0;
         unset($data['id']); // 释放$data中的id
         return $this->transaction(function () use ($id, $data, $message) {
+            // hash散列加密
+            isset($data['password']) && $data['password'] = $this->passwordHash($data['password']);
             $res = $id ? $this->dao->updateOne($id, $data, 'id') : $this->dao->saveOne($data);
             !$res && throw new ApiException($message . '用户失败');
         });
