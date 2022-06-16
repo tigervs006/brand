@@ -54,8 +54,9 @@ class ChannelController extends BaseController
             [
                 'id',
                 'pid',
-                'name',
                 'sort',
+                'path',
+                'name',
                 'cname',
                 'level',
                 'title',
