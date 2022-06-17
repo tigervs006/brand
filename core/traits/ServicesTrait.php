@@ -55,7 +55,7 @@ trait ServicesTrait
         $tree = [];
         foreach ($data as $val) {
             if ($pid == $val['pid']) {
-                $pname && $val['parent'] = $pname;
+                $pname && $val['pname'] = $pname;
                 $children = self::getTreeData($data, $val['id'], $pname ? $val['cname'] : null);
                 $children && $val['children'] = $children;
                 $tree[] = $val;

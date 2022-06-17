@@ -40,7 +40,7 @@ class ChannelController extends BaseController
         $map = $this->request->get(['status'], null, 'trim');
         $title && $map[] = ['cname', 'like', '%' . $title . '%'];
         $data = $this->services->getData($map ?? null, ['id' => 'asc']);
-        $list = empty($map) ? $this->services->getTreeData($data, 0, null) : $data;
+        $list = empty($map) ? $this->services->getTreeData($data, 0) : $data;
         return $list ? $this->json->successful(compact('list')) : $this->json->fail('There is not thing');
     }
 
