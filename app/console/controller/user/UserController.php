@@ -66,6 +66,10 @@ class UserController extends BaseController
         } catch (ValidateException $e) {
             throw new ApiException($e->getError());
         }
+        // 防止在编辑用户的情况下，浏览器自动填充密码字段直接修改
+        if ('edit' === $scene && isset($data['password'])) {
+            throw new ApiException('请输入确认用户密码');
+        }
         $this->services->saveUser($data, $message);
         return $this->json->successful($message . '用户成功');
     }
