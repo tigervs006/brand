@@ -100,8 +100,8 @@ abstract class BaseController
         $this->current = $this->request->param('current/d', 1);
         $this->pageSize = $this->request->param('pageSize/d', 15);
 
-        // 只在特定应用执行
-         App('http')->getName() === 'index' && $this->channel();
+         // 只在特定应用执行
+        'index' === App('http')->getName() && $this->channel();
     }
 
     /**
