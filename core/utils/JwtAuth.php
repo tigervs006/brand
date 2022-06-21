@@ -46,7 +46,7 @@ class JwtAuth
      * jwt签发者
      * @var string
      */
-    private string $issuedBy = 'https://demo.brandsz.cn';
+    private string $issuedBy = 'https://www.brandsz.cn';
 
     /**
      * jwt密钥串
