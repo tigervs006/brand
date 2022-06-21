@@ -45,6 +45,8 @@ class ArticleServices extends BaseServices
         unset($data['id'], $data['content']);
         /** @var ArticleContentServices $articleContentService */
         $articleContentService = app()->make(ArticleContentServices::class);
+        15 < count(explode(',', $data['keywords']))
+        && throw new ApiException('文档关键词不得超过15个，否则会被搜索引擎判断为堆砌关键词而影响收录');
         return $this->transaction(function () use ($id, $data, $content, $message, $articleContentService) {
             if ($id) {
                 $info = $this->dao->updateOne($id, $data, 'id');
