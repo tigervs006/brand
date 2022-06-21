@@ -81,7 +81,7 @@ class ArticleController extends BaseController
         // 处理特殊符号
         $data['keywords'] = Str::strSymbol($data['keywords']);
         15 < count(explode(',', $data['keywords']))
-        && throw new ApiException('网站关键词不得超过15个，否则会被搜索引擎判断为堆砌关键词而K站');
+        && throw new ApiException('文档关键词不得超过15个，否则会被搜索引擎判断为堆砌关键词而K站');
         if (isset($data['id'])) {
             $message = '编辑';
         } else {
