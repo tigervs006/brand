@@ -79,6 +79,11 @@ Route::group(function () {
         Route::get('province', 'province');
         Route::get('city<code?>$', 'city');
     })->prefix('user.AccountController/');
+    // 系统配置
+    Route::group('system', function () {
+        Route::get('list', 'lists');
+        Route::post('save', 'save');
+    })->prefix('system.ConfigController/');
     // 数据看板
     Route::group('dashboard', function () {
         Route::get('monitor', 'MonitorController/index');
