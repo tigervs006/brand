@@ -1,7 +1,11 @@
 .env
 *.log
+*.map
 *.lock
 /.idea
 /vendor
 /.vscode
 /runtime
+bootstrap.min.css
+/public/static/icon
+/public/static/images
