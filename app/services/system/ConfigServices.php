@@ -4,7 +4,6 @@ namespace app\services\system;
 
 use app\dao\system\ConfigDao;
 use app\services\BaseServices;
-use core\exceptions\ApiException;
 
 class ConfigServices extends BaseServices
 {
