@@ -61,17 +61,14 @@ class MailHandler
 
     public function __construct()
     {
-        $this->port = 465;
-        $this->receiver = [
-            '394881218@qq.com',
-            'kevin@tigervs.com',
-        ];
-        $this->password = 'Tigervs0300';
-        $this->mailSubject = '您有新的客户留言';
-        $this->host = 'ssl://smtp.mxhichina.com';
-        $this->sendFrom = 'postmaster@tigervs.com';
-        $this->userName = 'postmaster@tigervs.com';
         $this->mail = new PHPMailer(true);
+        $this->port = sys_config('mail_port');
+        $this->host = sys_config('mail_host');
+        $this->password = sys_config('mail_password');
+        $this->sendFrom = sys_config('mail_send_from');
+        $this->userName = sys_config('mail_user_name');
+        $this->mailSubject = sys_config('mail_subject');
+        $this->receiver = explode(',', sys_config('mail_receiver'));
     }
 
     /**
