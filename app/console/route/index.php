@@ -6,7 +6,7 @@ Route::group(function () {
     Route::group('public', function () {
         Route::post('login', 'login');        // 登录接口
         Route::post('logout', 'logout');      // 登出接口
-        Route::post('submit', 'sendMessage'); // 表单留言
+        Route::post('submit', 'submitForm');  // 表单留言
     })->prefix('publicController/');
     // 登录接口
 })->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+']);
