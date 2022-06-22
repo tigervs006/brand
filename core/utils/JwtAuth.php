@@ -61,7 +61,7 @@ class JwtAuth
             'userAgent' => md5(app()->request->header('USER_AGENT'))
         ];
         $this->issuedAt = new DateTimeImmutable();
-        $this->expiresAt = $this->issuedAt->modify('+24 hour');
+        $this->expiresAt = $this->issuedAt->modify(sys_config('tokenExpireTime'));
     }
 
     /**
