@@ -221,7 +221,7 @@ function commitForm(currentForm) {
     subStatus.attr('disabled', 'true')
     $.ajax({
         type: 'POST',
-        url: '/console/submit.html',
+        url: '/console/public/submit',
         data: $(currentForm).serialize(),
         success: (r) => {
             if (r.status === 200) {
@@ -229,11 +229,11 @@ function commitForm(currentForm) {
             }
             myToast.toast('show')
             myToast.find('.me-auto').html(r.status)
-            myToast.find('.toast-body').html(r.statusText)
+            myToast.find('.toast-body').html(r.msg)
         }, error: (e) => {
             myToast.toast('show')
             myToast.find('.me-auto').html(e.status)
-            myToast.find('.toast-message').html(e.statusText)
+            myToast.find('.toast-message').html(e.msg)
         }
     })
 }
