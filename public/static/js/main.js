@@ -217,6 +217,7 @@ function tabEventListener(documentEl, userAction = 'mouseenter') {
 function commitForm(currentForm) {
     const subStatus = $('.submit')
     const myToast = $('#liveToast')
+    const toastIcon = $('#toast-icon')
     // 避免重复提交
     subStatus.attr('disabled', 'true')
     $.ajax({
@@ -228,12 +229,20 @@ function commitForm(currentForm) {
                 $('#formModal') && $('#formModal').modal('hide')
             }
             myToast.toast('show')
+            toastIcon.addClass('text-success')
             myToast.find('.me-auto').html(r.status)
             myToast.find('.toast-body').html(r.msg)
         }, error: (e) => {
             myToast.toast('show')
+            toastIcon.addClass('text-danger')
             myToast.find('.me-auto').html(e.status)
             myToast.find('.toast-message').html(e.msg)
+        }, finally: () => {
+            setTimeout(() => {
+                toastIcon.hasClass('text-danger') && toastIcon.removeClass('text-danger')
+                toastIcon.hasClass('text-success') && toastIcon.removeClass('text-success')
+            }, 5000)
+            subStatus.removeAttr('disabled')
         }
     })
 }
