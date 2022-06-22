@@ -237,11 +237,13 @@ function commitForm(currentForm) {
             toastIcon.addClass('text-danger')
             myToast.find('.me-auto').html(e.status)
             myToast.find('.toast-message').html(e.msg)
-        }, finally: () => {
+        }, complete: () => {
             setTimeout(() => {
+                // 清空表单内容
+                $(currentForm)[0].reset();
                 toastIcon.hasClass('text-danger') && toastIcon.removeClass('text-danger')
                 toastIcon.hasClass('text-success') && toastIcon.removeClass('text-success')
-            }, 5000)
+            }, 3000)
             subStatus.removeAttr('disabled')
         }
     })
