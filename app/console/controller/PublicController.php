@@ -141,7 +141,7 @@ class PublicController extends BaseController
         $services->saveClient($post, '留言失败！请检查各项信息是否正确填写');
 
         // 入库后发送邮件
-        if ((int) sys_config('mailService')) {
+        if ((int) sys_config('mail_service')) {
             // 邮件模板
             $mailBody = isset($post['position'])
                 ? /** @lang text */
