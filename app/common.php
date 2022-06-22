@@ -7,6 +7,7 @@ if (!function_exists('sys_config')) {
     /**
      * 获取单个系统配置
      * @return string
+     * todo: 后期要做缓存
      * @param string $name 配置名
      * @param string $default 默认配置名
      */
