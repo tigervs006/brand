@@ -123,7 +123,9 @@ class PublicController extends BaseController
             throw new ApiException($e->getError());
         }
 
-        // 留言ip
+        // 留言来源
+        $post['source'] = 1;
+        // 留言的ip
         $ipAddress = $this->request->ip();
         // 留言时间
         $nowTime = date('Y-m-d H:i:s');
