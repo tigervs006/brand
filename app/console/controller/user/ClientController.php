@@ -4,11 +4,15 @@ namespace app\console\controller\user;
 
 use think\response\Json;
 use core\basic\BaseController;
+use core\exceptions\ApiException;
 use app\services\user\ClientServices;
+use think\exception\ValidateException;
 
 class ClientController extends BaseController
 {
     private ClientServices $services;
+
+    private string $validator = 'app\console\validate\FormValidator.manual';
 
     public function initialize()
     {
@@ -19,7 +23,6 @@ class ClientController extends BaseController
     /**
      * 获取客户列表
      * @return Json
-     * fixme: 组装的搜索条件不兼容$map内的其它搜索条件
      */
     final public function lists(): Json
     {
@@ -30,7 +33,7 @@ class ClientController extends BaseController
         /** 获取筛选条件 */
         $map = $this->request->only(['mobile', 'source', 'username'], 'get', 'trim');
         if ($dateRange) {
-            /** 组装按时间段搜索条件 */
+            /** 组装按时间段搜索条件 fixme: 组装的搜索条件不兼容$map内的其它搜索条件 */
             $map[] = ['create_time', 'between time', [$dateRange['dateRange'][0], $dateRange['dateRange'][1]]];
         }
         $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order);
@@ -40,5 +43,51 @@ class ClientController extends BaseController
             $total = $this->services->getCount($map ?: null);
             return $this->json->successful(compact('list', 'total'));
         }
+    }
+
+    /**
+     * 新增/编辑客户
+     * @return Json
+     */
+    final public function save(): Json
+    {
+        $post = $this->request->post([
+            'id',
+            'email',
+            'mobile',
+            'company',
+            'address',
+            'message',
+            'username',
+        ], null, 'trim');
+
+        /** 验证关键数据 */
+        try {
+            $this->validate($post, $this->validator);
+        } catch (ValidateException $e) {
+            throw new ApiException($e->getError());
+        }
+
+        $message = '编辑';
+        if (empty($post['id'])) {
+            $message = '新增';
+            $post['source'] = 0;
+            $post['page'] = $this->request->url();
+            $post['ipaddress'] = ip2long($this->request->ip());
+        }
+
+        $this->services->saveClient($post, $message . '客户失败');
+
+        return $this->json->successful($message . '客户成功');
+    }
+
+    /**
+     * 单个/批量删除
+     * @return Json
+     */
+    final public function delete(): Json
+    {
+        $data = $this->services->delete($this->id);
+        return !$data ? $this->json->fail('删除客户失败') : $this->json->successful('删除客户成功');
     }
 }
