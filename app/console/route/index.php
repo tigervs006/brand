@@ -48,8 +48,8 @@ Route::group(function () {
     // 客户管理
     Route::group('client', function () {
         Route::get('list', 'lists');            // 客户列表
-        Route::get('save', 'save');             // 新增编辑
-        Route::get('del', 'delete');            // 删除客户
+        Route::post('save', 'save');             // 新增编辑
+        Route::post('del', 'delete');            // 删除客户
     })->prefix('user.clientController/');
     // 栏目部分
     Route::group('channel', function () {
