@@ -42,7 +42,6 @@ class FormValidator extends validate
     protected $scene = [
         'basic'     => ['username', 'mobile', 'email', 'message'],
         'manual'    => ['email', 'mobile', 'company', 'address', 'message', 'username'],
-        'edit'      => ['id', 'email', 'mobile', 'company', 'address', 'message', 'username'],
         'modal'     => ['username', 'mobile', 'email', 'company', 'province', 'city', 'district', 'message']
     ];
 }
