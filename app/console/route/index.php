@@ -45,6 +45,12 @@ Route::group(function () {
         Route::post('del', 'delete');           // 删除用户
         Route::post('status', 'setStatus');     // 用户状态
     })->prefix('user.userController/');
+    // 客户管理
+    Route::group('client', function () {
+        Route::get('list', 'lists');            // 客户列表
+        Route::get('save', 'save');             // 新增编辑
+        Route::get('del', 'delete');            // 删除客户
+    })->prefix('user.clientController/');
     // 栏目部分
     Route::group('channel', function () {
         Route::get('<id?>$', 'index');          // 栏目信息
