@@ -36,14 +36,14 @@ class PublicController extends BaseController
         is_null($userInfo) && throw new ApiException('查无此人，用户不存在，请重新输入');
         !$userInfo['status'] && throw new ApiException("用户：${data['name']} 已禁用");
         !password_verify($data['password'], $userInfo['password']) && throw new ApiException('密码验证失败');
-        // 更新登录时间和ip地址
+        /* 更新登录时间和ip地址 */
         $userService->updateOne($userInfo['id'], ['ipaddress' => ip2long($ipAddress), 'last_login' => time()]);
-        // 验证通过后签发token
+        /* 验证通过后签发token */
         $token = app()->make(\core\utils\JwtAuth::class)->createToken($userInfo['id'], $userInfo['name']);
 
         /** @var JwtTokenServices $jwtService */
         $jwtService = $this->app->make(JwtTokenServices::class);
-        // 把token信息同步到数据库
+        /* 把token信息同步到数据库 */
         isset($userInfo['token'])
             ? $jwtService->updateOne($userInfo['id'], ['token' => $token])
             : $jwtService->saveOne(['uid' => $userInfo['id'], 'user' => $userInfo['name'], 'token' => $token]);
