@@ -28,18 +28,18 @@ class AuthServices extends BaseServices
         $tree = [];
         foreach ($data as $val) {
             if ($pid == $val['pid']) {
-                $xxx = '/';
+                $fullPath = '/';
                 $val['plocale'] = $plocale;
                 $pname && $val['pname'] = $pname;
-                $ids = explode('-', $val['parent']);
+                $ids = explode('-', $val['paths']);
                 foreach ($ids as $id) {
                     if (!$id) {
-                        $xxx .= $val['name'];
+                        $fullPath .= $val['name'];
                     } else {
-                        $xxx .=  $this->dao->getFieldValue($id, 'id', 'name') . '/';
+                        $fullPath .=  $this->dao->getFieldValue($id, 'id', 'name') . '/';
                     }
                 }
-                $val['url'] = $xxx;
+                $val['path'] = rtrim($fullPath, '/');
                 $children = self::getTreeMenu($data, $val['id'], $pname ? $val['name'] : null, $val['locale']);
                 $children && $val['children'] = $children;
                 $tree[] = $val;
