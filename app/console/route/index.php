@@ -48,8 +48,8 @@ Route::group(function () {
     // 客户管理
     Route::group('client', function () {
         Route::get('list', 'lists');            // 客户列表
-        Route::post('save', 'save');             // 新增编辑
-        Route::post('del', 'delete');            // 删除客户
+        Route::post('save', 'save');            // 新增编辑
+        Route::post('del', 'delete');           // 删除客户
     })->prefix('user.clientController/');
     // 栏目部分
     Route::group('channel', function () {
@@ -66,6 +66,12 @@ Route::group(function () {
         Route::post('save', 'save');            // 新增编辑
         Route::post('del', 'delete');           // 删除友链
     })->prefix('links.linksController/');
+    Route::group('auth', function () {
+        Route::get('list', 'lists');            // 菜单列表
+        Route::post('del', 'delete');           // 菜单列表
+        Route::post('save', 'save');            // 新增编辑
+        Route::post('status', 'setStatus');     // 菜单状态
+    })->prefix('auth.authController/');
     // 用户权限
     Route::group('group', function () {
         Route::get('<id?>$', 'index');          // 用户组信息
@@ -85,19 +91,19 @@ Route::group(function () {
         Route::get('settings', 'settings');
         Route::get('province', 'province');
         Route::get('city<code?>$', 'city');
-    })->prefix('user.AccountController/');
+    })->prefix('user.accountController/');
     // 系统配置
     Route::group('system', function () {
         Route::get('list', 'lists');
         Route::post('save', 'save');
-    })->prefix('system.ConfigController/');
+    })->prefix('system.configController/');
     // 数据看板
     Route::group('dashboard', function () {
-        Route::get('monitor', 'MonitorController/index');
-        Route::get('analysis', 'AnalysisController/index');
-        Route::get('notice', 'WorkplaceController/notice');
-        Route::get('workplace', 'WorkplaceController/index');
-        Route::get('activities', 'WorkplaceController/activities');
+        Route::get('monitor', 'monitorController/index');
+        Route::get('analysis', 'analysisController/index');
+        Route::get('notice', 'workplaceController/notice');
+        Route::get('workplace', 'workplaceController/index');
+        Route::get('activities', 'workplaceController/activities');
     })->prefix('dashboard.');
 })->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+'])
     ->middleware(think\middleware\AllowCrossDomain::class)
