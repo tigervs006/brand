@@ -44,7 +44,7 @@ trait ServicesTrait
     }
 
     /**
-     * 生成树状数据结构
+     * 生成栏目树状结构
      * @return array
      * @param int|null $pid 父级id
      * @param string|null $pname 父级名称
