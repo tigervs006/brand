@@ -4,6 +4,7 @@ namespace app\services\auth;
 
 use app\dao\auth\AuthDao;
 use app\services\BaseServices;
+use core\exceptions\ApiException;
 
 class AuthServices extends BaseServices
 {
@@ -13,6 +14,16 @@ class AuthServices extends BaseServices
     public function __construct(AuthDao $dao)
     {
         $this->dao = $dao;
+    }
+
+    public function saveMenu(array $data, string $message): void
+    {
+        $id = $data['id'] ?? 0;
+        unset($data['id']); // 释放$data中的id
+        $this->transaction(function () use ($id, $data, $message) {
+            $res = $id ? $this->dao->updateOne($id, $data, 'id') : $this->dao->saveOne($data);
+            !$res && throw new ApiException($message . '菜单失败');
+        });
     }
 
     /**
@@ -39,7 +50,8 @@ class AuthServices extends BaseServices
                         $fullPath .=  $this->dao->getFieldValue($id, 'id', 'name') . '/';
                     }
                 }
-                $val['path'] = rtrim($fullPath, '/');
+                /* 如果是顶级菜单，直接返回；如果是二级及以上，则拼接当前的name */
+                $val['path'] = !$pid ? $fullPath : $fullPath . $val['name'];
                 $children = self::getTreeMenu($data, $val['id'], $pname ? $val['name'] : null, $val['locale']);
                 $children && $val['children'] = $children;
                 $tree[] = $val;
