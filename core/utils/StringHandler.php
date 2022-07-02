@@ -13,7 +13,7 @@ class StringHandler
     public static function strSymbol(string $str, ?string $separator = ','): string
     {
         // 处理中文符号及空格
-        $pattern = "/[\x{3002}\x{ff1b}\x{ff0c}\x{002d}\x{002e}\x{002f}\x{ff1a}\x{201c}\x{201d}\x{ff01}\x{ff08}\x{ff09}\x{3001}\x{ff1f}\x{300a}\x{300b}\s+]/u";
+        $pattern = "/[\x{3002}\x{ff1b}\x{ff0c}\x{002d}\x{002e}\x{002f}\x{ff1a}\x{201c}\x{201d}\x{ff01}\x{ff08}\x{ff09}\x{3001}\x{ff1f}\x{300a}\x{300b}\s]+/u";
         return preg_replace($pattern, $separator, $str);
     }
 
