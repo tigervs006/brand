@@ -24,7 +24,7 @@ class AuthController extends BaseController
      * 获取菜单列表
      * @return Json
      */
-    public function lists(): Json
+    final public function lists(): Json
     {
         $map = $this->request->get([
             'exact',
@@ -37,7 +37,7 @@ class AuthController extends BaseController
         return $list ? $this->json->successful(compact('list')) : $this->json->fail();
     }
 
-    public function save(): Json
+    final public function save(): Json
     {
         $post = $this->request->post([
             'id',
