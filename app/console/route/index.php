@@ -66,19 +66,20 @@ Route::group(function () {
         Route::post('save', 'save');            // 新增编辑
         Route::post('del', 'delete');           // 删除友链
     })->prefix('links.linksController/');
+    // 用户权限菜单
     Route::group('auth', function () {
         Route::get('list', 'lists');            // 菜单列表
         Route::post('del', 'delete');           // 菜单列表
         Route::post('save', 'save');            // 新增编辑
         Route::post('status', 'setStatus');     // 菜单状态
     })->prefix('auth.authController/');
-    // 用户权限
+    // 用户组权限列表
     Route::group('group', function () {
-        Route::get('<id?>$', 'index');          // 用户组信息
         Route::get('list', 'lists');            // 用户组列表
         Route::post('save', 'save');            // 编辑用户组
         Route::post('del', 'delete');           // 删除用户组
-    })->prefix('group.groupController/');
+        Route::post('status', 'setStatus');     // 用户组状态
+    })->prefix('auth.groupController/');
     // 公共接口
     Route::group('public', function () {
         Route::post('upload', 'upload');        // 文件上传接口
