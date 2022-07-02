@@ -38,7 +38,7 @@ class MenuValidator extends validate
     ];
 
     /* 如果顶级菜单则必须设置icon */
-    function checkIconRequire($value, $data) {
+    function checkIconRequire($value, $data): bool {
         return 0 === $data['pid'];
     }
 }
