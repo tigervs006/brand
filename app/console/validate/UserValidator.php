@@ -11,8 +11,8 @@ class UserValidator extends validate
     ];
 
     protected $rule = [
-        'id'                => 'require',
-        'gid'               => 'require',
+        'id'                => 'require|integer',
+        'gid'               => 'require|integer',
         'name'              => 'require|alphaDash|max:20',
         'cname'             => 'require|chs|max:10',
         'email'             => 'require|email',
@@ -23,7 +23,9 @@ class UserValidator extends validate
 
     protected $message = [
         'id.require'                => '用户id不得为空',
+        'id.integer'                => '用户id必须为正整数',
         'gid.require'               => '请为用户设置用户组',
+        'gid.integer'               => '用户组id必须为正整数',
         'name.require'              => '用户名不得为空',
         'name.alphaDash'            => '用户名只能是数字、英文、下划线的组合',
         'name.max'                  => '这么长的用户名你确定能记得住?',
