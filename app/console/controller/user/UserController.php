@@ -80,7 +80,7 @@ class UserController extends BaseController
         $map = $this->request->only(['status'], 'get');
         // 获取排序字段
         $order = $this->request->only(['create_time', 'last_login'], 'get', 'strOrderFilter');
-        $list = $this->services->getList($this->current, $this->pageSize, $map?: null, $this->field, $order);
+        $list = $this->services->getList($this->current, $this->pageSize, $map?: null, $this->field, $order, ['group']);
         if ($list->isEmpty()) {
             return $this->json->fail('There is nothing...');
         } else {
