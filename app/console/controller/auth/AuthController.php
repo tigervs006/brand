@@ -2,9 +2,9 @@
 declare (strict_types = 1);
 namespace app\console\controller\auth;
 
-use core\exceptions\ApiException;
 use think\response\Json;
 use core\basic\BaseController;
+use core\exceptions\ApiException;
 use app\services\auth\AuthServices;
 use think\exception\ValidateException;
 
