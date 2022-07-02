@@ -96,9 +96,9 @@ abstract class BaseController
     protected function initialize()
     {
         $this->json = App('json');
-         $this->id = $this->request->param('id', 0);
-        $this->current = $this->request->param('current/d', 1);
-        $this->pageSize = $this->request->param('pageSize/d', 15);
+        $this->id = $this->request->param('id', 0, 'trim');
+        $this->current = $this->request->param('current/d', 1, 'trim');
+        $this->pageSize = $this->request->param('pageSize/d', 15, 'trim');
 
          // 只在特定应用执行
         'index' === App('http')->getName() && $this->channel();
