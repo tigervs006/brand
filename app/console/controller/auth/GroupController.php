@@ -20,6 +20,10 @@ class GroupController extends BaseController
         $this->services = $this->app->make(GroupServices::class);
     }
 
+    /**
+     * 新增/编辑用户组
+     * @return Json
+     */
     final public function save(): Json
     {
         $post = $this->request->post([
@@ -45,6 +49,10 @@ class GroupController extends BaseController
         return $this->json->successful($message . '用户组成功');
     }
 
+    /**
+     * 获取用户组列表
+     * @return Json
+     */
     final public function lists(): Json
     {
         $map = $this->request->only([
@@ -85,6 +93,6 @@ class GroupController extends BaseController
         $status = $this->request->post(['status']);
         $message = $status['status'] ? '启用' : '禁用';
         $this->services->updateOne($this->id, $status);
-        return $this->json->successful($message . '用户组状态成功');
+        return $this->json->successful($message . '用户组成功');
     }
 }
