@@ -37,6 +37,10 @@ class AuthController extends BaseController
         return $list ? $this->json->successful(compact('list')) : $this->json->fail();
     }
 
+    /**
+     * 新增/编辑菜单
+     * @return Json
+     */
     final public function save(): Json
     {
         $post = $this->request->post([
