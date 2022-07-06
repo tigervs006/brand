@@ -21,7 +21,7 @@ class UserController extends BaseController
      * 提取字段
      * @var string
      */
-    private string $field = 'id, gid, name, cname, status, email, avatar, ipaddress, last_login, create_time';
+    private string $field = 'id, gid, name, cname, status, email, avatar, mobile, ipaddress, last_login, create_time';
 
     public function initialize()
     {
@@ -48,6 +48,7 @@ class UserController extends BaseController
                 'name',
                 'cname',
                 'email',
+                'mobile',
                 'avatar',
                 'password',
                 'confirmPassword'

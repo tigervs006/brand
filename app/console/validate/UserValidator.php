@@ -7,7 +7,8 @@ use think\validate;
 class UserValidator extends validate
 {
     protected $regex = [
-        'url'   => '[\/\/]{2}\w.*?'
+        'tel' => '1[3456789]\d{9}',
+        'url'   => '[\/\/]{2}\w.*?',
     ];
 
     protected $rule = [
@@ -16,6 +17,7 @@ class UserValidator extends validate
         'name'              => 'require|alphaDash|max:20',
         'cname'             => 'require|chs|max:10',
         'email'             => 'require|email',
+        'mobile'            => 'require|regex:tel',
         'avatar'            => 'require|regex:url',
         'password'          => 'require|length:32',
         'confirmPassword'   => 'require|length:32|confirm:password'
@@ -34,6 +36,8 @@ class UserValidator extends validate
         'cname.max'                 => '请做个行不更名坐不改姓的人',
         'email.require'             => '用户邮箱不得为空',
         'email.email'               => '请输入正确的用户邮箱',
+        'mobile.require'            => '请为用户设置手机号码',
+        'mobile.regex'              => '用户手机号码格式错误',
         'avatar.require'            => '请上传用户头像',
         'avatar.regex'              => '用户头像网址错误，只需截取[//]后面的网址则可',
         'password.require'          => '用户密码不得为空',
@@ -44,7 +48,7 @@ class UserValidator extends validate
     ];
 
     protected $scene = [
-        'edit' => ['id', 'gid', 'name', 'cname', 'email', 'avatar'],
-        'save' => ['gid', 'name', 'cname', 'email', 'avatar', 'password', 'confirmPassword']
+        'edit' => ['id', 'gid', 'name', 'cname', 'email', 'mobile', 'avatar'],
+        'save' => ['gid', 'name', 'cname', 'email', 'mobile', 'avatar', 'password', 'confirmPassword']
     ];
 }
