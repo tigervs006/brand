@@ -46,11 +46,13 @@ class UserController extends BaseController
                 'id',
                 'gid',
                 'name',
+                'scene',
                 'cname',
                 'email',
                 'mobile',
                 'avatar',
                 'password',
+                'oldPassword',
                 'confirmPassword'
             ], null, 'trim'
         );
@@ -61,6 +63,13 @@ class UserController extends BaseController
         });
         $scene = isset($data['id']) ? 'edit' : 'save';
         $message = isset($data['id']) ? '编辑' : '新增';
+        if (isset($data['id']) && isset($data['scene'])) {
+            $scene = $data['scene'];
+            if (isset($data['oldPassword'])) {
+                $initPassword = $this->services->getFieldValue($data['id'], 'id', 'password');
+                !password_verify($data['oldPassword'], $initPassword) && throw new ApiException('原密码验证失败');
+            }
+        }
         // 验证必要数据
         try {
             $this->validate($data, $this->validator . $scene);
