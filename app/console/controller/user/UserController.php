@@ -48,6 +48,7 @@ class UserController extends BaseController
                 'name',
                 'cname',
                 'email',
+                'mobile',
                 'avatar',
                 'password',
                 'confirmPassword'
