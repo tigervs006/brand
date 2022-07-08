@@ -87,7 +87,7 @@ class ClientController extends BaseController
      */
     final public function delete(): Json
     {
-        $data = $this->services->delete($this->id);
-        return !$data ? $this->json->fail('删除客户失败') : $this->json->successful('删除客户成功');
+        $res = $this->services->delete($this->id);
+        return !$res ? $this->json->fail('删除客户失败') : $this->json->successful('删除客户成功');
     }
 }
