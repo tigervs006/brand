@@ -32,6 +32,7 @@ Route::group(function () {
     // 商品部分
     Route::group('product', function () {
         Route::get('<id?>$', 'index');          // 商品内容
+        Route::get('cate', 'getCate');          // 商品内容
         Route::get('list', 'lists');            // 商品列表
         Route::post('save', 'save');            // 新增编辑
         Route::post('del', 'delete');           // 删除商品
