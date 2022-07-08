@@ -3,8 +3,21 @@ declare (strict_types = 1);
 namespace app\model\product;
 
 use core\basic\BaseModel;
+use think\model\relation\HasOne;
 
 class Product extends BaseModel
 {
+    protected $pk = 'id';
+    protected $jsonAssoc = true;
+    protected $json = ['album', 'special'];
+
+    /**
+     * 关联商品详情
+     * @return HasOne
+     */
+    public function detail(): HasOne
+    {
+        return $this->hasOne(ProductDetail::class, 'gid', 'id');
+    }
 
 }
