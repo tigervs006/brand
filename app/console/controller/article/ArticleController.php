@@ -153,11 +153,7 @@ class ArticleController extends BaseController
         /** @var \app\services\channel\ChannelServices $channelServices */
         $channelServices = $this->app->make(\app\services\channel\ChannelServices::class);
         $list = $channelServices->getChildInfo(['id' => 4], 'id, name, cname');
-        if (empty($list)) {
-            return $this->json->fail('There is nothing...');
-        } else {
-            return $this->json->successful(compact('list'));
-        }
+        return $list ? $this->json->successful(compact('list')) : $this->json->fail();
     }
 
     /**
