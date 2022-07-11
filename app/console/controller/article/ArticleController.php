@@ -32,11 +32,7 @@ class ArticleController extends BaseController
     final public function index(): Json
     {
         $info = $this->services->getOne(['id' => $this->id], null, ['content']);
-        if (null === $info) {
-            return $this->json->fail('There is nothing...');
-        } else {
-            return $this->json->successful(compact('info'));
-        }
+        return null === $info ? $this->json->fail() : $this->json->successful(compact('info'));
     }
 
     /**
@@ -119,7 +115,7 @@ class ArticleController extends BaseController
         // 提取文章列表
         $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $order ?: $this->order, ['channel']);
         if ($list->isEmpty()) {
-            return $this->json->fail('There is nothing...');
+            return $this->json->fail();
         } else {
             // 提取数据总数
             $total = $this->services->getCount($map ?: null);
@@ -138,7 +134,7 @@ class ArticleController extends BaseController
         // 获取系统用户作为文章作者
         $list = $userServices->getData($this->status, $this->order, 'name, cname');
         if ($list->isEmpty()) {
-            return $this->json->fail('There is nothing...');
+            return $this->json->fail();
         } else {
             return $this->json->successful(compact('list'));
         }
