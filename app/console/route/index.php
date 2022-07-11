@@ -35,6 +35,7 @@ Route::group(function () {
         Route::get('cate', 'getCate');          // 商品内容
         Route::get('list', 'lists');            // 商品列表
         Route::post('save', 'save');            // 新增编辑
+        Route::post('status', 'setStatus');     // 商品状态
         Route::post('del', 'delete');           // 删除商品
     })->prefix('product.productController/');
     // 用户部分
