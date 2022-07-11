@@ -4,12 +4,16 @@ namespace app\console\controller\product;
 
 use think\response\Json;
 use core\basic\BaseController;
+use core\exceptions\ApiException;
+use think\exception\ValidateException;
 use app\services\product\ProductServices;
 use app\services\channel\ChannelServices;
 
 class ProductController extends BaseController
 {
     private ProductServices $services;
+
+    private string $validator = 'app\console\validate\ProductValidator';
 
     public function initialize()
     {
@@ -28,12 +32,29 @@ class ProductController extends BaseController
             'pid',
             'album',
             'title',
-            'status',
+            'special',
             'content',
             'keywords',
             'description',
         ], null, 'trim');
-        return $this->json->successful(['info' => $post]);
+
+        if (isset($post['id'])) {
+            $message = '编辑';
+        } else {
+            $message = '新增';
+            $post['click'] = mt_rand(436, 695);
+        }
+
+        /* 验证数据 */
+        try {
+            $this->validate($post, $this->validator);
+        } catch (ValidateException $e) {
+            throw new ApiException($e->getError());
+        }
+
+        $this->services->saveProduct($post, $message);
+
+        return $this->json->successful($message . '商品成功');
     }
 
     /**
@@ -44,6 +65,18 @@ class ProductController extends BaseController
     {
         $this->services->remove($this->id);
         return $this->json->successful('删除商品成功');
+    }
+
+    /**
+     * 商品状态
+     * @return Json
+     */
+    final public function setStatus(): Json
+    {
+        $data = $this->request->post(['status']);
+        $message = $data['status'] ? '上架' : '下架';
+        $this->services->updateOne($this->id, $data);
+        return $this->json->successful($message . '商品成功');
     }
 
     /**
