@@ -8,6 +8,8 @@ use core\exceptions\ApiException;
 
 class ArticleServices extends BaseServices
 {
+    private ArticleContentServices $articleContentService;
+
     /**
      * 构造函数
      * @param ArticleDao $dao
@@ -15,6 +17,7 @@ class ArticleServices extends BaseServices
     public function __construct(ArticleDao $dao)
     {
         $this->dao = $dao;
+        $this->articleContentService = app()->make(ArticleContentServices::class);
     }
 
     /**
@@ -24,36 +27,32 @@ class ArticleServices extends BaseServices
      */
     public function remove(int|array|string $id): void
     {
-        /** @var  ArticleContentServices $articleContentService */
-        $articleContentService = app()->make(ArticleContentServices::class);
-        $this->transaction(function () use ($id, $articleContentService) {
-            $result = $this->dao->delete($id) && $articleContentService->delete($id);
+        $this->transaction(function () use ($id) {
+            $result = $this->dao->delete($id) && $this->articleContentService->delete($id);
             !$result && throw new ApiException('删除文章失败');
         });
     }
 
     /**
-     * 新增|编辑
-     * @return mixed
+     * 新增|编辑文章
+     * @return void
      * @param array $data
      * @param string $message
      */
-    public function saveArticle(array $data, string $message): mixed
+    public function saveArticle(array $data, string $message): void
     {
         $id = $data['id'] ?? 0;
         $content = $data['content'];
         unset($data['id'], $data['content']);
-        /** @var ArticleContentServices $articleContentService */
-        $articleContentService = app()->make(ArticleContentServices::class);
         15 < count(explode(',', $data['keywords']))
-        && throw new ApiException('文档关键词不得超过15个，否则会被搜索引擎判断为堆砌关键词而影响收录');
-        return $this->transaction(function () use ($id, $data, $content, $message, $articleContentService) {
+        && throw new ApiException('文档关键词不得超过15个');
+        $this->transaction(function () use ($id, $data, $content, $message) {
             if ($id) {
                 $info = $this->dao->updateOne($id, $data, 'id');
-                $res = $info && $articleContentService->updateOne($id, ['content' => $content], 'aid');
+                $res = $info && $this->articleContentService->updateOne($id, ['content' => $content], 'aid');
             } else {
                 $info = $this->dao->saveOne($data);
-                $res = $info && $articleContentService->saveOne(['aid' => $info->id, 'content' => $content]);
+                $res = $info && $this->articleContentService->saveOne(['aid' => $info->id, 'content' => $content]);
             }
             !$res && throw new ApiException($message . '文章失败');
         });

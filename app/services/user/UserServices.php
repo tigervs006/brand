@@ -15,16 +15,16 @@ class UserServices extends BaseServices
 
     /**
      * 编辑/新增用户
-     * @return mixed
+     * @return void
      * @param array $data data
      * @param string $message message
      */
-    public function saveUser(array $data, string $message): mixed
+    public function saveUser(array $data, string $message): void
     {
         $id = $data['id'] ?? 0;
         unset($data['id']); // 释放$data中的id
-        return $this->transaction(function () use ($id, $data, $message) {
-            // hash散列加密
+        $this->transaction(function () use ($id, $data, $message) {
+            /* hash散列加密 */
             isset($data['password']) && $data['password'] = $this->passwordHash($data['password']);
             $res = $id ? $this->dao->updateOne($id, $data, 'id') : $this->dao->saveOne($data);
             !$res && throw new ApiException($message . '用户失败');
