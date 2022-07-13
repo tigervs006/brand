@@ -82,10 +82,10 @@ class ProductController extends BaseController
     {
         /** 获取搜索标题 */
         $title = $this->request->get('title/s', null, 'trim');
-        /** 获取筛选条件 */
-        $map = $this->request->only(['pid', 'status'], 'get', 'trim');
         /** 获取时间范围 */
         $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
+        /** 获取搜索条件 */
+        $map = $this->request->only(['id', 'pid', 'status'], 'get', 'trim');
         /** 获取排序条件 */
         $order = $this->request->only(['click', 'sales', 'stock', 'price', 'inquiries'], 'get', 'strOrderFilter');
         if ($title || $dateRange) {
