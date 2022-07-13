@@ -3,6 +3,7 @@ declare (strict_types = 1);
 namespace app\model\product;
 
 use core\basic\BaseModel;
+use app\model\channel\Channel;
 use think\model\relation\HasOne;
 
 class Product extends BaseModel
@@ -20,4 +21,12 @@ class Product extends BaseModel
         return $this->hasOne(ProductDetail::class, 'gid', 'id');
     }
 
+    /**
+     * 关联栏目模型
+     * @return HasOne
+     */
+    public function channel(): HasOne
+    {
+        return $this->hasOne(Channel::class, 'id', 'pid')->field('id, cname');
+    }
 }
