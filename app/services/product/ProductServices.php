@@ -45,7 +45,7 @@ class ProductServices extends BaseServices
         $this->transaction(function () use ($id, $data, $content, $message) {
             if ($id) {
                 $info = $this->dao->updateOne($id, $data, 'id');
-                $res = $info && $this->productDetailServices->updateOne($id, ['content' => $content], 'aid');
+                $res = $info && $this->productDetailServices->updateOne($id, ['content' => $content], 'gid');
             } else {
                 $info = $this->dao->saveOne($data);
                 $res = $info && $this->productDetailServices->saveOne(['gid' => $info->id, 'content' => $content]);
