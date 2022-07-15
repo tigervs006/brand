@@ -95,7 +95,7 @@ class JwtAuth
             ->expiresAt($this->expiresAt)
             ->withClaim('uid', $uid)
             ->identifiedBy($this->identified)
-            ->canOnlyBeUsedAfter($this->issuedAt->modify('+1 second'))
+            ->canOnlyBeUsedAfter($this->issuedAt)
             ->getToken($config->signer(), $config->signingKey());
 
         return $token->toString();
