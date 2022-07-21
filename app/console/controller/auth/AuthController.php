@@ -27,7 +27,6 @@ class AuthController extends BaseController
     final public function lists(): Json
     {
         $map = $this->request->get([
-            'exact',
             'status',
             'hideInMenu',
             'hideChildrenInMenu'
@@ -50,7 +49,6 @@ class AuthController extends BaseController
             'icon',
             'sort',
             'paths',
-            'exact',
             'locale',
             'status',
             'authority',
