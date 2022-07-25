@@ -85,7 +85,15 @@ Route::group(function () {
     Route::group('public', function () {
         Route::post('upload', 'upload');        // 文件上传接口
         Route::post('remove', 'removeFile');    // 文件删除接口
+        Route::post('refresh_cache', 'refreshCache'); // 刷新缓存
     })->prefix('publicController/');
+    // 行政区域
+    Route::group('region', function () {
+        Route::get('list', 'list');             // 行政区域列表
+        Route::post('del', 'delete');           // 删除行政区域
+        Route::post('status', 'setStatus');     // 设置区域状态
+        Route::post('save', 'save');            // 编辑/新增区域
+    })->prefix('system.regionController/');
     // 个人中心
     Route::group('account', function () {
         Route::get('center', 'index');
