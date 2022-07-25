@@ -9,7 +9,6 @@ use core\exceptions\ApiException;
 
 /**
  * @method getCityIdMax()
- * @method getFieldValue(int|string $value, string $field, ?string $valueKey, ?array $where = [])
  */
 class RegionServices extends BaseServices
 {

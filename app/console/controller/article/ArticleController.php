@@ -84,7 +84,7 @@ class ArticleController extends BaseController
         }
         // 只有一篇是头条
         if (isset($data['is_head']) && $data['is_head']) {
-            $aid = $this->services->getFieldValue($data['is_head'], 'is_head', 'id');
+            $aid = $this->services->value(['is_head' => $data['is_head']], 'id');
             $aid && $this->services->updateOne($aid, ['is_head' => 0], 'id');
         }
         $this->services->saveArticle($data, $message);

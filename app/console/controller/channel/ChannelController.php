@@ -74,7 +74,7 @@ class ChannelController extends BaseController
         });
         $data['level'] = 0;
         if (!empty($data['pid']) && 0 <= $data['pid']) {
-            $data['level'] = $this->services->getFieldValue($data['pid'], 'id', 'level') + 1;
+            $data['level'] = $this->services->value(['id' => $data['pid']], 'level') + 1;
         }
         $message = '新增'; // 设置message的默认值
         // 释放由EditableProTable随机生成的字符串id

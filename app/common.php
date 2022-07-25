@@ -13,7 +13,7 @@ if (!function_exists('sys_config')) {
      */
     function sys_config(string $name, string $default = ''): string
     {
-        return empty($name) ? $default : app('sysConfig')->getFieldValue($name, 'name', 'value');
+        return empty($name) ? $default : app('sysConfig')->value(['name' => $name], 'value');
     }
 }
 

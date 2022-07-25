@@ -215,16 +215,15 @@ abstract class BaseDao
     }
 
     /**
-     * 获取某个字段值
+     * 获取单个字段值
+     * @param array $where
+     * @param string|null $field
      * @return mixed
-     * @param string $field 字段
-     * @param int|string $value 键值
-     * @param array|null $where 条件
-     * @param string|null $valueKey 键值
      */
-    public function getFieldValue(int|string $value, string $field, ?string $valueKey, ?array $where = []): mixed
+    public function value(array $where, ?string $field = ''): mixed
     {
-        return $this->getModel()->getFieldValue($value, $field, $valueKey, $where);
+        $pk = $this->getPk();
+        return $this->getModel()->where($where)->value($field ?: $pk);
     }
 
     /**

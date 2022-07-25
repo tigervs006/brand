@@ -66,7 +66,7 @@ class UserController extends BaseController
         if (isset($data['id']) && isset($data['scene'])) {
             $scene = $data['scene'];
             if (isset($data['oldPassword'])) {
-                $initPassword = $this->services->getFieldValue($data['id'], 'id', 'password');
+                $initPassword = $this->services->value(['id' => $data['id']], 'password');
                 !password_verify($data['oldPassword'], $initPassword) && throw new ApiException('原密码验证失败');
             }
         }

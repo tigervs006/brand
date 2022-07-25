@@ -35,7 +35,7 @@ class Industry extends BaseController
         $map = $this->status;
         $field = 'id,cid,click,title,author,litpic,create_time,description';
         $name = $this->request->param('name/s', null, 'trim');
-        $name && $channelId = $this->channelServices->getFieldValue($name, 'name', 'id');
+        $name && $channelId = $this->channelServices->value(['name' => $name], 'id');
         $name && $channelId && $map['cid'] = $channelId; // 当$name和$channelId都为true的时赋值$map['cid']
         $result = $this->services->getPaginate($map, $this->pageSize, $field, $this->order, ['channel']);
         return $this->view::fetch('../industry/index', ['result' => $result]);

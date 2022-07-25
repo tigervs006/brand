@@ -139,7 +139,7 @@ class PublicController extends BaseController
 
         // 写入到数据库
         $services = $this->app->make(\app\services\user\ClientServices::class);
-        $cid = $services->getFieldValue($post['ipaddress'], 'ipaddress', 'id');
+        $cid = $services->value(['ipaddress' => $post['ipaddress']], 'id') ?: null;
         $cid && $post['id'] = $cid; // 相同ip的留言将视为更新留言信息
         $services->saveClient($post, '留言失败！请检查各项信息是否正确填写');
 

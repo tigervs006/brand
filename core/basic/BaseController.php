@@ -128,7 +128,7 @@ abstract class BaseController
                 $key = 'id';
                 /** @var \app\services\article\ArticleServices $artServices */
                 $artServices = $this->app->make(\app\services\article\ArticleServices::class);
-                $value = $artServices->getFieldValue($pathDetail[0], 'id', 'cid'); // 获取父级栏目ID
+                $value = $artServices->value(['id' => $pathDetail[0]], 'cid'); // 获取父级栏目ID
             } else if (preg_match('/[a-zA-Z]+/', $channel, $pathCategory)) { // 如果是栏目页
                 $value = $pathCategory[0];
             }

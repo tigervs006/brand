@@ -81,10 +81,10 @@ class RegionController extends BaseController
         $message = '新增';
         $post['level'] = !$post['pid']
             ? $post['pid']
-            : $this->services->getFieldValue($post['pid'], 'cid', 'level') + 1;
+            : $this->services->value(['cid' => $post['pid']], 'level') + 1;
         $post['merger'] = !$post['pid']
             ? $post['name']
-            : $this->services->getFieldValue($post['pid'], 'cid', 'name') . ',' . $post['name'];
+            : $this->services->value(['cid' => $post['pid']], 'name') . ',' . $post['name'];
         if (isset($post['id']) && is_numeric($post['id'])) {
             $message =  '编辑';
         } else {

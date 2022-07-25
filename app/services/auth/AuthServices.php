@@ -47,7 +47,7 @@ class AuthServices extends BaseServices
                     if (!$id) {
                         $fullPath .= $val['name'];
                     } else {
-                        $fullPath .=  $this->dao->getFieldValue($id, 'id', 'name') . '/';
+                        $fullPath .=  $this->dao->value(['id' => $id], 'name') . '/';
                     }
                 }
                 /* 如果是顶级菜单，直接返回；如果是二级及以上，则拼接当前的name */
