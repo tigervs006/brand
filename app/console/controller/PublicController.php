@@ -2,6 +2,7 @@
 declare (strict_types = 1);
 namespace app\console\controller;
 
+use think\facade\Cache;
 use think\response\Json;
 use core\basic\BaseController;
 use core\exceptions\ApiException;
@@ -173,5 +174,16 @@ class PublicController extends BaseController
 
         $message = isset($cid) ? '更新信息成功' : '留言成功';
         return $this->json->successful("{$message}，我们将会在24小时内联系您");
+    }
+
+    /**
+     * 刷新缓存
+     * @return Json
+     */
+    final public function refreshCache(): Json
+    {
+        $key = $this->request->post('key/s', null, 'trim');
+        Cache::has($key) ? Cache::delete($key) : throw new ApiException('刷新指定的缓存key不存在');
+        return $this->json->successful('刷新缓存成功');
     }
 }
