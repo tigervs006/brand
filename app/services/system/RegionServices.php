@@ -2,7 +2,6 @@
 declare (strict_types = 1);
 namespace app\services\system;
 
-use app\model\system\Region;
 use app\dao\system\RegionDao;
 use app\services\BaseServices;
 use core\exceptions\ApiException;
@@ -12,12 +11,9 @@ use core\exceptions\ApiException;
  */
 class RegionServices extends BaseServices
 {
-    private Region $model;
-
     public function __construct(RegionDao $dao)
     {
         $this->dao = $dao;
-        $this->model = new Region();
     }
 
     /**
@@ -57,9 +53,9 @@ class RegionServices extends BaseServices
      */
     public function getChildCity(int $pid, string $field, array $list = []): array
     {
+        $pname = $this->value(['cid' => $pid], 'name') ?? '中国';
         $data = $this->getData(['pid' => $pid], ['id' => 'asc'], $field);
-        $pname = $this->model->where(['cid' => $pid])->value('name') ?? '中国';
-        $hasChild = 0 == $pid || $this->model->where(['cid' => $pid])->value('pid') == 0 ? 1 : 0;
+        $hasChild = 0 == $pid || $this->value(['cid' => $pid], 'pid') == 0 ? 1 : 0;
         foreach ($data as $item) {
             $hasChild && $item['children'] = [];
             $item['pname'] = $pname;
