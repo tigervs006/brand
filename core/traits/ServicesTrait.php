@@ -15,7 +15,7 @@ namespace core\traits;
  * @method \core\basic\BaseModel batchUpdate(array $ids, array $data, ?string $key) 批量更新数据
  * @method array getColumn(string $field, ?array $where = null, string $key = '') 获取某个列的数组
  * @method \core\basic\BaseModel updateOne(int|array|string $id, array $data, ?string $key = null) 更新一条数据
- * @method mixed getFieldValue(string $value, string $field, ?string $valueKey, ?array $where = []) 获取某个字段值
+ * @method mixed getFieldValue(int|string $value, string $field, ?string $valueKey, ?array $where = []) 获取某个字段值
  * @method array|\core\basic\BaseModel|\think\Model|null get(int|string|array $id, ?string $field, ?array $with = []) 获取单条数据
  * @method array|\think\Collection getData(?array $map = null, ?array $order = ['id' => 'desc'], ?string $field = '*') 获取数据列表
  * @method array getPrenext(int $id, ?string $field = 'id, title', ?string $firstPre = '已经是第一篇了', ?string $lastNext = '这是最后一篇了') 获取上/下一篇文章
