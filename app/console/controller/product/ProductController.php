@@ -5,6 +5,7 @@ namespace app\console\controller\product;
 use think\response\Json;
 use core\basic\BaseController;
 use core\exceptions\ApiException;
+use core\utils\StringHandler as Str;
 use think\exception\ValidateException;
 use app\services\product\ProductServices;
 use app\services\channel\ChannelServices;
@@ -61,6 +62,8 @@ class ProductController extends BaseController
             $post['inquiries'] = mt_rand(862, 2468);
         }
 
+        /* 处理特殊符号 */
+        $post['keywords'] = Str::strSymbol($post['keywords']);
         /* 验证数据 */
         try {
             $this->validate($post, $this->validator);
