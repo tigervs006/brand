@@ -218,62 +218,13 @@ abstract class BaseDao
      * 获取某个字段值
      * @return mixed
      * @param string $field 字段
-     * @param string $value 键值
+     * @param int|string $value 键值
      * @param array|null $where 条件
      * @param string|null $valueKey 键值
      */
-    public function getFieldValue(string $value, string $field, ?string $valueKey, ?array $where = []): mixed
+    public function getFieldValue(int|string $value, string $field, ?string $valueKey, ?array $where = []): mixed
     {
         return $this->getModel()->getFieldValue($value, $field, $valueKey, $where);
-    }
-
-    /**
-     * @return array[]
-     * 获取搜索器和搜索条件key
-     * @param array $withSearch
-     * @throws \ReflectionException
-     */
-    private function getSearchData(array $withSearch): array
-    {
-        $with = [];
-        $mapKey = [];
-        $respones = new \ReflectionClass($this->setModel());
-        foreach ($withSearch as $fieldName) {
-            $method = 'search' . Str::studly($fieldName) . 'Attr';
-            if ($respones->hasMethod($method)) {
-                $with[] = $fieldName;
-            } else {
-                $mapKey[] = $fieldName;
-            }
-        }
-        return [$with, $mapKey];
-    }
-
-    /**
-     * @return mixed
-     * 根据搜索器获取搜索内容
-     * @param array $withSearch
-     * @param array|null $data
-     * @throws \ReflectionException
-     */
-    protected function withSearchSelect(array $withSearch, ?array $data = []): mixed
-    {
-        [$with] = $this->getSearchData($withSearch);
-        return $this->getModel()->withSearch($with, $data);
-    }
-
-    /**
-     * 使用搜索器
-     * @return mixed
-     * @param array|null $map 条件
-     */
-    public function search(?array $map): mixed
-    {
-        if (is_null($map)) {
-            return $this->getModel();
-        } else {
-            return $this->withSearchSelect(array_keys($map), $map);
-        }
     }
 
     /**
