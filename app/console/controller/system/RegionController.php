@@ -43,7 +43,7 @@ class RegionController extends BaseController
     {
         $list = Cache::remember('region', function () {
             $data = $this->services->getData($this->status, ['id' => 'asc']);
-            return $data ? $this->services->getTreeRegion($data) : [];
+            return $data ? $this->services->getTreeRegion($data) : null;
         }, 3600 * 24 * 7);
         return $this->json->successful(compact('list'));
     }
