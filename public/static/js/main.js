@@ -255,7 +255,7 @@ $(window).scroll(function () {
     }
 })
 /* 城市列表 */
-const getRegion = (pid = 0) => {
+function getRegion(pid = 0) {
     let region
     $.ajax({
         async: false,
