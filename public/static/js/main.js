@@ -36,9 +36,9 @@ window.onload = function () {
 $(document).ready(function () {
     /* 区分设备执行 */
     if ((/iPad|iPhone|Android/i).test(navigator.userAgent)) {
-        // Tab窗口切换方式
+        /* Tab窗口切换方式 */
         tabEventListener('#productTab button', 'click')
-        // 监听二级菜单点击事件
+        /* 监听二级菜单点击事件 */
         $('.accordion dt').on('click', function (e) {
             e.stopPropagation()
             let _this = $(this)
@@ -47,7 +47,7 @@ $(document).ready(function () {
             _this.parent().toggleClass('selected')
             _this.toggleClass('iconRotate')
         })
-    } else { // 电脑端
+    } else { /* 电脑端 */
         /* Tab窗口切换方式 */
         tabEventListener('#productTab button')
         /* 导航栏hover事件 */
@@ -117,7 +117,6 @@ $(document).ready(function () {
     /* 上/下相册切换 */
     let album = []
     $('.part-produce-item > img').each(function () {
-        // album.push($(this).data('origin'))
         album.push({
             'origin': $(this).data('origin'),
             'alt': $(this).attr('alt'),
@@ -129,9 +128,9 @@ $(document).ready(function () {
         let eleBigImg = $('.part-produce-bigimg')
         let bigImg = eleBigImg.attr('src')
         switch (action) {
-            case 'ctprev': // 上一张
+            case 'ctprev': /* 上一张 */
                 for (let i = 0; i < album.length; i ++) {
-                    // FIXME:有bug需要修复
+                    /* fixme: 有bug需修复 */
                     if ((album[i].origin === bigImg) && (album.length - i)) {
                         setThunmBorder(i - 1)
                         eleBigImg.attr('src', album[i - 1].origin)
@@ -140,7 +139,7 @@ $(document).ready(function () {
                     }
                 }
                 break
-            case 'ctnext': // 下一张
+            case 'ctnext': /* 下一张 */
                 for (let i = 0; i < album.length; i ++) {
                     if ((album[i].origin === bigImg) && (i + 1) < album.length) {
                         setThunmBorder(i + 1)
@@ -178,7 +177,7 @@ $(document).ready(function () {
                 $(this).addClass('is-invalid')
             } else if (!/^1[3456789]\d{9}$/.test($(this).val())) {
                 $(this).hasClass('is-valid') && $(this).removeClass('is-valid')
-                $(this).next('div.invalid-feedback')[0].innerHTML = '手机号码错误，请认真填写'
+                $(this).next('div.invalid-feedback')[0].innerHTML = '手机号码错误，请重新填写'
                 $(this).addClass('is-invalid')
             } else {
                 $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
@@ -197,7 +196,7 @@ $(document).ready(function () {
             if (!$(this).val()) {
                 $(this).hasClass('is-valid') && $(this).removeClass('is-valid')
                 $(this).addClass('is-invalid')
-            } else if (!/^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test($(this).val())) {
+            } else if (!/^([a-zA-Z]|\d)(\w|-)+@[a-zA-Z\d]+\.([a-zA-Z]{2,4})$/.test($(this).val())) {
                 $(this).hasClass('is-valid') && $(this).removeClass('is-valid')
                 $(this).next('div.invalid-feedback')[0].innerHTML = '邮箱格式错误，请重新填写'
                 $(this).addClass('is-invalid')
@@ -281,7 +280,7 @@ function setThunmBorder(idx) {
  * @param userAction string 触发方式
  */
 function tabEventListener(documentEl, userAction = 'mouseenter') {
-    // 将DOM元素转化为数组用于后面的遍历
+    /* 将DOM元素转化为数组用于后面的遍历 */
     const triggerTabList = [].slice.call(document.querySelectorAll(documentEl))
     triggerTabList.forEach((item) => {
         const tabTrigger = new bootstrap.Tab(item)
@@ -291,12 +290,12 @@ function tabEventListener(documentEl, userAction = 'mouseenter') {
         })
     })
 }
-/* 表单提交 */
+/* 留言表单提交 */
 function commitForm(currentForm) {
     const subStatus = $('.submit')
     const myToast = $('#liveToast')
     const toastIcon = $('#toast-icon')
-    // 避免重复提交
+    /* 禁用提交按钮 */
     subStatus.attr('disabled', 'true')
     $.ajax({
         type: 'POST',
@@ -320,12 +319,13 @@ function commitForm(currentForm) {
             myToast.find('.toast-message').html(e.msg)
         }, complete: () => {
             setTimeout(() => {
-                // 清空表单内容
+                /* 重置表单 */
                 $(currentForm)[0].reset();
+                /* 启用提交按钮 */
+                subStatus.removeAttr('disabled')
                 toastIcon.hasClass('text-danger') && toastIcon.removeClass('text-danger')
                 toastIcon.hasClass('text-success') && toastIcon.removeClass('text-success')
             }, 6000)
-            subStatus.removeAttr('disabled')
         }
     })
 }
