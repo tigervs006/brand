@@ -5,6 +5,7 @@ Route::group(function () {
     Route::rule('/', 'index');
     Route::rule('info', 'index/info');
     Route::rule('area/$', 'area/index');
+    Route::rule('region', 'index/region');
     Route::rule('about/$', 'about/index');
     Route::rule('support/$', 'support/index');
     Route::rule('case/$', 'cases/index')->name('caseList');                     // 案例列表
