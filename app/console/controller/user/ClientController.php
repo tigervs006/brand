@@ -7,17 +7,27 @@ use core\basic\BaseController;
 use core\exceptions\ApiException;
 use app\services\user\ClientServices;
 use think\exception\ValidateException;
+use app\services\system\RegionServices;
 
 class ClientController extends BaseController
 {
+    /**
+     * @var ClientServices
+     */
     private ClientServices $services;
 
-    private string $validator = 'app\console\validate\FormValidator.manual';
+    /**
+     * @var RegionServices
+     */
+    private RegionServices $regionServices;
+
+    private string $validator = 'app\console\validate\FormValidator';
 
     public function initialize()
     {
         parent::initialize();
         $this->services = $this->app->make(ClientServices::class);
+        $this->regionServices = $this->app->make(RegionServices::class);
     }
 
     /**
@@ -38,7 +48,7 @@ class ClientController extends BaseController
         }
         $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order);
         if ($list->isEmpty()) {
-            return $this->json->fail('There is nothing...');
+            return $this->json->fail();
         } else {
             $total = $this->services->getCount($map ?: null);
             return $this->json->successful(compact('list', 'total'));
@@ -51,15 +61,17 @@ class ClientController extends BaseController
      */
     final public function save(): Json
     {
-        $post = $this->request->post([
+        $post = $this->request->only([
             'id',
+            'city',
             'email',
             'mobile',
             'company',
-            'address',
             'message',
+            'province',
             'username',
-        ], null, 'trim');
+            'district',
+        ], 'post', 'trim');
 
         /** 验证关键数据 */
         try {
@@ -75,6 +87,11 @@ class ClientController extends BaseController
             $post['page'] = $this->request->url();
             $post['ipaddress'] = ip2long($this->request->ip());
         }
+        /** 拼接省市区地址 */
+        $city_name = $this->regionServices->value(['cid' => $post['city']], 'name');
+        $district_name = $this->regionServices->value(['cid' => $post['district']], 'name');
+        $province_name = $this->regionServices->value(['cid' => $post['province']], 'name');
+        $post['address'] = "{$province_name}，{$city_name}，{$district_name}";
 
         $this->services->saveClient($post, $message . '客户失败');
 
