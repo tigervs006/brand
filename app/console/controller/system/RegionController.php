@@ -2,10 +2,10 @@
 declare (strict_types = 1);
 namespace app\console\controller\system;
 
-use core\exceptions\ApiException;
 use think\facade\Cache;
 use think\response\Json;
 use core\basic\BaseController;
+use core\exceptions\ApiException;
 use think\exception\ValidateException;
 use app\services\system\RegionServices;
 
