@@ -1,14 +1,40 @@
-// 设置导航滚动事件
-$(window).scroll(function () {
-    let scroH = $(this).scrollTop()
-    let contentH = $('.channel').height() || $('#carouselExampleCaptions').height() || 0
-    scroH > contentH ? $('#toTop').show() : $('#toTop').hide()
-    if ($('.channel').length || $('#carouselExampleCaptions').length) {
-        scroH ? $('nav.navbar').addClass('bg-primary ') : $('nav.navbar').removeClass('bg-primary ')
-    }
-})
+window.onload = function () {
+    let html = ''
+    const city = $('select[name="city"]')
+    const district = $('select[name="district"]')
+    const provinces = $('select[name="province"]')
+    city.append(html)
+    district.append(html)
+    $.each(getRegion(), (idx, item) => {
+        html += "<option data-code=" +item.cid+ " value=" +item.cid+ ">" +item.name+ "</options>"
+    })
+    provinces.append(html)
+    provinces.change(function () {
+        if ($(this).val() === '') return
+        $("#inputCity option").remove()
+        $("#inputDistrict option").remove()
+        let code = $(this).find("option:selected").data('code').toString()
+        let html = "<option value=''>--请选择--</option>"
+        district.append(html)
+        $.each(getRegion(code),function(idx, item){
+            html += "<option data-code=" +item.cid+ " value=" +item.cid+ ">" +item.name+ "</options>"
+        })
+        city.append(html)
+    })
+    city.change(function () {
+        if ($(this).val() === "") return
+        $("#inputDistrict option").remove()
+        let code = $(this).find("option:selected").data('code').toString()
+        let html = "<option value=''>--请选择--</option>"
+        $.each(getRegion(code),function(idx, item) {
+            html += "<option data-code=" +item.cid+ " value=" +item.cid+ ">" +item.name+ "</options>"
+        })
+        district.append(html)
+    })
+}
+
 $(document).ready(function () {
-    // 区分设备执行
+    /* 区分设备执行 */
     if ((/iPad|iPhone|Android/i).test(navigator.userAgent)) {
         // Tab窗口切换方式
         tabEventListener('#productTab button', 'click')
@@ -22,26 +48,26 @@ $(document).ready(function () {
             _this.toggleClass('iconRotate')
         })
     } else { // 电脑端
-        // Tab窗口切换方式
+        /* Tab窗口切换方式 */
         tabEventListener('#productTab button')
-        // 导航栏hover事件
+        /* 导航栏hover事件 */
         $('li.dropdown').hover(function () {
             $(this).children('.dropdown-menu').toggleClass('show')
         })
     }
-    // 对应页面导航栏样式
+    /* 导航栏样式 */
     location.pathname !== '/' && $('li.nav-item').each(function () {
         let curPath = location.href
         let parentPath = $(this).children().attr('href')
         curPath.indexOf(parentPath) >= 1 && $(this).toggleClass('active')
     })
-    // 监听提交按钮
+    /* 监听提交按钮 */
     const myToastEl = document.getElementById('liveToast')
     myToastEl.addEventListener('hidden.bs.toast', function () {
         const submit = document.getElementsByClassName('submit')
         submit.length && submit[0].removeAttribute('disabled')
     })
-    // 客服组件部分
+    /* 客服组件部分 */
     $('.part-service').find('img').hover(function () {
         $(this).next().show(400)
         $(this).attr('src', $(this).data('original'))
@@ -61,7 +87,7 @@ $(document).ready(function () {
         }
         $(this).next().hide('fast')
     })
-    // 产品中心导航
+    /* 产品中心导航 */
     $(function () {
         let smImg
         $('.part-product-category-item').hover(function () {
@@ -77,7 +103,7 @@ $(document).ready(function () {
             $(this).find('img').attr('src', smImg)
         })
     })
-    // 产品相册切换
+    /* 产品相册切换 */
     $('.part-produce-item').hover(function () {
         setThunmBorder($(this).index())
         let alt = $(this).children().attr('alt')
@@ -88,7 +114,7 @@ $(document).ready(function () {
         bigImgEl.attr('src', bigImg)
         bigImgEl.attr('title', title)
     })
-    // 上/下相册切换
+    /* 上/下相册切换 */
     let album = []
     $('.part-produce-item > img').each(function () {
         // album.push($(this).data('origin'))
@@ -127,22 +153,22 @@ $(document).ready(function () {
             default: return false
         }
     })
-    // 公共表单验证
+    /* 公共表单验证 */
     $(function () {
-        $('#name').blur(function () {
+        $(':input[name="username"]').blur(function () {
             if (!$(this).val()) {
                 $(this).hasClass('is-valid') && $(this).removeClass('is-valid')
                 $(this).addClass('is-invalid')
             } else if (!$(this).val().match(/^[\u4e00-\u9fa5]+$/)) {
                 $(this).hasClass('is-valid') && $(this).removeClass('is-valid')
-                $(this).next('div.invalid-feedback')[0].innerHTML = '阿鬼，你还是说中文吧'
+                $(this).next('div.invalid-feedback')[0].innerHTML = '姓名必须是中文'
                 $(this).addClass('is-invalid')
             } else {
                 $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
                 $(this).addClass('is-valid')
             }
         })
-        $('#mobile').blur(function () {
+        $(':input[name="mobile"]').blur(function () {
             if (!$(this).val()) {
                 $(this).hasClass('is-valid') && $(this).removeClass('is-valid')
                 $(this).addClass('is-invalid')
@@ -159,7 +185,15 @@ $(document).ready(function () {
                 $(this).addClass('is-valid')
             }
         })
-        $('#email').blur(function () {
+        $(':input[name="company"]').blur(function () {
+            if (!$(this).val()) {
+                $(this).addClass('is-invalid')
+            } else {
+                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
+                $(this).addClass('is-valid')
+            }
+        })
+        $(':input[name="email"]').blur(function () {
             if (!$(this).val()) {
                 $(this).hasClass('is-valid') && $(this).removeClass('is-valid')
                 $(this).addClass('is-invalid')
@@ -172,7 +206,31 @@ $(document).ready(function () {
                 $(this).addClass('is-valid')
             }
         })
-        $('#message').blur(function () {
+        $('select[name="province"]').blur(function () {
+            if (!$(this).val()) {
+                $(this).addClass('is-invalid')
+            } else {
+                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
+                $(this).addClass('is-valid')
+            }
+        })
+        $('select[name="city"]').blur(function () {
+            if (!$(this).val()) {
+                $(this).addClass('is-invalid')
+            } else {
+                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
+                $(this).addClass('is-valid')
+            }
+        })
+        $('select[name="district"]').blur(function () {
+            if (!$(this).val()) {
+                $(this).addClass('is-invalid')
+            } else {
+                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
+                $(this).addClass('is-valid')
+            }
+        })
+        $('textarea[name="message"]').blur(function () {
             if (!$(this).val()) {
                 $(this).hasClass('is-valid') && $(this).removeClass('is-valid')
                 $(this).addClass('is-invalid')
@@ -183,16 +241,36 @@ $(document).ready(function () {
         })
     })
 })
-// goToTop
+/* 返回顶部 */
 function goToTop() {
     document.scrollingElement.scrollTop = 0
 }
-// 在线咨询
+/* 滚动事件 */
+$(window).scroll(function () {
+    let scroH = $(this).scrollTop()
+    let contentH = $('.channel').height() || $('#carouselExampleCaptions').height() || 0
+    scroH > contentH ? $('#toTop').show() : $('#toTop').hide()
+    if ($('.channel').length || $('#carouselExampleCaptions').length) {
+        scroH ? $('nav.navbar').addClass('bg-primary ') : $('nav.navbar').removeClass('bg-primary ')
+    }
+})
+/* 城市列表 */
+const getRegion = (pid = 0) => {
+    let region
+    $.ajax({
+        async: false,
+        url: '/region',
+        data: { pid: pid },
+        success: res => region = res?.data?.list ?? []
+    })
+    return region
+}
+/* 在线咨询 */
 function consulting() {
     const shangqiao = $('#nb_invite_ok')
     shangqiao.length > 0 ? shangqiao.click() : alert('百度商桥尚未初始化')
 }
-// 设置缩略图
+/* 设置缩略图 */
 function setThunmBorder(idx) {
     $('.part-produce-item').removeClass('border-danger')
     $('.part-produce-item:eq(' +idx+ ')').addClass('border-danger')
@@ -213,7 +291,7 @@ function tabEventListener(documentEl, userAction = 'mouseenter') {
         })
     })
 }
-// 公共表单提交
+/* 表单提交 */
 function commitForm(currentForm) {
     const subStatus = $('.submit')
     const myToast = $('#liveToast')
@@ -224,12 +302,15 @@ function commitForm(currentForm) {
         type: 'POST',
         url: '/console/public/submit',
         data: $(currentForm).serialize(),
-        success: (r) => {
+        success: r => {
             if (r.status === 200) {
                 $('#formModal') && $('#formModal').modal('hide')
             }
             myToast.toast('show')
-            toastIcon.addClass('text-success')
+            const showIcon = 200 === r.status
+                    ? 'text-success'
+                    : 'text-danger'
+            toastIcon.addClass(showIcon)
             myToast.find('.me-auto').html(r.status)
             myToast.find('.toast-body').html(r.msg)
         }, error: (e) => {
@@ -243,139 +324,8 @@ function commitForm(currentForm) {
                 $(currentForm)[0].reset();
                 toastIcon.hasClass('text-danger') && toastIcon.removeClass('text-danger')
                 toastIcon.hasClass('text-success') && toastIcon.removeClass('text-success')
-            }, 3000)
+            }, 6000)
             subStatus.removeAttr('disabled')
         }
     })
 }
-/** 表单留言部分 Start */
-window.onload = function () {
-    const myModalEl = document.getElementById('formModal')
-    myModalEl &&　myModalEl.addEventListener('show.bs.modal', function () {
-        let html = ''
-        const city = $('#inputCity')
-        const district = $('#inputDistrict')
-        const provinces = $('#inputProvinces')
-        city.append(html)
-        district.append(html)
-        $.each(addr, (idx, item) => {
-            html += "<option data-code="+idx+" value=" +item.name+">" +item.name+ "</options>"
-        })
-        provinces.append(html)
-        provinces.change(function () {
-            if ($(this).val() === '') return
-            $("#inputCity option").remove()
-            $("#inputDistrict option").remove()
-            let code = $(this).find("option:selected").data('code').toString()
-            let html = "<option value=''>--请选择--</option>"
-            district.append(html)
-            $.each(addr,function(idx, item){
-                if (code === idx) {
-                    $.each(item.child, (cid, city) => {
-                        html += "<option data-code="+cid+" value=" +city.name+">" +city.name+ "</options>"
-                    })
-                }
-            })
-            city.append(html)
-        })
-        city.change(function () {
-            if ($(this).val() === "") return
-            $("#inputDistrict option").remove()
-            let code = $(this).find("option:selected").data('code').toString()
-            let html = "<option value=''>--请选择--</option>"
-            $.each(addr,function(idx, item) {
-                $.each(item.child, function (cid, city) {
-                    if (code === cid) {
-                        $.each(city.child, (tid, district) => {
-                            html +="<option value="+district+">"+ district +"</option>"
-                        })
-                    }
-                })
-            })
-            district.append(html)
-        })
-
-        // 验证姓名
-        $('#username').blur(function () {
-            if (!$(this).val()) {
-                $(this).addClass('is-invalid')
-            } else if (!$(this).val().match(/^[\u4e00-\u9fa5]+$/)) {
-                $(this).next('div.invalid-feedback')[0].innerHTML = '阿鬼，你还是说中文吧'
-                $(this).addClass('is-invalid')
-            } else {
-                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
-                $(this).addClass('is-valid')
-            }
-        })
-
-        // 验证手机
-        $('#mobileNum').blur(function () {
-            if (!$(this).val()) {
-                $(this).addClass('is-invalid')
-            } else if ($(this).val().length < 11) {
-                $(this).next('div.invalid-feedback')[0].innerHTML = `没有${$(this).val().length}位的手机号`
-                $(this).addClass('is-invalid')
-            } else if (!/^1[3456789]\d{9}$/.test($(this).val())) {
-                $(this).next('div.invalid-feedback')[0].innerHTML = '手机号码错误，请认真填写'
-                $(this).addClass('is-invalid')
-            } else {
-                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
-                $(this).addClass('is-valid')
-            }
-        })
-
-        // 验证公司
-        $('#company').blur(function () {
-            if (!$(this).val()) {
-                $(this).addClass('is-invalid')
-            } else {
-                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
-                $(this).addClass('is-valid')
-            }
-        })
-
-        // 验证邮箱
-        $('#emailAddr').blur(function () {
-            if (!$(this).val()) {
-                $(this).addClass('is-invalid')
-            } else if (!/^([a-zA-Z]|[0-9])(\w)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/.test($(this).val())) {
-                $(this).next('div.invalid-feedback')[0].innerHTML = '邮箱格式错误，请重新填写'
-                $(this).addClass('is-invalid')
-            } else {
-                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
-                $(this).addClass('is-valid')
-            }
-        })
-
-        // 验证省份
-        $('#inputProvinces').blur(function () {
-            if (!$(this).val()) {
-                $(this).addClass('is-invalid')
-            } else {
-                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
-                $(this).addClass('is-valid')
-            }
-        })
-
-        // 验证城市
-        $('#inputCity').blur(function () {
-            if (!$(this).val()) {
-                $(this).addClass('is-invalid')
-            } else {
-                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
-                $(this).addClass('is-valid')
-            }
-        })
-
-        // 验证区域
-        $('#inputDistrict').blur(function () {
-            if (!$(this).val()) {
-                $(this).addClass('is-invalid')
-            } else {
-                $(this).hasClass('is-invalid') && $(this).removeClass('is-invalid')
-                $(this).addClass('is-valid')
-            }
-        })
-    })
-}
-/** 表单留言部分 End */
