@@ -103,21 +103,19 @@ class PublicController extends BaseController
      */
     final public function submitForm(): Json
     {
-        $post = $this->request->post([
+        $post = $this->request->only([
             'city',
             'email',
             'mobile',
             'message',
-            'company',
-            'position',
             'username',
             'province',
             'district',
-        ], null, 'trim');
+            'company' => '未知',
+        ], 'post', 'trim');
 
-        // 关键数据验证
-        $scene = empty($post['position']) ? 'modal' : 'basic';
-        $validator = 'app\console\validate\FormValidator.' . $scene;
+        // 数据验证
+        $validator = 'app\console\validate\FormValidator';
         try {
             $this->validate($post, $validator);
         } catch (\think\exception\ValidateException $e) {
@@ -135,7 +133,11 @@ class PublicController extends BaseController
         // 获取留言页面
         $post['page'] = $this->request->header('referer');
         // 组装省市区地址
-        empty($post['position']) && $post['address'] = "{$post['province']},{$post['city']},{$post['district']}";
+        $regionServices = $this->app->make(\app\services\system\RegionServices::class);
+        $city_name = $regionServices->value(['cid' => $post['city']], 'name');
+        $district_name = $regionServices->value(['cid' => $post['district']], 'name');
+        $province_name = $regionServices->value(['cid' => $post['province']], 'name');
+        $post['address'] = "{$province_name}，{$city_name}，{$district_name}";
 
         // 写入到数据库
         $services = $this->app->make(\app\services\user\ClientServices::class);
@@ -146,25 +148,15 @@ class PublicController extends BaseController
         // 入库后发送邮件
         if ((int) sys_config('mail_service')) {
             // 邮件模板
-            $mailBody = isset($post['position'])
-                ? /** @lang text */
+            $mailBody =
+                /** @lang text */
                 <<<TEMPLATE
                     姓名：{$post['username']}<br/>
                     电话：{$post['mobile']}<br/>
                     邮箱：{$post['email']}<br/>
                     ip地址：{$ipAddress}<br/>
                     留言时间：{$nowTime}<br/>
-                    留言页面：{$post['page']}<br/>
-                    留言信息：{$post['message']}
-                TEMPLATE
-                : /** @lang text */
-                <<<TEMPLATE
-                    姓名：{$post['username']}<br/>
-                    电话：{$post['mobile']}<br/>
-                    邮箱：{$post['email']}<br/>
-                    ip地址：{$ipAddress}<br/>
-                    留言时间：{$nowTime}<br/>
-                    所在城市：{$post['province']}，{$post['city']}，{$post['district']}<br/>
+                    所在城市：{$province_name}，{$city_name}，{$district_name}<br/>
                     公司名称：{$post['company']}<br/>
                     留言页面：{$post['page']}<br/>
                     留言信息：{$post['message']}
