@@ -26,11 +26,13 @@ class AuthController extends BaseController
      */
     final public function list(): Json
     {
-        $map = $this->request->get([
-            'status',
-            'hideInMenu',
-            'hideChildrenInMenu'
-            ], null, 'trim');
+        $map = $this->request->only(
+            [
+                'status',
+                'hideInMenu',
+                'hideChildrenInMenu'
+            ], 'get', 'trim'
+        );
         $data = $this->services->getData($map, ['id' => 'asc']);
         $list = $this->services->getTreeMenu($data);
         return $list ? $this->json->successful(compact('list')) : $this->json->fail();
