@@ -34,7 +34,7 @@ class ClientController extends BaseController
      * 获取客户列表
      * @return Json
      */
-    final public function lists(): Json
+    final public function list(): Json
     {
         /** 获取时间范围 */
         $dateRange = $this->request->only(['dateRange'], 'get', 'trim');

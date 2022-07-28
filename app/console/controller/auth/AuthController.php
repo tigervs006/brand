@@ -24,7 +24,7 @@ class AuthController extends BaseController
      * 获取菜单列表
      * @return Json
      */
-    final public function lists(): Json
+    final public function list(): Json
     {
         $map = $this->request->get([
             'status',

@@ -81,7 +81,7 @@ class ProductController extends BaseController
      * @return Json
      * fixme: 组装的搜索条件不兼容$map内的其它搜索条件
      */
-    final public function lists(): Json
+    final public function list(): Json
     {
         /** 获取搜索标题 */
         $title = $this->request->get('title/s', null, 'trim');

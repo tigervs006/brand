@@ -53,7 +53,7 @@ class GroupController extends BaseController
      * 获取用户组列表
      * @return Json
      */
-    final public function lists(): Json
+    final public function list(): Json
     {
         $map = $this->request->only([
             'status'

@@ -33,7 +33,7 @@ class ChannelController extends BaseController
      * 树状结构数据
      * @return Json
      */
-    final public function lists(): Json
+    final public function list(): Json
     {
         // 适配ProFormTreeSelect的search参数
         $title = $this->request->get('keyWords/s', null, 'trim');

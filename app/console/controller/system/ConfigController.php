@@ -31,7 +31,7 @@ class ConfigController extends BaseController
      * 获取配置列表
      * @return Json
      */
-    final public function lists(): Json
+    final public function list(): Json
     {
         $data = $this->services->getData($this->request->get(['type']));
         $list = array_column($data->toArray(), null, 'name');

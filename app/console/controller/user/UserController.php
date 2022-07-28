@@ -84,7 +84,7 @@ class UserController extends BaseController
      * 获取用户列表
      * @return Json
      */
-    final public function lists(): Json
+    final public function list(): Json
     {
         // 获得map条件
         $map = $this->request->only(['status'], 'get');
