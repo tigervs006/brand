@@ -28,8 +28,8 @@ class AuthController extends BaseController
     {
         $map = $this->request->only(
             [
-                'status',
                 'hideInMenu',
+                'status' => 1,
                 'hideChildrenInMenu'
             ], 'get', 'trim'
         );
