@@ -49,7 +49,15 @@ class PublicController extends BaseController
             ? $jwtService->updateOne($userInfo['id'], ['token' => $token])
             : $jwtService->saveOne(['uid' => $userInfo['id'], 'user' => $userInfo['name'], 'token' => $token]);
 
-        return $this->json->successful('Login successful', ['info' => ['uid' => $userInfo['id'], 'name' => $userInfo['name'], 'avatar' => $userInfo['avatar'], 'authorization' => $token]]);
+        $info = [
+            'uid' => $userInfo['id'],
+            'gid' => $userInfo['gid'],
+            'name' => $userInfo['name'],
+            'avatar' => $userInfo['avatar'],
+            'authorization' => $token,
+        ];
+
+        return $this->json->successful('Login successful', compact('info'));
     }
 
     /**
