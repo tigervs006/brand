@@ -12,4 +12,14 @@ class AuthDao extends BaseDao
     {
         return AuthModel::class;
     }
+
+    /**
+     * 查询用户菜单
+     * @param string $ids ids
+     * @return \think\Collection
+     */
+    public function queryMenu(string $ids): \think\Collection
+    {
+        return $this->getModel()->whereIn('id', $ids)->order('id', 'asc')->select();
+    }
 }
