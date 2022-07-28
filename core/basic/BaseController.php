@@ -100,15 +100,29 @@ abstract class BaseController
         $this->current = $this->request->param('current/d', 1, 'trim');
         $this->pageSize = $this->request->param('pageSize/d', 15, 'trim');
 
-         // 只在特定应用执行
-        'index' === App('http')->getName() && $this->channel();
+        /* 如果是index应用 */
+        if ('index' === App('http')->getName()) {
+            $this->link();
+            $this->channel();
+        }
+    }
+
+    /**
+     * 前端友链
+     * @return void
+     */
+    private function link(): void
+    {
+        /** @var \app\services\link\LinkServices  $services */
+        $services = $this->app->make(\app\services\link\LinkServices::class);
+        $link = $services->getData($this->status, ['id' => 'desc', 'sort' => 'desc'], 'name, url');
+        $this->view::assign(compact('link'));
     }
 
     /**
      * 网站栏目
      * &面包屑导航
      * @return void
-     * @noinspection PhpFullyQualifiedNameUsageInspection
      */
     private function channel(): void
     {
