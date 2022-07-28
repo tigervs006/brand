@@ -98,11 +98,8 @@ Route::group(function () {
     })->prefix('system.regionController/');
     // 个人中心
     Route::group('account', function () {
-        Route::get('center', 'index');
+        Route::get('menu', 'menu');             // 查询用户菜单
         Route::get('fakelist', 'fakeList');
-        Route::get('settings', 'settings');
-        Route::get('province', 'province');
-        Route::get('city<code?>$', 'city');
     })->prefix('user.accountController/');
     // 系统配置
     Route::group('system', function () {
