@@ -119,18 +119,20 @@
                     </dd>
                 </dl>
             </div>
+{if 0 < count($link)}
             <div class="col-12">
                 <dl class="part-footer-links">
                     <dt><svg class="bi me-1 align-text-bottom" width="20" height="20" color="white" fill="currentColor">
                         <use xlink:href="/static/icon/bootstrap-icons.svg#link-45deg"></use>
                     </svg>友情链接</dt>
                     <dd>
-                        <a href="product/index.html" target="_blank" title="高拍仪">高拍仪</a>
-                        <a href="product/index.html" target="_blank" title="高拍仪品牌">高拍仪品牌</a>
-                        <a href="product/index.html" target="_blank" title="高拍仪产品">高拍仪产品</a>
+{volist name="link" id="item"}
+                        <a href="{$item.url}" target="_blank" title="{$item.name}">{$item.name}</a>
+{/volist}
                     </dd>
                 </dl>
             </div>
+{/if}
             <div class="col-12 part-footer-copyright">
                 <p>{$Think.config.index.sitename} Copyright ©2020 All Rights Reserved<a target="_blank" rel="nofollow" href="https://beian.miit.gov.cn/">{$Think.config.index.beian}</a></p>
             </div>
