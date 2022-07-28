@@ -115,7 +115,7 @@ abstract class BaseController
     {
         /** @var \app\services\link\LinkServices  $services */
         $services = $this->app->make(\app\services\link\LinkServices::class);
-        $link = $services->getData($this->status, ['id' => 'desc', 'sort' => 'desc'], 'name, url');
+        $link = $services->getData($this->status, ['sort' => 'desc', 'id' => 'desc'], 'name, url');
         $this->view::assign(compact('link'));
     }
 
