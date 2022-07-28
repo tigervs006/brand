@@ -51,7 +51,7 @@ class ArticleController extends BaseController
      */
     final public function save(): Json
     {
-        $data = $this->request->post(
+        $data = $this->request->only(
             [
                 'id',
                 'cid',
@@ -66,7 +66,7 @@ class ArticleController extends BaseController
                 'is_head',
                 'is_recom',
                 'is_litpic'
-            ], null, 'trim'
+            ], 'post', 'trim'
         );
         // 验证必要数据
         try {

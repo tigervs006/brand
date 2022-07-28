@@ -38,7 +38,7 @@ class ProductController extends BaseController
      */
     final public function save(): Json
     {
-        $post = $this->request->post([
+        $post = $this->request->only([
             'id',
             'pid',
             'album',
@@ -51,7 +51,7 @@ class ProductController extends BaseController
             'keywords',
             'inquiries',
             'description',
-        ], null, 'trim');
+        ], 'post', 'trim');
 
         if (isset($post['id'])) {
             $message = '编辑';

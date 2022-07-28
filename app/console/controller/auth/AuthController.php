@@ -44,7 +44,7 @@ class AuthController extends BaseController
      */
     final public function save(): Json
     {
-        $post = $this->request->post([
+        $post = $this->request->only([
             'id',
             'pid',
             'name',
@@ -56,7 +56,7 @@ class AuthController extends BaseController
             'authority',
             'hideInMenu',
             'hideChildrenInMenu',
-        ], null, 'trim');
+        ], 'post', 'trim');
         $message = '新增'; // 设置message的默认值
         // 释放由EditableProTable随机生成的字符串id
         if (isset($post['id']) && is_numeric($post['id'])) {
@@ -94,13 +94,12 @@ class AuthController extends BaseController
      */
     final public function setStatus(): Json
     {
-        $data = $this->request->post(
+        $data = $this->request->only(
             [
-                'exact',
                 'status',
                 'hideInMenu',
                 'hideChildrenInMenu'
-            ], null, 'trim'
+            ], 'post', 'trim'
         );
 
         /* 隐藏菜单参数始终取反值 */

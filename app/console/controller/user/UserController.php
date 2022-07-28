@@ -41,7 +41,7 @@ class UserController extends BaseController
 
     final public function save(): Json
     {
-        $post = $this->request->post(
+        $post = $this->request->only(
             [
                 'id',
                 'gid',
@@ -54,7 +54,7 @@ class UserController extends BaseController
                 'password',
                 'oldPassword',
                 'confirmPassword'
-            ], null, 'trim'
+            ], 'post', 'trim'
         );
         // 过滤空值字段
         $data = array_filter($post, function ($val) {

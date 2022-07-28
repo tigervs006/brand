@@ -50,7 +50,7 @@ class ChannelController extends BaseController
      */
     final public function save(): Json
     {
-        $post = $this->request->post(
+        $post = $this->request->only(
             [
                 'id',
                 'pid',
@@ -65,7 +65,7 @@ class ChannelController extends BaseController
                 'status',
                 'keywords',
                 'description'
-            ], null, 'trim'
+            ], 'post', 'trim'
         );
         // 过滤空值字段
         $data = array_filter($post, function ($val) {
