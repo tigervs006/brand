@@ -6,6 +6,9 @@ use app\dao\auth\AuthDao;
 use app\services\BaseServices;
 use core\exceptions\ApiException;
 
+/**
+ * @method \think\Collection queryMenu(string $ids) 查询用户菜单
+ */
 class AuthServices extends BaseServices
 {
     /**
