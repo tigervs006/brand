@@ -61,12 +61,13 @@ Route::group(function () {
         Route::post('status', 'setStatus');     // 栏目状态
     })->prefix('channel.channelController/');
     // 友链部分
-    Route::group('links', function () {
+    Route::group('link', function () {
         Route::get('<id?>$', 'index');          // 友链信息
-        Route::get('list', 'lists');            // 友链列表
+        Route::get('list', 'list');             // 友链列表
         Route::post('save', 'save');            // 新增编辑
         Route::post('del', 'delete');           // 删除友链
-    })->prefix('links.linksController/');
+        Route::post('status', 'setStatus');     // 友链状态
+    })->prefix('link.linkController/');
     // 用户权限菜单
     Route::group('auth', function () {
         Route::get('list', 'lists');            // 菜单列表
