@@ -31,7 +31,6 @@ class AuthServices extends BaseServices
 
     /**
      * 生成菜单树状结构
-     * todo: 需做缓存
      * @return array
      * @param int|null $pid 父级id
      * @param string|null $pname 父级名称
