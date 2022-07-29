@@ -91,7 +91,6 @@ class PublicController extends BaseController
 
         $info = [
             'uid' => $userInfo['id'],
-            'gid' => $userInfo['gid'],
             'name' => $userInfo['name'],
             'avatar' => $userInfo['avatar'],
             'authorization' => $token,
