@@ -15,7 +15,7 @@ class UploadException extends \RuntimeException
         if (is_array($message)) {
             $errInfo = $message;
             $code = $errInfo[0] ?? $code;
-            $message = $errInfo[1] ?? 'Unknow Error';
+            $message = $errInfo[1] ?? 'Upload failed';
         }
         parent::__construct($message, $code, $previous);
     }
