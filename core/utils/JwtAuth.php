@@ -77,9 +77,10 @@ class JwtAuth
      * 创建Token字符串
      * @return string
      * @param int $uid 用户id
+     * @param int $gid 用户组id
      * @param  string $audience 当前用户
      */
-    public function createToken(int $uid = 0, string $audience = 'szbrand'): string
+    public function createToken(int $uid = 0, int $gid = 0, string $audience = 'szbrand'): string
     {
         $config = $this->createJwtObject();
         $builder = $config->builder();
@@ -94,6 +95,7 @@ class JwtAuth
             ->issuedAt($this->issuedAt)
             ->expiresAt($this->expiresAt)
             ->withClaim('uid', $uid)
+            ->withClaim('gid', $gid)
             ->identifiedBy($this->identified)
             ->canOnlyBeUsedAfter($this->issuedAt)
             ->getToken($config->signer(), $config->signingKey());
