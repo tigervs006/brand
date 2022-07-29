@@ -91,7 +91,7 @@ Route::group(function () {
     // 行政区域
     Route::group('region', function () {
         Route::get('list', 'list');             // 行政区域列表
-        Route::get('list', 'index');            // 懒加载行政区
+        Route::get('lists', 'index');           // 懒加载行政区
         Route::post('del', 'delete');           // 删除行政区域
         Route::post('status', 'setStatus');     // 设置区域状态
         Route::post('save', 'save');            // 编辑/新增区域
