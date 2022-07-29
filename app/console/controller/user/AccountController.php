@@ -49,7 +49,7 @@ class AccountController extends BaseController
         $gid = $this->request->get('gid/d', 0);
         $ids = $this->groupServices->value(['id' => $gid], 'menu');
         $data = $this->authServices->queryMenu($ids);
-        $list = $this->authServices->getTreeData($data);
+        $list = $this->authServices->getTreeMenu($data);
         return $this->json->successful(compact('list'));
     }
 }
