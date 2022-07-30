@@ -24,7 +24,7 @@ class ConfigController extends BaseController
     {
         $data = $this->request->post();
         $this->services->updateConfig($data);
-        return $this->json->successful('配置更新成功');
+        return $this->json->successful('更新配置成功');
     }
 
     /**
@@ -35,6 +35,6 @@ class ConfigController extends BaseController
     {
         $data = $this->services->getData($this->request->get(['type']));
         $list = array_column($data->toArray(), null, 'name');
-        return $data->isEmpty() ? $this->json->fail('There is nothing...') : $this->json->successful(['list' => $list]);
+        return $data->isEmpty() ? $this->json->fail() : $this->json->successful(['list' => $list]);
     }
 }
