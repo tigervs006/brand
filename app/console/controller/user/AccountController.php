@@ -57,7 +57,8 @@ class AccountController extends BaseController
         $token = $this->request->header('Authorization');
         /* 通过token中的gid查询用户菜单，防止篡改 */
         $parseToken = $this->auth->parseToken($token);
-        $ids = $this->groupServices->value(['id' => $parseToken['gid']], 'menu');
+        $map = ['id' => $parseToken['gid']];
+        $ids = $this->groupServices->value($map, 'menu');
         $data = $this->authServices->queryMenu($ids);
         $list = $this->authServices->getTreeMenu($data);
         return $this->json->successful(compact('list'));
