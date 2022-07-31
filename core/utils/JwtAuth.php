@@ -135,18 +135,18 @@ class JwtAuth
             throw new AuthException($e->getMessage());
         }
 
-        // validateExp
+        /* validateExp */
         $timezone = new \DateTimeZone('Asia/Shanghai');
         $time = new SystemClock($timezone);
         $validateExp = new StrictValidAt($time);
-        // validateJti
+        /* validateJti */
         $validateJti = new IdentifiedBy($this->identified);
-        // validateAud
+        /* validateAud */
         $audience = $token->claims()->get('aud');
         $validateAud = new PermittedFor($audience[0] ?? 'brand');
-        // validateIssued
+        /* validateIssued */
         $validateIssued = new IssuedBy($this->issuedBy);
-        // validatorSigned
+        /* validatorSigned */
         $validatorSigned = new SignedWith(new Sha384(),InMemory::base64Encoded($this->jwtSercet));
         $config->setValidationConstraints($validateJti, $validateExp, $validateAud, $validateIssued, $validatorSigned);
         $constraints = $config->validationConstraints();
@@ -156,13 +156,13 @@ class JwtAuth
             throw new AuthException(substr($e->getMessage(), 58) . ', Please try login again');
         }
 
-        // Gets the userAgent from current token
+        /* Gets the userAgent from current token */
         $userAgent = $token->claims()->get('userAgent');
-        // Gets the ipaddress from current token
+        /* Gets the ipaddress from current token */
         $ipaddress = $token->claims()->get('ipaddress');
-        // Validate the userAgent from current token and now userAgent
+        /* Validate the userAgent from current token and now userAgent */
         $userAgent !== $this->claim['userAgent'] && throw new AuthException('Unauthorized operation, UserAgent have been changed');
-        // Validate the ipaddress from current token and now ipaddress
+        /* Validate the ipaddress from current token and now ipaddress */
         $ipaddress !== $this->claim['ipaddress'] && throw new AuthException('Unauthorized operation, Ipaddress have been changed');
     }
 }
