@@ -18,7 +18,7 @@ class FormValidator extends validate
         'province'  => 'require|integer',
         'city'      => 'require|integer',
         'district'  => 'require|integer',
-        'message'   => 'require|min:10|max:256'
+        'message'   => 'require|min:10|max:100'
     ];
 
     protected $message = [
