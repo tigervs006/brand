@@ -75,13 +75,7 @@ class ChannelController extends BaseController
         if (!empty($data['pid']) && 0 <= $data['pid']) {
             $data['level'] = $this->services->value(['id' => $data['pid']], 'level') + 1;
         }
-        $message = '新增'; // 设置message的默认值
-        // 释放由EditableProTable随机生成的字符串id
-        if (isset($post['id']) && is_numeric($post['id'])) {
-            $message =  '编辑';
-        } else {
-            unset($post['id']);
-        }
+        $message = isset($post['id']) ? '编辑' : '新增';
         // 验证必要数据
         try {
             $this->validate($data, $this->validator);
