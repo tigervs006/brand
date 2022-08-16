@@ -3,7 +3,6 @@ declare (strict_types = 1);
 namespace app\dao;
 
 use core\basic\BaseModel;
-use think\helper\Str;
 
 abstract class BaseDao
 {
