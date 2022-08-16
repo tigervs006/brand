@@ -11,7 +11,7 @@ use app\services\channel\ChannelServices;
 class ChannelController extends BaseController
 {
     private ChannelServices $services;
-    private string $validator = 'app\console\validate\ChannelValidator.';
+    private string $validator = 'app\console\validate\ChannelValidator';
 
     public function initialize()
     {
@@ -60,7 +60,6 @@ class ChannelController extends BaseController
                 'cname',
                 'level',
                 'title',
-                'single',
                 'banner',
                 'status',
                 'keywords',
@@ -83,10 +82,9 @@ class ChannelController extends BaseController
         } else {
             unset($post['id']);
         }
-        $scene = empty($data['single']) ? 'save' : 'single';
         // 验证必要数据
         try {
-            $this->validate($data, $this->validator . $scene);
+            $this->validate($data, $this->validator);
         } catch (ValidateException $e) {
             throw new ApiException($e->getError());
         }

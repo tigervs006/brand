@@ -54,9 +54,4 @@ class ChannelValidator extends validate
         'description.min'       => 'SEO描述不得少20个字符',
         'description.max'       => 'SEO描述请控制在100个字符以内'
     ];
-
-    protected $scene = [
-        'single'    => ['pid', 'sort', 'name', 'cname', 'status'],
-        'save'      => ['pid', 'sort', 'path', 'name', 'cname', 'banner', 'status', 'title', 'keywords', 'description']
-    ];
 }
