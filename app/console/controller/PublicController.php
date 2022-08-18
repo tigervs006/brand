@@ -9,6 +9,7 @@ use core\basic\BaseController;
 use core\exceptions\ApiException;
 use core\exceptions\AuthException;
 use app\services\user\UserServices;
+use app\services\auth\GroupServices;
 use core\exceptions\UploadException;
 use app\services\user\ClientServices;
 use app\services\system\RegionServices;
@@ -27,6 +28,12 @@ class PublicController extends BaseController
      * @var UserServices
      */
     private UserServices $userServices;
+
+    /**
+     * 用户组类
+     * @var GroupServices
+     */
+    private GroupServices $groupServices;
 
     /**
      * Token类
@@ -51,6 +58,7 @@ class PublicController extends BaseController
         parent::initialize();
         $this->jwtAuth = $this->app->make(JwtAuth::class);
         $this->userServices = $this->app->make(UserServices::class);
+        $this->groupServices = $this->app->make(GroupServices::class);
         $this->jwtServices = $this->app->make(JwtTokenServices::class);
         $this->clientServices = $this->app->make(ClientServices::class);
         $this->regionServices = $this->app->make(RegionServices::class);
@@ -77,6 +85,9 @@ class PublicController extends BaseController
 
         $userInfo = $this->userServices->getOne(['name' => $data['name']], null, ['token']);
         is_null($userInfo) && throw new AuthException('查无此人，用户不存在，请重新输入');
+        /* 查询所在用户组状态 */
+        $groupStatus = $this->groupServices->value(['id' => $userInfo['gid']], 'status');
+        !$groupStatus && throw new AuthException('所属的用户组已被禁用，请联系后台管理员');
         !$userInfo['status'] && throw new AuthException("用户：${data['name']} 已禁用");
         !password_verify($data['password'], $userInfo['password']) && throw new AuthException('密码验证失败');
         /* 更新登录时间和ip地址 */
