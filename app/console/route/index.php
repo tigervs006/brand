@@ -73,8 +73,8 @@ Route::group(function () {
         Route::get('list', 'list')->option(['route_name' => '获取菜单列表']);
         Route::post('del', 'delete')->option(['route_name' => '删除菜单']);
         Route::post('save', 'save')->option(['route_name' => '新增/编辑菜单']);
-        Route::get('rules', 'getRules')->option(['route_name' => '获取路由列表']);
         Route::post('status', 'setStatus')->option(['route_name' => '设置菜单状态']);
+        Route::get('routes', 'getRouteList')->option(['route_name' => '获取路由列表']);
     })->prefix('auth.authController/');
     // 用户组权限列表
     Route::group('group', function () {
