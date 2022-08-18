@@ -54,8 +54,7 @@ class UserController extends BaseController
                 'password',
                 'oldPassword',
                 'confirmPassword'
-            ], 'post', 'trim'
-        );
+            ], 'post', 'trim');
         // 过滤空值字段
         $data = array_filter($post, function ($val) {
             // 避免过滤0、boolean值
