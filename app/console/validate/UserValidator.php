@@ -19,8 +19,8 @@ class UserValidator extends validate
         'email'             => 'require|email',
         'mobile'            => 'require|regex:tel',
         'avatar'            => 'require|regex:url',
-        'oldPassword'       => 'length:32',
-        'password'          => 'requireCallback:check_require_password|length:32',
+        'password'          => 'length:32',
+        'oldPassword'       => 'requireWith:password|length:32',
         'confirmPassword'   => 'requireWith:password|confirm:password'
     ];
 
@@ -41,6 +41,7 @@ class UserValidator extends validate
         'mobile.regex'                  => '用户手机号码格式错误',
         'avatar.require'                => '请上传用户头像',
         'avatar.regex'                  => '用户头像网址错误，只需截取[//]后面的网址则可',
+        'oldPassword.requireWith'       => '请输入原账户密码',
         'oldPassword.length'            => '无效的用户密码',
         'password.requireCallback'      => '用户密码不得为空',
         'password.length'               => '无效的用户密码',
@@ -53,12 +54,4 @@ class UserValidator extends validate
         'edit'      => ['id', 'gid', 'name', 'cname', 'email', 'mobile', 'avatar', 'password', 'confirmPassword'],
         'signle'    => ['id', 'name', 'cname', 'email', 'mobile', 'avatar', 'password', 'oldPassword', 'confirmPassword'],
     ];
-
-    function check_require_password($value, $data): bool
-    {
-        if (!empty($data['oldPassword'])) {
-            return true;
-        }
-        return !empty($value);
-    }
 }
