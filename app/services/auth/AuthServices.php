@@ -45,15 +45,17 @@ class AuthServices extends BaseServices
                 $val['plocale'] = $plocale;
                 $pname && $val['pname'] = $pname;
                 $ids = explode('-', $val['paths']);
-                foreach ($ids as $id) {
-                    if (!$id) {
-                        $fullPath .= $val['name'];
-                    } else {
-                        $fullPath .=  $this->dao->value(['id' => $id], 'name') . '/';
+                if (1 == $val['type']) {
+                    foreach ($ids as $id) {
+                        if (!$id) {
+                            $fullPath .= $val['name'];
+                        } else {
+                            $fullPath .=  $this->dao->value(['id' => $id], 'name') . '/';
+                        }
                     }
+                    /* 如果是顶级菜单，直接返回；如果是二级及以上，则拼接当前的name */
+                    $val['path'] = !$pid ? $fullPath : $fullPath . $val['name'];
                 }
-                /* 如果是顶级菜单，直接返回；如果是二级及以上，则拼接当前的name */
-                $val['path'] = !$pid ? $fullPath : $fullPath . $val['name'];
                 $children = self::getTreeMenu($data, $val['id'], $pname ? $val['name'] : null, $val['locale']);
                 $children && $val['children'] = $children;
                 $tree[] = $val;
