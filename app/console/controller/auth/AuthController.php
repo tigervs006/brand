@@ -32,8 +32,7 @@ class AuthController extends BaseController
                 'hideInMenu',
                 'status' => 1,
                 'hideChildrenInMenu'
-            ], 'get', 'trim'
-        );
+            ], 'get', 'trim');
         $data = $this->services->getData($map, ['id' => 'asc']);
         $list = $this->services->getTreeMenu($data);
         return $list ? $this->json->successful(compact('list')) : $this->json->fail();
@@ -56,7 +55,6 @@ class AuthController extends BaseController
             'routes',
             'locale',
             'status',
-            'authority',
             'hideInMenu',
             'hideChildrenInMenu',
         ], 'post', 'trim');

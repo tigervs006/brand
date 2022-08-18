@@ -21,7 +21,6 @@ class MenuValidator extends validate
         'sort'                  => 'integer|between:1,1000',
         'paths'                 => 'require|regex:path',
         'locale'                => 'require|regex:locale',
-        'authority'             => 'array',
     ];
 
     protected $message = [
@@ -40,8 +39,7 @@ class MenuValidator extends validate
         'sort.integer'          => '菜单排序必须是正整数',
         'sort.between'          => '菜单排序数值应在1~1000之间',
         'locale.require'        => '本地语言是必填字段',
-        'locale.regex'          => '多语言只能是英文字母、数字和下划线、英文句号的组合',
-        'authority.array'       => '菜单权限参数类型必须为数组形式'
+        'locale.regex'          => '多语言只能是英文字母、数字和下划线、英文句号的组合'
     ];
 
     /** 只有是菜单类型和顶级菜单时图标是必填字段 */
