@@ -2,6 +2,7 @@
 declare (strict_types = 1);
 namespace app\console\controller\auth;
 
+use think\facade\Route;
 use think\response\Json;
 use core\basic\BaseController;
 use core\exceptions\ApiException;
@@ -50,7 +51,9 @@ class AuthController extends BaseController
             'name',
             'icon',
             'sort',
+            'type',
             'paths',
+            'routes',
             'locale',
             'status',
             'authority',
@@ -108,5 +111,23 @@ class AuthController extends BaseController
 
         $this->services->updateOne($this->id, $data);
         return $this->json->successful('设置菜单成功');
+    }
+
+    /**
+     * 获取路由列表
+     * @return json
+     */
+    public function getRouteList(): Json
+    {
+        $list = [];
+        /* 获取所有的路由规则 */
+        $ruleList = Route::getRuleList();
+        foreach ($ruleList as $item) {
+            $item['method'] = strtoupper($item['method']);
+            $item['route_name'] = $item['option']['route_name'] ?? '未定义';
+            unset($item['option'], $item['pattern'], $item['domain'], $item['name'], $item['route']);
+            $list[] = $item;
+        }
+        return $this->json->successful(compact('list'));
     }
 }
