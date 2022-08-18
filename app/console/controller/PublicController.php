@@ -83,17 +83,17 @@ class PublicController extends BaseController
             throw new AuthException($e->getError());
         }
 
-        $userInfo = $this->userServices->getOne(['name' => $data['name']], null, ['token']);
-        is_null($userInfo) && throw new AuthException('查无此人，用户不存在，请重新输入');
+        $userInfo = $this->userServices->getOne(['name' => $data['name']], null);
+        is_null($userInfo) && throw new AuthException('用户名不存在，请重新输入');
         /* 查询所在用户组状态 */
         $groupStatus = $this->groupServices->value(['id' => $userInfo['gid']], 'status');
         !$groupStatus && throw new AuthException('所属的用户组已被禁用，请联系后台管理员');
         !$userInfo['status'] && throw new AuthException("用户：${data['name']} 已禁用");
         !password_verify($data['password'], $userInfo['password']) && throw new AuthException('密码验证失败');
-        /* 更新登录时间和ip地址 */
-        $this->userServices->updateOne($userInfo['id'], ['ipaddress' => ip2long($ipAddress), 'last_login' => time()]);
         /* 验证通过后签发token */
         $token = $this->jwtAuth->createToken($userInfo['id'], $userInfo['gid'], $userInfo['name']);
+        /* 更新登录时间和ip地址 */
+        $this->userServices->updateOne($userInfo['id'], ['ipaddress' => ip2long($ipAddress), 'last_login' => time()]);
 
         /* 把token同步到数据库 */
         isset($userInfo['token'])
