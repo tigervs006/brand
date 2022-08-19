@@ -61,7 +61,7 @@ class UserController extends BaseController
                 3 == $val['type'] && $info['apiRole'][] = $val['routes'];
             }
         }
-        return null === $info ? $this->json->fail('查无此人...') : $this->json->successful(compact('info'));
+        return is_null($info) ? $this->json->fail('查无此人...') : $this->json->successful(compact('info'));
     }
 
     /**
