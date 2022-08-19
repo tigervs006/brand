@@ -5,7 +5,9 @@ namespace app\console\controller\user;
 use think\response\Json;
 use core\basic\BaseController;
 use core\exceptions\ApiException;
+use app\services\auth\AuthServices;
 use app\services\user\UserServices;
+use app\services\auth\GroupServices;
 use think\exception\ValidateException;
 
 class UserController extends BaseController
@@ -14,8 +16,18 @@ class UserController extends BaseController
      * @var UserServices
      */
     private UserServices $services;
+
     private string $validator = 'app\console\validate\UserValidator.';
 
+    /**
+     * @var AuthServices
+     */
+    private AuthServices $authServices;
+
+    /**
+     * @var GroupServices
+     */
+    private GroupServices $groupServices;
 
     /**
      * 提取字段
@@ -27,6 +39,8 @@ class UserController extends BaseController
     {
         parent::initialize();
         $this->services = $this->app->make(UserServices::class);
+        $this->authServices = $this->app->make(AuthServices::class);
+        $this->groupServices = $this->app->make(GroupServices::class);
     }
 
     /**
@@ -35,10 +49,25 @@ class UserController extends BaseController
      */
     final public function index(): Json
     {
-        $info = $this->services->getOne(['id' => $this->id], $this->field);
+        $info = $this->services->getOne(['id' => $this->id], $this->field)->toArray();
+        if (!is_null($info)) {
+            /* 获取所属用户组权限菜单 */
+            $userMenu = $this->groupServices->value(['id' => $info['gid']], 'menu');
+            $userAuth = $this->authServices->queryMenu($userMenu);
+            foreach ($userAuth as $val) {
+                /* 提取用户的按钮权限 */
+                2 == $val['type'] && $info['btnRole'][] = $val['name'];
+                /* 提取用户的接口权限 */
+                3 == $val['type'] && $info['apiRole'][] = $val['routes'];
+            }
+        }
         return null === $info ? $this->json->fail('查无此人...') : $this->json->successful(compact('info'));
     }
 
+    /**
+     * 新增/编辑用户
+     * @return Json
+     */
     final public function save(): Json
     {
         $post = $this->request->only(
