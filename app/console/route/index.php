@@ -115,7 +115,15 @@ Route::group(function () {
         Route::get('workplace', 'workplaceController/index')->option(['route_name' => '工作台']);
         Route::get('activities', 'workplaceController/activities')->option(['route_name' => '活动页']);
     })->prefix('dashboard.');
-})->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+'])
-    ->middleware(think\middleware\AllowCrossDomain::class)
-    ->middleware(app\http\middleware\AuthTokenMiddleware::class)
-    ->middleware(app\http\middleware\AuthCheckMiddleware::class);
+})->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+'])->middleware(
+    [
+        /* 跨域请求 */
+        think\middleware\AllowCrossDomain::class,
+        /* token签发/验证 */
+        app\http\middleware\AuthTokenMiddleware::class,
+        /* 用户组路由鉴权 */
+        app\http\middleware\AuthCheckMiddleware::class,
+        /* 记录用户操作日志 */
+        app\http\middleware\ActionLogMiddleware::class,
+    ]
+);
