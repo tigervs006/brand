@@ -16,7 +16,7 @@ class MenuValidator extends validate
         'pid'                   => 'require|integer',
         'type'                  => 'require|integer',
         'name'                  => 'require|alphaDash',
-        'routes'                => 'requireIf:type,3|regex:route',
+        'routes'                => 'requireIf:type,3',
         'icon'                  => 'requireCallBack:check_require_icon|alphaDash',
         'sort'                  => 'integer|between:1,1000',
         'paths'                 => 'require|regex:path',
