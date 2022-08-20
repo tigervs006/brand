@@ -27,8 +27,8 @@ class AuthTokenMiddleware implements MiddlewareInterface
      */
     private JwtAuth $jwtService;
 
-    public function __construct() {
-        $this->jwtService = app()->make(JwtAuth::class);
+    public function __construct(JwtAuth $jwtService) {
+        $this->jwtService = $jwtService;
         $this->isCheckToken = (int) sys_config('access_token_check');
     }
 

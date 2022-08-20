@@ -11,9 +11,12 @@ class AuthCheckMiddleware implements MiddlewareInterface
 {
     private JwtAuth $jwtServices;
 
-    public function __construct()
+    private AuthServices $authServices;
+
+    public function __construct(JwtAuth $jwtAuth, AuthServices $authServices)
     {
-        $this->jwtServices = app()->make(JwtAuth::class);
+        $this->jwtServices = $jwtAuth;
+        $this->authServices = $authServices;
     }
 
     public function handle(Request $request, \Closure $next)
@@ -22,9 +25,7 @@ class AuthCheckMiddleware implements MiddlewareInterface
         $token = $request->header('Authorization');
         /* 解析当前请求的token */
         $tokenInfo = $this->jwtServices->parseToken($token);
-        /** @var AuthServices $authServices */
-        $authServices = app()->make(AuthServices::class);
-        $authServices->verifyAuthority($request, $tokenInfo['gid']);
+        $this->authServices->verifyAuthority($request, $tokenInfo['gid']);
         return $next($request);
     }
 }
