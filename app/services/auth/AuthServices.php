@@ -3,7 +3,6 @@ declare (strict_types = 1);
 namespace app\services\auth;
 
 use think\Request;
-use think\facade\Cache;
 use app\dao\auth\AuthDao;
 use app\services\BaseServices;
 use core\exceptions\ApiException;
@@ -44,9 +43,7 @@ class AuthServices extends BaseServices
         $rules = $request->rule()->getRule();
         $groupServices = app()->make(GroupServices::class);
         $groupRole = $groupServices->value(['id' => $gid], 'menu');
-        $roleMenu = Cache::remember('roleMenu', function () use ($groupRole) {
-            return $this->queryMenu($groupRole, ['type' => 3])->toArray();
-        });
+        $roleMenu = $this->queryMenu($groupRole, ['type' => 3])->toArray();
         if (!in_array($rules, array_column($roleMenu, 'routes'))) {
             throw new AuthException("Access Denied! You don't have permission to access this path!", 403);
         }

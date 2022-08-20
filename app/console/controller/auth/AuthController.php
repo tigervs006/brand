@@ -3,7 +3,6 @@ declare (strict_types = 1);
 namespace app\console\controller\auth;
 
 use think\facade\Route;
-use think\facade\Cache;
 use think\response\Json;
 use core\basic\BaseController;
 use core\exceptions\ApiException;
@@ -73,7 +72,6 @@ class AuthController extends BaseController
             throw new ApiException($e->getError());
         }
         $this->services->saveMenu($post, $message);
-        Cache::delete('roleMenu'); // 保存成功后清除缓存
         return $this->json->successful($message . '菜单成功');
     }
 
