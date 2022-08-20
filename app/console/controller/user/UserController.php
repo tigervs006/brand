@@ -56,9 +56,7 @@ class UserController extends BaseController
             $userAuth = $this->authServices->queryMenu($userMenu);
             foreach ($userAuth as $val) {
                 /* 提取用户的按钮权限 */
-                2 == $val['type'] && $info['btnRole'][] = $val['name'];
-                /* 提取用户的接口权限 */
-                3 == $val['type'] && $info['apiRole'][] = $val['routes'];
+                2 == $val['type'] && $info['btnRules'][] = $val['name'];
             }
         }
         return is_null($info) ? $this->json->fail('查无此人...') : $this->json->successful(compact('info'));
