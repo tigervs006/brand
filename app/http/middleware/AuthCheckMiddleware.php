@@ -2,6 +2,7 @@
 
 namespace app\http\middleware;
 
+use core\exceptions\AuthException;
 use think\Request;
 use core\utils\JwtAuth;
 use app\services\auth\AuthServices;
@@ -23,6 +24,7 @@ class AuthCheckMiddleware implements MiddlewareInterface
     {
         /* 获取当前请求的token */
         $token = $request->header('Authorization');
+        !$token && throw new AuthException('Token have been losted!');
         /* 解析当前请求的token */
         $tokenInfo = $this->jwtServices->parseToken($token);
         $this->authServices->verifyAuthority($request, $tokenInfo['gid']);
