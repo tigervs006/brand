@@ -27,12 +27,13 @@ class SystemLogServices extends BaseServices
         $method = $request->rule()->getMethod();
         $options = $request->rule()->getOption();
         $tokenInfo = $this->jwtServices->parseToken($token);
-        $this->dao->saveOne([
+        /* 只记录post方式的日志 */
+        'post' === $method && $this->dao->saveOne([
+            'level' => 3,
             'gid' => $tokenInfo['gid'],
-            'user' => $tokenInfo['aud'],
+            'user' => $tokenInfo['uid'],
             'method' => strtoupper($method),
             'action' => $options['route_name'],
-            'level' => 'get' === $method ? 2 : 3,
             'path' => $request->rule()->getRule(),
             'ipaddress' => ip2long($request->ip()),
         ]);
