@@ -117,4 +117,5 @@ Route::group(function () {
     })->prefix('dashboard.');
 })->option(['https' => true])->pattern(['id' => '\d+', 'name' => '\w+'])
     ->middleware(think\middleware\AllowCrossDomain::class)
-    ->middleware(app\http\middleware\AuthTokenMiddleware::class);
+    ->middleware(app\http\middleware\AuthTokenMiddleware::class)
+    ->middleware(app\http\middleware\AuthCheckMiddleware::class);
