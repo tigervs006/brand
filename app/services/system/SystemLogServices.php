@@ -30,8 +30,8 @@ class SystemLogServices extends BaseServices
         /* 只记录post方式的日志 */
         'post' === $method && $this->dao->saveOne([
             'level' => 3,
+            'uid' => $tokenInfo['uid'],
             'gid' => $tokenInfo['gid'],
-            'user' => $tokenInfo['uid'],
             'method' => strtoupper($method),
             'action' => $options['route_name'],
             'path' => $request->rule()->getRule(),
