@@ -2,12 +2,14 @@
 declare (strict_types = 1);
 namespace app\services\auth;
 
+use think\Request;
 use app\dao\auth\AuthDao;
 use app\services\BaseServices;
 use core\exceptions\ApiException;
+use core\exceptions\AuthException;
 
 /**
- * @method \think\Collection queryMenu(string $ids) 查询用户菜单
+ * @method \think\Collection queryMenu(string $ids, ?array $where) 查询用户菜单
  */
 class AuthServices extends BaseServices
 {
@@ -27,6 +29,24 @@ class AuthServices extends BaseServices
             $res = $id ? $this->dao->updateOne($id, $data, 'id') : $this->dao->saveOne($data);
             !$res && throw new ApiException($message . '菜单失败');
         });
+    }
+
+    /**
+     * 验证用户权限
+     * @return void
+     * @param Request $request
+     * @param int $gid 用户组id
+     */
+    public function verifyAuthority(Request $request, int $gid): void
+    {
+        /* 获取当前访问路由 */
+        $rules = $request->rule()->getRule();
+        $groupServices = app()->make(GroupServices::class);
+        $groupRole = $groupServices->value(['id' => $gid], 'menu');
+        $roleMenu = $this->queryMenu($groupRole, ['type' => 3])->toArray();
+        if (!in_array($rules, array_column($roleMenu, 'routes'))) {
+            throw new AuthException("Access Denied! You don't have permission to access this path!", 403);
+        }
     }
 
     /**
