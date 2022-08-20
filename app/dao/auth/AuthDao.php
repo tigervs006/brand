@@ -18,9 +18,9 @@ class AuthDao extends BaseDao
 
     /**
      * 查询用户菜单
-     * @param string $ids ids
-     * @param ?array $where 条件
      * @return \think\Collection
+     * @param string $ids ids
+     * @param null|array $where 条件
      */
     public function queryMenu(string $ids, ?array $where = []): \think\Collection
     {
