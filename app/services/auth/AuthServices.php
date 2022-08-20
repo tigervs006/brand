@@ -3,13 +3,14 @@ declare (strict_types = 1);
 namespace app\services\auth;
 
 use think\Request;
+use think\facade\Cache;
 use app\dao\auth\AuthDao;
 use app\services\BaseServices;
 use core\exceptions\ApiException;
 use core\exceptions\AuthException;
 
 /**
- * @method \think\Collection queryMenu(string $ids, ?array $where) 查询用户菜单
+ * @method \think\Collection queryMenu(string $ids, ?array $where = []) 查询用户菜单
  */
 class AuthServices extends BaseServices
 {
@@ -43,7 +44,10 @@ class AuthServices extends BaseServices
         $rules = $request->rule()->getRule();
         $groupServices = app()->make(GroupServices::class);
         $groupRole = $groupServices->value(['id' => $gid], 'menu');
-        $roleMenu = $this->queryMenu($groupRole, ['type' => 3])->toArray();
+        /* 缓存用户组ID为KEY的路由权限 */
+        $roleMenu = Cache::remember($gid . '_role_menu', function () use ($groupRole) {
+            return $this->queryMenu($groupRole, ['type' => 3])->toArray();
+        }, 3600 * 24 * 7);
         if (!in_array($rules, array_column($roleMenu, 'routes'))) {
             throw new AuthException("Access Denied! You don't have permission to access this path!", 403);
         }
