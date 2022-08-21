@@ -41,7 +41,7 @@ class AuthTokenMiddleware implements MiddlewareInterface
     {
         if ($this->isCheckToken) {
             $token = $request->header('Authorization');
-            !$token && throw new AuthException('Token have been losted!');
+            !$token && throw new AuthException('Token is missing or incorrect');
             $this->jwtService->verifyToken(trim($token));
         }
 

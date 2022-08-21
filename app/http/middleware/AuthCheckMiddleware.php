@@ -24,7 +24,7 @@ class AuthCheckMiddleware implements MiddlewareInterface
     {
         /* 获取当前请求的token */
         $token = $request->header('Authorization');
-        !$token && throw new AuthException('Token have been losted!');
+        !$token && throw new AuthException('Token is missing or incorrect');
         /* 解析当前请求的token */
         $tokenInfo = $this->jwtServices->parseToken($token);
         $this->authServices->verifyAuthority($request, $tokenInfo['gid']);
