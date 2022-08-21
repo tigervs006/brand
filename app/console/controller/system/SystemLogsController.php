@@ -26,7 +26,7 @@ class SystemLogsController extends BaseController
      */
     final public function list(): Json
     {
-        $map = $this->request->only(['uid', 'ipAddress']);
+        $map = $this->request->only(['uid', 'gid', 'level']);
         /* 获取时间范围 */
         $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
         if ($dateRange) {
