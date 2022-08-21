@@ -132,7 +132,7 @@ class ArticleController extends BaseController
         /** @var \app\services\user\UserServices $userServices */
         $userServices = $this->app->make(\app\services\user\UserServices::class);
         // 获取系统用户作为文章作者
-        $list = $userServices->getData($this->status, $this->order, 'name, cname');
+        $list = $userServices->getData($this->status, $this->order, 'id, name, cname');
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
