@@ -7,8 +7,6 @@ return [
     'expire'    => 0,
     // cookie 保存路径
     'path'      => '/',
-    // cookie 有效域名
-    'domain'    => '',
     //  cookie 启用安全传输
     'secure'    => false,
     // httponly设置
@@ -17,4 +15,6 @@ return [
     'setcookie' => true,
     // samesite 设置，支持 'strict' 'lax'
     'samesite'  => '',
+    // cookie 有效域名
+    'domain'    => 'https://www.brandsz.cn',
 ];
