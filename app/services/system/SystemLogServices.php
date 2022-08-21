@@ -21,16 +21,17 @@ class SystemLogServices extends BaseServices
      * @return void
      * @param $request
      * @param string $token
+     * @param null|int $level 日志级别
      * @param null|string $action 操作描述
      */
-    public function actionLogRecord($request, string $token, ?string $action): void
+    public function actionLogRecord($request, string $token, ?int $level, ?string $action): void
     {
         $method = $request->rule()->getMethod();
         $options = $request->rule()->getOption();
         $tokenInfo = $this->jwtServices->parseToken($token);
         /* 只记录post方式的日志 */
         'post' === $method && $this->dao->saveOne([
-            'level' => 3,
+            'level' => $level ?: 3,
             'uid' => $tokenInfo['uid'],
             'gid' => $tokenInfo['gid'],
             'path' => $request->rule()->getRule(),
