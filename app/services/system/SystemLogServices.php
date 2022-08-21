@@ -24,6 +24,7 @@ class SystemLogServices extends BaseServices
      */
     public function actionLogRecord($request, string $token): void
     {
+        $app = app('http')->getName();
         $method = $request->rule()->getMethod();
         $options = $request->rule()->getOption();
         $tokenInfo = $this->jwtServices->parseToken($token);
@@ -33,8 +34,8 @@ class SystemLogServices extends BaseServices
             'uid' => $tokenInfo['uid'],
             'gid' => $tokenInfo['gid'],
             'action' => $options['route_name'],
-            'path' => $request->rule()->getRule(),
             'ipaddress' => ip2long($request->ip()),
+            'path' => $app . '/' . $request->rule()->getRule(),
         ]);
     }
 }
