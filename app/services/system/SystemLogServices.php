@@ -32,7 +32,6 @@ class SystemLogServices extends BaseServices
             'level' => 3,
             'uid' => $tokenInfo['uid'],
             'gid' => $tokenInfo['gid'],
-            'method' => strtoupper($method),
             'action' => $options['route_name'],
             'path' => $request->rule()->getRule(),
             'ipaddress' => ip2long($request->ip()),
