@@ -21,8 +21,9 @@ class SystemLogServices extends BaseServices
      * @return void
      * @param $request
      * @param string $token
+     * @param null|string $action 操作描述
      */
-    public function actionLogRecord($request, string $token): void
+    public function actionLogRecord($request, string $token, ?string $action): void
     {
         $method = $request->rule()->getMethod();
         $options = $request->rule()->getOption();
@@ -32,9 +33,9 @@ class SystemLogServices extends BaseServices
             'level' => 3,
             'uid' => $tokenInfo['uid'],
             'gid' => $tokenInfo['gid'],
-            'action' => $options['route_name'],
             'path' => $request->rule()->getRule(),
             'ipaddress' => ip2long($request->ip()),
+            'action' => $action ?: $options['route_name'],
         ]);
     }
 }
