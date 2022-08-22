@@ -2,7 +2,6 @@
 declare (strict_types = 1);
 namespace app\services\auth;
 
-use think\Request;
 use think\facade\Cache;
 use app\dao\auth\AuthDao;
 use app\services\BaseServices;
@@ -35,10 +34,10 @@ class AuthServices extends BaseServices
     /**
      * 验证用户权限
      * @return void
-     * @param Request $request
+     * @param  $request
      * @param int $gid 用户组id
      */
-    public function verifyAuthority(Request $request, int $gid): void
+    public function verifyAuthority($request, int $gid): void
     {
         /* 获取当前访问路由 */
         $rules = $request->rule()->getRule();
