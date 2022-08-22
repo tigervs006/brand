@@ -2,9 +2,9 @@
 
 namespace app\http\middleware;
 
-use core\exceptions\AuthException;
 use think\Request;
 use core\utils\JwtAuth;
+use core\exceptions\AuthException;
 use app\services\auth\AuthServices;
 use core\interfaces\MiddlewareInterface;
 
