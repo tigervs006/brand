@@ -118,10 +118,10 @@ class UserController extends BaseController
         $order = $this->request->only(['create_time', 'last_login'], 'get', 'strOrderFilter');
         $list = $this->services->getList($this->current, $this->pageSize, $map?: null, $this->field, $order, null, null, ['group']);
         if ($list->isEmpty()) {
-            return $this->json->fail('There is nothing...');
+            return $this->json->fail();
         } else {
             // 计算数据总量
-            $total = $this->services->getCount($map ?: null, null);
+            $total = $this->services->getCount($map ?: null);
             return $this->json->successful(compact('total', 'list'));
         }
     }

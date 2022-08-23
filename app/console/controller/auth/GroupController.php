@@ -65,7 +65,7 @@ class GroupController extends BaseController
             return $this->json->fail();
         } else {
             // 计算数据总量
-            $total = $this->services->getCount($map ?: null, null);
+            $total = $this->services->getCount($map ?: null);
             return $this->json->successful(compact('total', 'list'));
         }
     }

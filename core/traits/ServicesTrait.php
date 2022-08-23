@@ -15,7 +15,7 @@ namespace core\traits;
  * @method \core\basic\BaseModel batchUpdate(array $ids, array $data, ?string $key) 批量更新数据
  * @method array getColumn(string $field, ?array $where = null, string $key = '') 获取某个列的数组
  * @method \core\basic\BaseModel updateOne(int|array|string $id, array $data, ?string $key = null) 更新一条数据
- * @method int getCount(?array $map, ?string $key, ?array $betweenTime = null, ?array $whereLike = null) 计算数据总量
+ * @method int getCount(?array $map, ?string $key = null, ?array $betweenTime = null, ?array $whereLike = null) 计算数据总量
  * @method array|\core\basic\BaseModel|\think\Model|null get(int|string|array $id, ?string $field, ?array $with = []) 获取单条数据
  * @method array getPrenext(int $id, ?string $field = 'id, title', ?string $firstPre = '已经是第一篇了', ?string $lastNext = '这是最后一篇了') 获取上/下一篇文章
  * @method \think\Paginator getPaginate(array $map, int $rows = 15, ?string $field = '*', ?array $order = ['id' => 'desc'], ?array $with = []) 用于前端的分页列表

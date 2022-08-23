@@ -121,7 +121,7 @@ abstract class BaseDao
      * @param array|null $whereLike 模糊搜索
      * @param array|null $betweenTime 时间段
      */
-    public function getCount(?array $map, ?string $key, ?array $betweenTime = null, ?array $whereLike = null): int
+    public function getCount(?array $map, ?string $key = null, ?array $betweenTime = null, ?array $whereLike = null): int
     {
         if (is_null($map) && empty($betweenTime) && empty($whereLike)) {
             return $this->getModel()->count($key ?: $this->getPK());
