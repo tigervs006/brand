@@ -34,15 +34,19 @@ class LinkController extends BaseController
         $map = $this->request->only(['status'], 'get', 'trim');
         /** 获取搜索标题 */
         $name = $this->request->get('name/s', null, 'trim');
+        /** 获取联络方式 */
+        $contact = $this->request->get('contact/s', null, 'trim');
         /** 获取时间范围 */
         $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
         /** 获取排序条件 */
         $order = $this->request->only(['id', 'sort', 'create_time'], 'get', 'strOrderFilter');
-        // 组装文章标题搜索条件
+        /** 组装文章标题搜索条件 */
         $name && $map[] = ['name', 'like', '%' . $name . '%'];
-        // 组装按时间段搜索条件
+        /** 组装联系方式搜索条件 */
+        $contact && $map[] = ['contact', 'like', '%' . $contact . '%'];
+        /** 组装按时间段搜索条件 */
         $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
-        // 获取友情链接列表
+        /** 获取友情链接列表 */
         $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $betweenTime, $order ?: $this->order);
 
         if ($list->isEmpty()) {
