@@ -112,16 +112,32 @@ class UserController extends BaseController
      */
     final public function list(): Json
     {
-        // 获得map条件
-        $map = $this->request->only(['status'], 'get');
-        // 获取排序字段
+        /** 模糊搜索 */
+        $whereLike = [];
+        /** 搜索时间段 */
+        $betweenTime = [];
+        /** 获得map条件 */
+        $map = $this->request->only(['gid', 'status'], 'get');
+        /** 获取搜索用户 */
+        $name = $this->request->get('name/s', null, 'trim');
+        /** 获取时间范围 */
+        $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
+        /** 搜索手机号码 */
+        $mobile = $this->request->get('mobile/d', null, 'trim');
+        /** 获取排序字段 */
         $order = $this->request->only(['create_time', 'last_login'], 'get', 'strOrderFilter');
-        $list = $this->services->getList($this->current, $this->pageSize, $map?: null, $this->field, $order, null, null, ['group']);
+        /** 组装用户名搜索条件 */
+        $name && $whereLike = ['name', '%' . $name . '%'];
+        /** 组装手机号搜索条件 */
+        $mobile && $whereLike = ['mobile', '%' . $mobile . '%'];
+        /** 组装时间段搜索条件  */
+        $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
+        $list = $this->services->getList($this->current, $this->pageSize, $map?: null, $this->field, $order, $betweenTime, $whereLike, ['group']);
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
-            // 计算数据总量
-            $total = $this->services->getCount($map ?: null);
+            /** 计算数据总量 */
+            $total = $this->services->getCount($map ?: null, null, $betweenTime, $whereLike);
             return $this->json->successful(compact('total', 'list'));
         }
     }
