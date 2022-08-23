@@ -5,12 +5,16 @@ namespace app\services\user;
 use app\dao\user\UserDao;
 use app\services\BaseServices;
 use core\exceptions\ApiException;
+use app\services\system\SystemLogServices;
 
 class UserServices extends BaseServices
 {
-    public function __construct(UserDao $dao)
+    private SystemLogServices $logServices;
+
+    public function __construct(UserDao $dao, SystemLogServices $logServices)
     {
         $this->dao = $dao;
+        $this->logServices = $logServices;
     }
 
     /**
@@ -29,5 +33,24 @@ class UserServices extends BaseServices
             $res = $id ? $this->dao->updateOne($id, $data, 'id') : $this->dao->saveOne($data);
             !$res && throw new ApiException($message . '用户失败');
         });
+    }
+
+    /**
+     * 用户登录日志
+     * @return void
+     * @param null|string $action 操作
+     * @param array|\think\Model $userInfo
+     */
+    public function loginActionLog(array|\think\Model $userInfo, ?string $action = '用户登录'): void
+    {
+        $data = [
+            'level' => 2,
+            'action' => $action,
+            'uid' => $userInfo['id'],
+            'gid' => $userInfo['gid'],
+            'ipaddress' => ip2long(request()->ip()),
+            'path' => app('http')->getName() . '/' . request()->rule()->getRule(),
+        ];
+        $this->logServices->saveOne($data);
     }
 }

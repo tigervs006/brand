@@ -107,17 +107,26 @@ class PublicController extends BaseController
             'authorization' => $token,
         ];
 
+        /* 记录用户登录日志 */
+        $this->userServices->loginActionLog($userInfo);
+
         return $this->json->successful('Login successful', compact('info'));
     }
 
     /**
-     * 用户登出
+     * 退出登录
      * @return Json
      */
     final public function logout(): Json
     {
-        $user = $this->request->post('name/s');
-        return $this->json->successful('User：' . $user . ' logout');
+        $post = $this->request->only(
+            [
+                'id',
+                 'gid'
+            ], 'post', 'trim');
+        /* 记录退出登录日志 */
+        $this->userServices->loginActionLog($post, '退出登录');
+        return $this->json->successful('Logout successful');
     }
 
     /**
