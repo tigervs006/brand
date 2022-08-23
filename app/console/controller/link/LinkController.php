@@ -29,30 +29,31 @@ class LinkController extends BaseController
      */
     final public function list(): Json
     {
+        $whereLike = [];
         $betweenTime = [];
         /** 获取搜索条件 */
         $map = $this->request->only(['status'], 'get', 'trim');
         /** 获取搜索标题 */
         $name = $this->request->get('name/s', null, 'trim');
-        /** 获取联络方式 */
-        $contact = $this->request->get('contact/s', null, 'trim');
         /** 获取时间范围 */
         $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
+        /** 获取联络方式 */
+        $contact = $this->request->get('contact/s', null, 'trim');
         /** 获取排序条件 */
         $order = $this->request->only(['id', 'sort', 'create_time'], 'get', 'strOrderFilter');
         /** 组装文章标题搜索条件 */
-        $name && $map[] = ['name', 'like', '%' . $name . '%'];
+        $name && $whereLike = ['name', '%' . $name . '%'];
         /** 组装联系方式搜索条件 */
-        $contact && $map[] = ['contact', 'like', '%' . $contact . '%'];
+        $contact && $whereLike = ['contact', '%' . $contact . '%'];
         /** 组装按时间段搜索条件 */
         $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
         /** 获取友情链接列表 */
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $betweenTime, $order ?: $this->order);
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order ?: $this->order, $betweenTime, $whereLike);
 
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
-            $total = $this->services->getCount($map ?: null, null, $betweenTime);
+            $total = $this->services->getCount($map ?: null, null, $betweenTime, $whereLike);
             return $this->json->successful(compact('list', 'total'));
         }
     }
