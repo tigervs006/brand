@@ -122,14 +122,17 @@ abstract class BaseDao
      * @param array|null $with 关联模型
      * @param array|null $betweenTime 时间段
      */
-    public function getData(?array $map = null, ?array $order = ['id' => 'desc'], ?string $field = '*', ?array $betweenTime = [], ?array $with = []): array|\think\Collection
+    public function getData(?array $map = null, ?array $order = ['id' => 'desc'], ?string $field = '*', ?array $betweenTime = null, ?array $whereLike = null, ?array $with = null): array|\think\Collection
     {
         try {
-            return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) {
-                $query->with($with);
-            })->when(count($betweenTime), function ($query) use ($betweenTime) {
-                $query->whereBetweenTime(...$betweenTime);
-            })->field($field)->order($order)->select();
+            return $this->getModel()->where($map)
+                ->when($betweenTime, function ($query) use ($betweenTime) {
+                $query->whereBetweenTime(...$betweenTime); })
+                ->when($whereLike, function ($query) use ($whereLike) {
+                $query->whereLike(...$whereLike);})
+                ->when($with, function ($query) use ($with) {
+                    $query->with($with); })
+                ->field($field)->order($order)->select();
         } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
             throw new ApiException($e->getMessage());
         }
@@ -140,16 +143,20 @@ abstract class BaseDao
      * @return int
      * @param array|null $map 条件
      * @param string|null $key 字段
+     * @param array|null $whereLike 模糊搜索
      * @param array|null $betweenTime 时间段
      */
-    public function getCount(?array $map, ?string $key, ?array $betweenTime = []): int
+    public function getCount(?array $map, ?string $key, ?array $betweenTime = null, ?array $whereLike = null): int
     {
-        if (is_null($map) && empty($betweenTime)) {
+        if (is_null($map) && empty($betweenTime) && empty($whereLike)) {
             return $this->getModel()->count($key ?: $this->getPK());
         } else {
-            return $this->getModel()->where($map)->when(count($betweenTime), function ($query) use ($betweenTime) {
-                $query->whereBetweenTime(...$betweenTime);
-            })->count();
+            return $this->getModel()->where($map)
+                ->when($betweenTime, function ($query) use ($betweenTime) {
+                $query->whereBetweenTime(...$betweenTime); })
+                ->when($whereLike, function ($query) use ($whereLike) {
+                    $query->whereLike(...$whereLike);
+                })->count();
         }
     }
 
@@ -315,14 +322,18 @@ abstract class BaseDao
      * @param array|null $order 排序
      * @param array|null $with  关联模型
      * @param array|null $betweenTime 时间段
+     * @param array|null $whereLike 模糊查找
      */
-    public function getList(int $current, int $pageSize, ?array $map = null, ?string $field = '*', ?array $betweenTime = [], ?array $order = ['id' => 'desc'], ?array $with = []): array|\think\Collection
+    public function getList(int $current, int $pageSize, ?array $map = null, ?string $field = '*', ?array $order = ['id' => 'desc'], ?array $betweenTime = null, ?array $whereLike = null, ?array $with = null): array|\think\Collection
     {
         try {
-            return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) {
-                $query->with($with);
-            })->when(count($betweenTime), function ($query) use ($betweenTime) {
+            return $this->getModel()->where($map)
+            ->when($betweenTime, function ($query) use ($betweenTime) {
                 $query->whereBetweenTime(...$betweenTime);
+            })->when($whereLike, function ($query) use ($whereLike) {
+                $query->whereLike(...$whereLike);
+            })->when($with, function ($query) use ($with) {
+                $query->with($with);
             })->field($field)->order($order)->page($current, $pageSize)->select();
         } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
             throw new ApiException($e->getMessage());
