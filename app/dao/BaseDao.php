@@ -2,11 +2,11 @@
 declare (strict_types = 1);
 namespace app\dao;
 
+use think\Collection;
 use core\basic\BaseModel;
 use core\exceptions\ApiException;
-use think\Collection;
-use think\db\exception\DataNotFoundException;
 use think\db\exception\DbException;
+use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 
 abstract class BaseDao
