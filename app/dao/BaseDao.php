@@ -114,31 +114,6 @@ abstract class BaseDao
     }
 
     /**
-     * 根据条件获取所有数据
-     * @return array|Collection
-     * @param array|null $map 条件
-     * @param array|null $order 排序
-     * @param string|null $field 字段
-     * @param array|null $with 关联模型
-     * @param array|null $betweenTime 时间段
-     */
-    public function getData(?array $map = null, ?array $order = ['id' => 'desc'], ?string $field = '*', ?array $betweenTime = null, ?array $whereLike = null, ?array $with = null): array|\think\Collection
-    {
-        try {
-            return $this->getModel()->where($map)
-                ->when($betweenTime, function ($query) use ($betweenTime) {
-                $query->whereBetweenTime(...$betweenTime); })
-                ->when($whereLike, function ($query) use ($whereLike) {
-                $query->whereLike(...$whereLike);})
-                ->when($with, function ($query) use ($with) {
-                    $query->with($with); })
-                ->field($field)->order($order)->select();
-        } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
-            throw new ApiException($e->getMessage());
-        }
-    }
-
-    /**
      * 计算数据总量
      * @return int
      * @param array|null $map 条件
@@ -308,6 +283,32 @@ abstract class BaseDao
                 $query->with($with);
             })->field($field)->order($order)->paginate($rows);
         } catch (DbException $e) {
+            throw new ApiException($e->getMessage());
+        }
+    }
+
+    /**
+     * 根据条件获取所有数据
+     * @return array|Collection
+     * @param array|null $map 条件
+     * @param array|null $order 排序
+     * @param string|null $field 字段
+     * @param array|null $with 关联模型
+     * @param array|null $betweenTime 时间段
+     * @param array|null $whereLike 模糊查找
+     */
+    public function getData(?array $map = null, ?array $order = ['id' => 'desc'], ?string $field = '*', ?array $betweenTime = null, ?array $whereLike = null, ?array $with = null): array|\think\Collection
+    {
+        try {
+            return $this->getModel()->where($map)
+                ->when($betweenTime, function ($query) use ($betweenTime) {
+                    $query->whereBetweenTime(...$betweenTime); })
+                ->when($whereLike, function ($query) use ($whereLike) {
+                    $query->whereLike(...$whereLike);})
+                ->when($with, function ($query) use ($with) {
+                    $query->with($with); })
+                ->field($field)->order($order)->select();
+        } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
             throw new ApiException($e->getMessage());
         }
     }

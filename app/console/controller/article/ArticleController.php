@@ -97,6 +97,8 @@ class ArticleController extends BaseController
      */
     final public function list(): Json
     {
+        // 获取搜索标题
+        $whereLike = [];
         // 获取时间范围
         $betweenTime = [];
         $dateRange = $this->request->only(['startTime', 'endTime'], 'get');
@@ -109,16 +111,16 @@ class ArticleController extends BaseController
         // 排除字段后获得map
         $map = $this->request->except(['title', 'click', 'current', 'pageSize', 'startTime', 'endTime', 'create_time', 'update_time'], 'get');
         // 组装文章标题搜索条件
-        $title && $map[] = ['title', 'like', '%' . $title . '%'];
+        $title && $whereLike = ['title', '%' . $title . '%'];
         // 组装按时间段搜索条件
         $dateRange && $betweenTime = ['create_time', $dateRange['startTime'], $dateRange['endTime']];
         // 提取文章列表
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $betweenTime, $order ?: $this->order, ['channel']);
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $order ?: $this->order, $betweenTime, $whereLike, ['channel']);
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
             // 提取数据总数
-            $total = $this->services->getCount($map ?: null, null, $betweenTime);
+            $total = $this->services->getCount($map ?: null, null, $betweenTime, $whereLike);
             return $this->json->successful(compact('total', 'list'));
         }
     }

@@ -82,6 +82,9 @@ class ProductController extends BaseController
      */
     final public function list(): Json
     {
+        // 模糊查找
+        $whereLike = [];
+        // 时间段搜索
         $betweenTime = [];
         /** 获取搜索标题 */
         $title = $this->request->get('title/s', null, 'trim');
@@ -92,14 +95,14 @@ class ProductController extends BaseController
         /** 获取排序条件 */
         $order = $this->request->only(['click', 'sales', 'stock', 'price', 'inquiries'], 'get', 'strOrderFilter');
         /** 组装标题搜索条件 */
-        $title && $map[] = ['title', 'like', '%' . $title . '%'];
+        $title && $whereLike = ['title', '%' . $title . '%'];
         /** 组装按时间段搜索条件  */
         $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $betweenTime, $order ?: $this->order, ['channel']);
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order ?: $this->order, $betweenTime, $whereLike, ['channel']);
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
-            $total = $this->services->getCount($map ?: null, null, $betweenTime);
+            $total = $this->services->getCount($map ?: null, null, $betweenTime, $whereLike);
             return $this->json->successful(compact('list', 'total'));
         }
     }

@@ -36,20 +36,28 @@ class ClientController extends BaseController
      */
     final public function list(): Json
     {
+        /** 模糊搜索 */
+        $whereLike = [];
         /** 获取时间范围 */
         $betweenTime = [];
         $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
+        /** 获取筛选条件 */
+        $map = $this->request->only(['mobile', 'source'], 'get', 'trim');
+        /** 获取搜索用户 */
+        $username = $this->request->get('username/s', null, 'trim');
         /** 获取排序条件 */
         $order = $this->request->only(['create_time'], 'get', 'strOrderFilter');
-        /** 获取筛选条件 */
-        $map = $this->request->only(['mobile', 'source', 'username'], 'get', 'trim');
-        /* 组装按时间段搜索条件  */
+        /** 组装用户名搜索条件 */
+        $username && $whereLike = ['username', '%' . $username . '%'];
+        /** 组装按时间段搜索条件  */
         $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $betweenTime, $order);
+
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order, $betweenTime, $whereLike);
+
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
-            $total = $this->services->getCount($map ?: null, null, $betweenTime);
+            $total = $this->services->getCount($map ?: null, null, $betweenTime, $whereLike);
             return $this->json->successful(compact('list', 'total'));
         }
     }

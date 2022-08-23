@@ -52,7 +52,7 @@ class Index extends BaseController
      */
     final public function index(): string
     {
-        $hotArt = $this->articleServices->getList(1, 7, $this->status, $this->article_field, [], ['is_head' => 'desc', 'id' => 'desc']);
+        $hotArt = $this->articleServices->getList(1, 7, $this->status, $this->article_field, ['is_head' => 'desc', 'id' => 'desc']);
         return $this->view::fetch('/index', ['hotart' => $hotArt]);
     }
 
