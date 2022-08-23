@@ -30,7 +30,6 @@ class SystemLogServices extends BaseServices
         $tokenInfo = $this->jwtServices->parseToken($token);
         /* 只记录post方式的日志 */
         'post' === $method && $this->dao->saveOne([
-            'level' => 3,
             'uid' => $tokenInfo['uid'],
             'gid' => $tokenInfo['gid'],
             'action' => $options['route_name'],
