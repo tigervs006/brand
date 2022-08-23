@@ -3,6 +3,11 @@ declare (strict_types = 1);
 namespace app\dao;
 
 use core\basic\BaseModel;
+use core\exceptions\ApiException;
+use think\Collection;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 
 abstract class BaseDao
 {
@@ -51,9 +56,13 @@ abstract class BaseDao
         } else {
             $map = [$this->getPk() => $id];
         }
-        return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) {
-            $query->with($with);
-        })->field($field ?? '*')->find();
+        try {
+            return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) {
+                $query->with($with);
+            })->field($field ?? '*')->find();
+        } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
+            throw new ApiException($e->getMessage());
+        }
     }
 
     /**
@@ -83,7 +92,11 @@ abstract class BaseDao
      */
     public function setInc(int $id, int $incValue, ?string $field = 'click'): bool
     {
-        $data = $this->getModel()->find($id);
+        try {
+            $data = $this->getModel()->find($id);
+        } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
+            throw new ApiException($e->getMessage());
+        }
         $data->$field += $incValue;
         return $data->isAutoWriteTimestamp(false)->save();
     }
@@ -102,17 +115,23 @@ abstract class BaseDao
 
     /**
      * 根据条件获取所有数据
-     * @return array|\think\Collection
+     * @return array|Collection
      * @param array|null $map 条件
      * @param array|null $order 排序
      * @param string|null $field 字段
+     * @param array|null $with 关联模型
+     * @param array|null $betweenTime 时间段
      */
-    public function getData(?array $map = null, ?array $order = ['id' => 'desc'], ?string $field = '*'): array|\think\Collection
+    public function getData(?array $map = null, ?array $order = ['id' => 'desc'], ?string $field = '*', ?array $betweenTime = [], ?array $with = []): array|\think\Collection
     {
-        if (is_null($map)) {
-            return $this->getModel()->order($order)->field($field)->select();
-        } else {
-            return $this->getModel()->where($map)->order($order)->field($field)->select();
+        try {
+            return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) {
+                $query->with($with);
+            })->when(count($betweenTime), function ($query) use ($betweenTime) {
+                $query->whereBetweenTime(...$betweenTime);
+            })->field($field)->order($order)->select();
+        } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
+            throw new ApiException($e->getMessage());
         }
     }
 
@@ -120,14 +139,17 @@ abstract class BaseDao
      * 计算数据总量
      * @return int
      * @param array|null $map 条件
-     * @param string|null $field 字段
+     * @param string|null $key 字段
+     * @param array|null $betweenTime 时间段
      */
-    public function getCount(?array $map, ?string $field = 'id'): int
+    public function getCount(?array $map, ?string $key, ?array $betweenTime = []): int
     {
-        if (is_null($map)) {
-            return $this->getModel()->count($field);
+        if (is_null($map) && empty($betweenTime)) {
+            return $this->getModel()->count($key ?: $this->getPK());
         } else {
-            return $this->getModel()->where($map)->count();
+            return $this->getModel()->where($map)->when(count($betweenTime), function ($query) use ($betweenTime) {
+                $query->whereBetweenTime(...$betweenTime);
+            })->count();
         }
     }
 
@@ -179,7 +201,6 @@ abstract class BaseDao
             return $this->getModel()->useSoftDelete('delete_time',time())->delete($id) >= 1;
         } else {
             $where = [is_null($key) ? $this->getPk() : $key => $id];
-            // FIXME: delete方法实际返回的是int类型，ThinkPHP的bug
             return $this->getModel()->where($where)->useSoftDelete('delete_time',time())->delete() >= 1;
         }
     }
@@ -235,8 +256,12 @@ abstract class BaseDao
      */
     public function getPrenext(int $id, ?string $field = 'id, title', ?string $firstPre = '已经是第一篇了', ?string $lastNext = '这是最后一篇了'): array
     {
-        $next = $this->getModel()->where('id', '>', $id)->field($field)->limit(1)->select();
-        $pre = $this->getModel()->where('id', '<', $id)->field($field)->order('id', 'desc')->limit(1)->select();
+        try {
+            $next = $this->getModel()->where('id', '>', $id)->field($field)->limit(1)->select();
+            $pre = $this->getModel()->where('id', '<', $id)->field($field)->order('id', 'desc')->limit(1)->select();
+        } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
+            throw new ApiException($e->getMessage());
+        }
         if ($pre->isEmpty()) {
             $pre = array(
                 'title' => $firstPre
@@ -271,7 +296,13 @@ abstract class BaseDao
      */
     public function getPaginate(array $map, int $rows = 15, ?string $field = '*', ?array $order = ['id' => 'desc'], ?array $with = []): \think\Paginator
     {
-        return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) { $query->with($with); })->field($field)->order($order)->paginate($rows);
+        try {
+            return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) {
+                $query->with($with);
+            })->field($field)->order($order)->paginate($rows);
+        } catch (DbException $e) {
+            throw new ApiException($e->getMessage());
+        }
     }
 
     /**
@@ -283,13 +314,18 @@ abstract class BaseDao
      * @param string|null $field 字段
      * @param array|null $order 排序
      * @param array|null $with  关联模型
+     * @param array|null $betweenTime 时间段
      */
-    public function getList(int $current, int $pageSize, ?array $map, ?string $field, ?array $order = ['id' => 'desc'], ?array $with = []): array|\think\Collection
+    public function getList(int $current, int $pageSize, ?array $map = null, ?string $field = '*', ?array $betweenTime = [], ?array $order = ['id' => 'desc'], ?array $with = []): array|\think\Collection
     {
-        if (is_null($map)) {
-            return $this->getModel()->when(count($with), function ($query) use ($with) { $query->with($with); })->field($field ?? '*')->order($order)->page($current, $pageSize)->select();
-        } else {
-            return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) { $query->with($with); })->field($field ?? '*')->order($order)->page($current, $pageSize)->select();
+        try {
+            return $this->getModel()->where($map)->when(count($with), function ($query) use ($with) {
+                $query->with($with);
+            })->when(count($betweenTime), function ($query) use ($betweenTime) {
+                $query->whereBetweenTime(...$betweenTime);
+            })->field($field)->order($order)->page($current, $pageSize)->select();
+        } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
+            throw new ApiException($e->getMessage());
         }
     }
 }
