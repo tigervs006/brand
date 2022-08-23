@@ -29,6 +29,7 @@ class LinkController extends BaseController
      */
     final public function list(): Json
     {
+        $betweenTime = [];
         /** 获取搜索条件 */
         $map = $this->request->only(['status'], 'get', 'trim');
         /** 获取搜索标题 */
@@ -37,19 +38,17 @@ class LinkController extends BaseController
         $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
         /** 获取排序条件 */
         $order = $this->request->only(['id', 'sort', 'create_time'], 'get', 'strOrderFilter');
-        if ($name || $dateRange) {
-            /** 组装标题搜索条件 */
-            $map[] = ['name', 'like', '%' . $name . '%'];
-            /** 组装时间段搜索条件 */
-            $map[] = ['create_time', 'between time', [$dateRange['dateRange'][0], $dateRange['dateRange'][1]]];
-        }
-
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order ?: $this->order);
+        // 组装文章标题搜索条件
+        $name && $map[] = ['name', 'like', '%' . $name . '%'];
+        // 组装按时间段搜索条件
+        $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
+        // 获取友情链接列表
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $betweenTime, $order ?: $this->order);
 
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
-            $total = $this->services->getCount($map ?: null);
+            $total = $this->services->getCount($map ?: null, null, $betweenTime);
             return $this->json->successful(compact('list', 'total'));
         }
     }

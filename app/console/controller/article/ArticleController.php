@@ -94,11 +94,11 @@ class ArticleController extends BaseController
     /**
      * 文章列表
      * @return Json
-     * FIXME: 组装的搜索条件不兼容$map内的其它搜索条件
      */
     final public function list(): Json
     {
         // 获取时间范围
+        $betweenTime = [];
         $dateRange = $this->request->only(['startTime', 'endTime'], 'get');
         // 获取搜索标题
         $title = $this->request->get('title/s', null, 'trim');
@@ -108,17 +108,17 @@ class ArticleController extends BaseController
         $order = $this->request->only(['click', 'create_time', 'update_time'], 'get', 'strOrderFilter');
         // 排除字段后获得map
         $map = $this->request->except(['title', 'click', 'current', 'pageSize', 'startTime', 'endTime', 'create_time', 'update_time'], 'get');
-        // 组装按时间段搜索条件
-        $dateRange && $map[] = ['create_time', 'between time', [$dateRange['startTime'], $dateRange['endTime']]];
         // 组装文章标题搜索条件
         $title && $map[] = ['title', 'like', '%' . $title . '%'];
+        // 组装按时间段搜索条件
+        $dateRange && $betweenTime = ['create_time', $dateRange['startTime'], $dateRange['endTime']];
         // 提取文章列表
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $order ?: $this->order, ['channel']);
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, $field, $betweenTime, $order ?: $this->order, ['channel']);
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
             // 提取数据总数
-            $total = $this->services->getCount($map ?: null);
+            $total = $this->services->getCount($map ?: null, null, $betweenTime);
             return $this->json->successful(compact('total', 'list'));
         }
     }

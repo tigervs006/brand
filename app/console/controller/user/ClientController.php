@@ -37,20 +37,19 @@ class ClientController extends BaseController
     final public function list(): Json
     {
         /** 获取时间范围 */
+        $betweenTime = [];
         $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
         /** 获取排序条件 */
         $order = $this->request->only(['create_time'], 'get', 'strOrderFilter');
         /** 获取筛选条件 */
         $map = $this->request->only(['mobile', 'source', 'username'], 'get', 'trim');
-        if ($dateRange) {
-            /** 组装按时间段搜索条件 fixme: 组装的搜索条件不兼容$map内的其它搜索条件 */
-            $map[] = ['create_time', 'between time', [$dateRange['dateRange'][0], $dateRange['dateRange'][1]]];
-        }
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order);
+        /* 组装按时间段搜索条件  */
+        $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $betweenTime, $order);
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
-            $total = $this->services->getCount($map ?: null);
+            $total = $this->services->getCount($map ?: null, null, $betweenTime);
             return $this->json->successful(compact('list', 'total'));
         }
     }

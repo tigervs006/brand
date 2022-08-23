@@ -30,10 +30,8 @@ class SystemLogsController extends BaseController
         $map = $this->request->only(['uid', 'gid', 'level']);
         /* 获取时间范围 */
         $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
-        if ($dateRange) {
-            /* 组装按时间段搜索条件  */
-            $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
-        }
+        /* 组装按时间段搜索条件  */
+        $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
         $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $betweenTime ?: [], $this->order);
         if ($list->isEmpty()) {
             return $this->json->fail();

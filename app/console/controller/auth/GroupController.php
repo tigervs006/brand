@@ -60,7 +60,7 @@ class GroupController extends BaseController
         ], 'get', 'trim');
         // 获取排序字段
         $order = $this->request->only(['create_time', 'update_time'], 'get', 'strOrderFilter');
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order);
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', [], $order);
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {

@@ -61,6 +61,6 @@ class Industry extends BaseController
      */
     final public function hortArt(): array|\think\Collection
     {
-        return $this->services->getList($this->current, $this->pageSize, $this->status, 'id, click, title, litpic, create_time', ['click' => 'desc']);
+        return $this->services->getList($this->current, $this->pageSize, $this->status, 'id, click, title, litpic, create_time', [], ['click' => 'desc']);
     }
 }
