@@ -124,10 +124,10 @@ class Cos extends BaseUpload
             if (!isset($uploadInfo['Location'])) {
                 return $this->setError('Failed to upload to COS');
             }
-            $this->fileInfo['fileName'] = $fileName;
+            $this->fileInfo['name'] = $fileName;
             $this->fileInfo['uid'] = $uploadInfo['RequestId'];
             $this->fileInfo['relativePath'] = $uploadInfo['Key'];
-            $this->fileInfo['fullPath'] = $this->uploadUrl . '/' . $uploadInfo['Key'];
+            $this->fileInfo['url'] = $this->uploadUrl . '/' . $uploadInfo['Key'];
             $this->fileInfo['cosPath'] = $uploadInfo['Location'];
             return $this->fileInfo;
         } catch (UploadException $e) {
