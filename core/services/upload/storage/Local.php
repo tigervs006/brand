@@ -95,8 +95,9 @@ class Local extends BaseUpload
         }
         $filePath = Filesystem::path($fileName);
         $this->fileInfo['originalName'] = $fileHandle->getOriginalName();
+        $this->fileInfo['uid'] = rand(100000, 100000000);
         $this->fileInfo['fileName'] = (new File($filePath))->getFilename();
-        $this->fileInfo['filePath'] = $this->defaultPath . '/' . str_replace('\\', '/', $fileName);
+        $this->fileInfo['fullPath'] = $this->defaultPath . '/' . str_replace('\\', '/', $fileName);
         return $this->fileInfo;
     }
 
@@ -116,7 +117,8 @@ class Local extends BaseUpload
         $fileName = $dir . '/' . $realName;
         file_put_contents($fileName, $fileContent);
         $this->fileInfo['fileName'] = $realName;
-        $this->fileInfo['filePath'] = $this->defaultPath . '/' . $this->path . '/' . $realName;
+        $this->fileInfo['uid'] = rand(100000, 100000000);
+        $this->fileInfo['fullPath'] = $this->defaultPath . '/' . $this->path . '/' . $realName;
         return $this->fileInfo;
     }
 
