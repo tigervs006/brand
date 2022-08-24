@@ -115,6 +115,7 @@ class Cos extends BaseUpload
         }
         try {
             $filePath = $this->setUploadPath($fileName);
+
             $uploadInfo = $this->app()->putObject([
                 'Bucket' => $this->storageName,
                 'Key' => $filePath,
@@ -123,9 +124,10 @@ class Cos extends BaseUpload
             if (!isset($uploadInfo['Location'])) {
                 return $this->setError('Failed to upload to COS');
             }
-            $this->fileInfo['originalName'] = isset($fileHandle) ? $fileHandle->getOriginalName() : $filePath;
-            $this->fileInfo['relativePath'] = $filePath;
-            $this->fileInfo['fullPath'] = $this->uploadUrl . '/' . $filePath;
+            $this->fileInfo['fileName'] = $fileName;
+            $this->fileInfo['uid'] = $uploadInfo['RequestId'];
+            $this->fileInfo['relativePath'] = $uploadInfo['Key'];
+            $this->fileInfo['fullPath'] = $this->uploadUrl . '/' . $uploadInfo['Key'];
             $this->fileInfo['cosPath'] = $uploadInfo['Location'];
             return $this->fileInfo;
         } catch (UploadException $e) {
