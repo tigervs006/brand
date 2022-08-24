@@ -138,16 +138,10 @@ class PublicController extends BaseController
         try {
             $upload = \core\services\UploadService::init();
             /* 设置默认值upload是因为ckeditor上传时有固定的name */
-            $fileField = $this->request->post('field/s', 'upload', 'trim');
             $uploadPath = $this->request->post('path/s', 'images/article', 'trim');
-            $fileInfo = $upload->to($uploadPath)->validate()->move($fileField);
-            /* 适配ckeditor要求返回的参数 */
-            if ('upload' === $fileField) {
-                return json(['uploaded' => 1, 'url' => $fileInfo['fullPath']]);
-            } else {
-                $uploadInfo = ['uid' => $fileInfo['uid'], 'name' => $fileInfo['fileName'], 'url' => $fileInfo['fullPath']];
-                return $fileInfo ? $this->json->successful('File uploaded successfully', $uploadInfo) : $this->json->fail('File upload failed');
-            }
+            $fileInfo = $upload->to($uploadPath)->validate()->move();
+            $uploadInfo = ['uid' => $fileInfo['uid'], 'name' => $fileInfo['fileName'], 'url' => $fileInfo['fullPath']];
+            return $fileInfo ? $this->json->successful('File uploaded successfully', $uploadInfo) : $this->json->fail('File upload failed');
         } catch (\Exception $e) {
             throw new UploadException($e->getMessage());
         }
