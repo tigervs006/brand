@@ -40,13 +40,18 @@ class ClientController extends BaseController
         $whereLike = [];
         /** 获取时间范围 */
         $betweenTime = [];
-        $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
         /** 获取筛选条件 */
-        $map = $this->request->only(['mobile', 'source'], 'get', 'trim');
+        $map = $this->request->only(['source'], 'get', 'trim');
+        /** 获取时间段 */
+        $dateRange = $this->request->only(['dateRange'], 'get', 'trim');
+        /** 获取手机号码 */
+        $mobile = $this->request->get('mobile/d', null, 'trim');
         /** 获取搜索用户 */
         $username = $this->request->get('username/s', null, 'trim');
         /** 获取排序条件 */
         $order = $this->request->only(['create_time'], 'get', 'strOrderFilter');
+        /** 组装手机号搜索条件 */
+        $mobile && $whereLike = ['mobile', '%' . $mobile . '%'];
         /** 组装用户名搜索条件 */
         $username && $whereLike = ['username', '%' . $username . '%'];
         /** 组装按时间段搜索条件  */
