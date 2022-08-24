@@ -7,14 +7,13 @@ use think\validate;
 class ChannelValidator extends validate
 {
     protected $regex = [
-        'path'  => '[1-9\-]{1,50}',
         'url'   => '[\/\/]{2}\w.*?'
     ];
 
     protected $rule = [
         'pid'           => 'require|integer',
         'sort'          => 'integer|between:1,1000',
-        'path'          => 'require|max:50|regex:path',
+        'path'          => 'require|max:50',
         'name'          => 'require|alphaDash|min:2|max:20',
         'cname'         => 'require|chs|min:2|max:20',
         'banner'        => 'require|regex:url',
@@ -31,7 +30,6 @@ class ChannelValidator extends validate
         'sort.between'          => '栏目排序范围应在1~1000',
         'path.require'          => '栏目路径不得为空',
         'path.max'              => '栏目路径深度不得超过50',
-        'path.regex'            => '栏目路径必须是数字[1-9]或横线[-]的组合',
         'name.require'          => '栏目英文不得为空',
         'name.alphaDash'        => '栏目英文就为字母、数字或下划线的组合',
         'name.min'              => '栏目英文不得少于2个字符',
