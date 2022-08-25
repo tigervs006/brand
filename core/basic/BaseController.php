@@ -81,11 +81,11 @@ abstract class BaseController
      * @access public
      * @param  App  $app  应用对象
      */
-    public function __construct(App $app, View $view)
+    public function __construct(App $app, View $view, Request $request)
     {
         $this->app     = $app;
         $this->view    = $view;
-        $this->request = $this->app->request;
+        $this->request = $request;
         // 初始化
         $this->initialize();
     }
