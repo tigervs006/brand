@@ -5,15 +5,14 @@ declare (strict_types = 1);
 
 if (!function_exists('sys_config')) {
     /**
-     * 获取单个系统配置
+     * 获取单个配置项
      * @return string
-     * todo: 后期要做缓存
      * @param string $name 配置名
-     * @param string $default 默认配置名
+     * @param string $value 字段名
      */
-    function sys_config(string $name, string $default = ''): string
+    function sys_config(string $name, string $value = 'value'): string
     {
-        return empty($name) ? $default : app('sysConfig')->value(['name' => $name], 'value');
+        return app('sysConfig')->value(['name' => $name], $value);
     }
 }
 
