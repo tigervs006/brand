@@ -59,7 +59,7 @@ class AccountController extends BaseController
         $parseToken = $this->auth->parseToken($token);
         $map = ['id' => $parseToken['gid']];
         $ids = $this->groupServices->value($map, 'menu');
-        $data = $this->authServices->queryMenu($ids);
+        $data = $this->authServices->queryMenu($ids, ['type' => 1]);
         $list = $this->authServices->getTreeMenu($data);
         return $this->json->successful(compact('list'));
     }
