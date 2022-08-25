@@ -7,6 +7,7 @@ use app\model\auth\AuthModel;
 use core\exceptions\ApiException;
 use think\db\exception\DbException;
 use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
 
 class AuthDao extends BaseDao
 {
@@ -28,7 +29,7 @@ class AuthDao extends BaseDao
             return $this->getModel()->whereIn('id', $ids)->when(count($where), function ($query) use ($where) {
                 $query->where($where);
             })->order('id', 'asc')->select();
-        } catch (DataNotFoundException|DbException $e) {
+        } catch (DataNotFoundException|ModelNotFoundException|DbException $e) {
             throw new ApiException($e->getMessage());
         }
     }
