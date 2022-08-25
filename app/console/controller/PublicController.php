@@ -122,7 +122,7 @@ class PublicController extends BaseController
         $post = $this->request->only(
             [
                 'id',
-                 'gid'
+                'gid'
             ], 'post', 'trim');
         /* 记录退出登录日志 */
         $this->userServices->loginActionLog($post, '退出登录');
