@@ -18,18 +18,17 @@ class UploadService
     protected static array $upload = [];
 
     /**
-     * @param null $type
+     * @param int|null $type
      * @return Upload|mixed
      */
-    public static function init($type = null): mixed
+    public static function init(int $type = null): mixed
     {
         if (is_null($type)) {
-            $type = (int) sys_config('upload_type', 1);
+            $type = (int) sys_config('upload_type');
         }
         if (isset(self::$upload['upload_' . $type])) {
             return self::$upload['upload_' . $type];
         }
-        $type = (int) $type;
         $config = [];
         switch ($type) {
             case 1: // 本地
@@ -58,7 +57,6 @@ class UploadService
         if (1 !== $type) {
             $config['uploadUrl'] = sys_config('uploadUrl');
         }
-
         return self::$upload['upload_' . $type] = new Upload($type, $config);
     }
 }
