@@ -62,13 +62,13 @@ class MailHandler
     public function __construct()
     {
         $this->mail = new PHPMailer(true);
-        $this->port = sys_config('mail_port');
-        $this->host = sys_config('mail_host');
-        $this->password = sys_config('mail_password');
+        $this->port = sys_config('mail_send_port');
+        $this->host = sys_config('mail_smtp_host');
         $this->sendFrom = sys_config('mail_send_from');
         $this->userName = sys_config('mail_user_name');
-        $this->mailSubject = sys_config('mail_subject');
-        $this->receiver = explode(',', sys_config('mail_receiver'));
+        $this->password = sys_config('mail_user_password');
+        $this->mailSubject = sys_config('mail_send_subject');
+        $this->receiver = explode(',', sys_config('mail_sned_receiver'));
     }
 
     /**
