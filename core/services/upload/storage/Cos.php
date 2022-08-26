@@ -129,7 +129,7 @@ class Cos extends BaseUpload
             $this->fileInfo['uid'] = $uploadInfo['RequestId'];
             $this->fileInfo['relativePath'] = $uploadInfo['Key'];
             $this->fileInfo['url'] = $this->uploadUrl . '/' . $uploadInfo['Key'];
-            $this->fileInfo['cosPath'] = $uploadInfo['Location'];
+            $this->fileInfo['cosPath'] = '//' . $uploadInfo['Location'];
             return $this->fileInfo;
         } catch (UploadException $e) {
             return $this->setError($e->getMessage());
