@@ -154,9 +154,10 @@ class Local extends BaseUpload
      */
     public function delete(string $filePath): bool
     {
-        if (file_exists($filePath)) {
+        $path = substr($filePath, stripos($filePath,'/') + 1);
+        if (file_exists($path)) {
             try {
-                unlink($filePath);
+                unlink($path);
                 return true;
             } catch (UploadException $e) {
                 return $this->setError($e->getMessage());
