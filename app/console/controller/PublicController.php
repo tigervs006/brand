@@ -235,6 +235,6 @@ class PublicController extends BaseController
         $key = $this->request->post('key/s', null, 'trim');
         /* 如果没有指定缓存key，则默认清空所有缓存 */
         Cache::has($key) ? Cache::delete($key) : Cache::clear();
-        return $this->json->successful('刷新缓存成功');
+        return $this->json->successful('清除缓存成功');
     }
 }
