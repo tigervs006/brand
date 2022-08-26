@@ -58,7 +58,6 @@ class MailHandler
      */
     private string $mailSubject;
 
-
     public function __construct()
     {
         $this->mail = new PHPMailer(true);
