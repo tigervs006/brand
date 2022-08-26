@@ -227,13 +227,14 @@ class PublicController extends BaseController
     }
 
     /**
-     * 刷新缓存
+     * 清除缓存
      * @return Json
      */
     final public function refreshCache(): Json
     {
         $key = $this->request->post('key/s', null, 'trim');
-        Cache::has($key) ? Cache::delete($key) : throw new ApiException('刷新指定的缓存key不存在');
+        /* 如果没有指定缓存key，则默认清空所有缓存 */
+        Cache::has($key) ? Cache::delete($key) : Cache::clear();
         return $this->json->successful('刷新缓存成功');
     }
 }
