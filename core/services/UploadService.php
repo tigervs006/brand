@@ -18,16 +18,13 @@ class UploadService
     protected static array $upload = [];
 
     /**
+     * @return Upload
      * @param int|null $type
-     * @return Upload|mixed
      */
-    public static function init(int $type = null): mixed
+    public static function init(int $type = null): Upload
     {
         if (is_null($type)) {
             $type = (int) sys_config('upload_type');
-        }
-        if (isset(self::$upload['upload_' . $type])) {
-            return self::$upload['upload_' . $type];
         }
         $config = [];
         switch ($type) {
@@ -53,10 +50,8 @@ class UploadService
                 throw new UploadException('您已关闭上传功能');
         }
 
-        // 定义CDN域名
-        if (1 !== $type) {
-            $config['uploadUrl'] = sys_config('uploadUrl');
-        }
-        return self::$upload['upload_' . $type] = new Upload($type, $config);
+        /* 设置CDN域名 */
+        1 < $type && $config['uploadUrl'] = sys_config('uploadUrl');
+        return new Upload($type, $config);
     }
 }
