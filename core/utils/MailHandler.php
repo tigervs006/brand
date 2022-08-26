@@ -2,6 +2,7 @@
 
 namespace core\utils;
 
+use think\facade\Config;
 use PHPMailer\PHPMailer\SMTP;
 use core\exceptions\ApiException;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -61,13 +62,13 @@ class MailHandler
     public function __construct()
     {
         $this->mail = new PHPMailer(true);
-        $this->port = sys_config('mail_send_port');
-        $this->host = sys_config('mail_smtp_host');
-        $this->sendFrom = sys_config('mail_send_from');
-        $this->userName = sys_config('mail_user_name');
-        $this->password = sys_config('mail_user_password');
-        $this->mailSubject = sys_config('mail_send_subject');
-        $this->receiver = explode(',', sys_config('mail_send_receiver'));
+        $this->port = Config::get('index.mail_send_port');
+        $this->host = Config::get('index.mail_smtp_host');
+        $this->sendFrom = Config::get('index.mail_send_from');
+        $this->userName = Config::get('index.mail_user_name');
+        $this->password = Config::get('index.mail_user_password');
+        $this->mailSubject = Config::get('index.mail_send_subject');
+        $this->receiver = explode(',', Config::get('index.mail_send_receiver'));
     }
 
     /**

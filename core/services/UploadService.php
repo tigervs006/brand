@@ -2,6 +2,7 @@
 
 namespace core\services;
 
+use think\facade\Config;
 use core\services\upload\Upload;
 use core\exceptions\UploadException;
 
@@ -24,7 +25,7 @@ class UploadService
     public static function init(int $type = null): Upload
     {
         if (is_null($type)) {
-            $type = (int) sys_config('upload_type');
+            $type = (int) Config::get('index.upload_type');
         }
         $config = [];
         switch ($type) {
@@ -32,18 +33,18 @@ class UploadService
                 break;
             case 2: // OSS
                 $config = [
-                    'storageName' => sys_config('alioss_bucket'),
-                    'storageRegion' => sys_config('alioss_endpoint'),
-                    'accessKey' => sys_config('alioss_accessKey_id'),
-                    'secretKey' => sys_config('alioss_accessKey_secret'),
+                    'storageName' => Config::get('index.alioss_bucket'),
+                    'storageRegion' => Config::get('index.alioss_endpoint'),
+                    'accessKey' => Config::get('index.alioss_accessKey_id'),
+                    'secretKey' => Config::get('index.alioss_accessKey_secret'),
                 ];
                 break;
             case 3: // COS
                 $config = [
-                    'storageName' => sys_config('txcos_bucket'),
-                    'accessKey' => sys_config('txcos_secret_id'),
-                    'secretKey' => sys_config('txcos_secret_key'),
-                    'storageRegion' => sys_config('txcos_region'),
+                    'storageName' => Config::get('index.txcos_bucket'),
+                    'accessKey' => Config::get('index.txcos_secret_id'),
+                    'secretKey' => Config::get('index.txcos_secret_key'),
+                    'storageRegion' => Config::get('index.txcos_region'),
                 ];
                 break;
             default:
@@ -51,7 +52,7 @@ class UploadService
         }
 
         /* 设置CDN域名 */
-        1 < $type && $config['uploadUrl'] = sys_config('uploadUrl');
+        1 < $type && $config['uploadUrl'] = Config::get('index.uploadUrl');
         return new Upload($type, $config);
     }
 }

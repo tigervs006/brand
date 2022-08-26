@@ -15,11 +15,6 @@ use core\interfaces\MiddlewareInterface;
  */
 class AuthTokenMiddleware implements MiddlewareInterface
 {
-    /**
-     * 是否校验token
-     * @var int
-     */
-    private int $isCheckToken;
 
     /**
      * JwtAuth
@@ -29,7 +24,6 @@ class AuthTokenMiddleware implements MiddlewareInterface
 
     public function __construct(JwtAuth $jwtService) {
         $this->jwtService = $jwtService;
-        $this->isCheckToken = (int) sys_config('access_token_check');
     }
 
     /**
@@ -39,7 +33,7 @@ class AuthTokenMiddleware implements MiddlewareInterface
      */
     public function handle(Request $request, \Closure $next): Response
     {
-        if ($this->isCheckToken) {
+        if (config('index.access_token_check')) {
             $token = $request->header('Authorization');
             !$token && throw new AuthException('Token is missing or incorrect');
             $this->jwtService->verifyToken(trim($token));
