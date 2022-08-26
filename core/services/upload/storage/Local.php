@@ -98,7 +98,7 @@ class Local extends BaseUpload
         $this->fileInfo['originalName'] = $fileHandle->getOriginalName();
         $this->fileInfo['uid'] = rand(100000, 100000000);
         $this->fileInfo['name'] = (new File($filePath))->getFilename();
-        $this->fileInfo['url'] = $this->defaultPath . '/' . str_replace('\\', '/', $fileName);
+        $this->fileInfo['url'] = $this->defaultPath . str_replace('\\', '/', $fileName);
         return $this->fileInfo;
     }
 
@@ -156,12 +156,7 @@ class Local extends BaseUpload
     {
         if (file_exists($filePath)) {
             try {
-                $fileArr = explode('/',$filePath);
-                $fileName = end($fileArr);
                 unlink($filePath);
-                unlink(str_replace($fileName, 'big_' . $fileName, $filePath));
-                unlink(str_replace($fileName, 'mid_' . $fileName, $filePath));
-                unlink(str_replace($fileName, 'small_' . $fileName, $filePath));
                 return true;
             } catch (UploadException $e) {
                 return $this->setError($e->getMessage());
