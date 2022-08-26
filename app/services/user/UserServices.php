@@ -9,13 +9,12 @@ use app\services\system\SystemLogServices;
 
 class UserServices extends BaseServices
 {
-    private SystemLogServices $logServices;
 
-    public function __construct(UserDao $dao, SystemLogServices $logServices)
+    public function __construct(UserDao $dao)
     {
         $this->dao = $dao;
-        $this->logServices = $logServices;
     }
+
 
     /**
      * 编辑/新增用户
@@ -51,6 +50,7 @@ class UserServices extends BaseServices
             'ipaddress' => ip2long(request()->ip()),
             'path' => app('http')->getName() . '/' . request()->rule()->getRule(),
         ];
-        $this->logServices->saveOne($data);
+        $logServices = app()->make(SystemLogServices::class);
+        $logServices->saveOne($data);
     }
 }

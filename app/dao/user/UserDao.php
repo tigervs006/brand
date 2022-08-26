@@ -11,5 +11,4 @@ class UserDao extends BaseDao
     {
         return User::class;
     }
-
 }
