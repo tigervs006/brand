@@ -62,7 +62,6 @@ Route::group(function () {
     })->prefix('channel.channelController/');
     // 友链部分
     Route::group('link', function () {
-        Route::get('<id?>$', 'index')->option(['route_name' => '获取友链详情']);
         Route::get('list', 'list')->option(['route_name' => '友链列表']);
         Route::post('save', 'save')->option(['route_name' => '新增/编辑友链']);
         Route::post('del', 'delete')->option(['route_name' => '删除友链']);
