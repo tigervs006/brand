@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6c9a8fe0f85ee81ca4c66a98846e236",
+    "content-hash": "8b39c235e895298347bcbfce37a8c078",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -1293,16 +1293,16 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "4.3.x-dev",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "5a97b2b33c2368685f8ac9886115d84f70dd14ae"
+                "reference": "72ac6d807ee51a70ad376ee03a2387e8646e10f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/5a97b2b33c2368685f8ac9886115d84f70dd14ae",
-                "reference": "5a97b2b33c2368685f8ac9886115d84f70dd14ae",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/72ac6d807ee51a70ad376ee03a2387e8646e10f3",
+                "reference": "72ac6d807ee51a70ad376ee03a2387e8646e10f3",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -1357,7 +1357,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lcobucci/jwt/issues",
-                "source": "https://github.com/lcobucci/jwt/tree/4.3.x"
+                "source": "https://github.com/lcobucci/jwt/tree/4.2.1"
             },
             "funding": [
                 {
@@ -1369,7 +1369,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-08-23T05:56:07+00:00"
+            "time": "2022-08-19T23:14:07+00:00"
         },
         {
             "name": "league/flysystem",
@@ -3616,9 +3616,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "lcobucci/jwt": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
