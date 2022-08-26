@@ -68,7 +68,7 @@ class MailHandler
         $this->userName = sys_config('mail_user_name');
         $this->password = sys_config('mail_user_password');
         $this->mailSubject = sys_config('mail_send_subject');
-        $this->receiver = explode(',', sys_config('mail_sned_receiver'));
+        $this->receiver = explode(',', sys_config('mail_send_receiver'));
     }
 
     /**
