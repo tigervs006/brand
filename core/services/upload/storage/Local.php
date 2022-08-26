@@ -94,6 +94,7 @@ class Local extends BaseUpload
             return $this->setError('Failed to upload to Local');
         }
         $filePath = Filesystem::path($fileName);
+        $this->fileInfo['storage'] = 'Local';
         $this->fileInfo['originalName'] = $fileHandle->getOriginalName();
         $this->fileInfo['uid'] = rand(100000, 100000000);
         $this->fileInfo['name'] = (new File($filePath))->getFilename();

@@ -111,6 +111,7 @@ class Oss extends BaseUpload
             if (!isset($uploadInfo['info']['url'])) {
                 return $this->setError('Failed to upload to OSS');
             }
+            $this->fileInfo['storage'] = 'OSS';
             $this->fileInfo['name'] = $fileName;
             $this->fileInfo['uid'] = $uploadInfo['x-oss-request-id'];
             $this->fileInfo['relativePath'] = $filePath;
@@ -140,6 +141,7 @@ class Oss extends BaseUpload
             if (!isset($uploadInfo['info']['url'])) {
                 return $this->setError('Upload failure');
             }
+            $this->fileInfo['storage'] = 'OSS';
             $this->fileInfo['name'] = $fileName;
             $this->fileInfo['uid'] = $uploadInfo['x-oss-request-id'];
             $this->fileInfo['relativePath'] = $filePath;
