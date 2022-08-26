@@ -29,7 +29,7 @@ class ProductController extends BaseController
     final public function index(): Json
     {
         $info = $this->services->getOne(['id' => $this->id], null, ['detail']);
-        return null === $info ? $this->json->fail() : $this->json->successful(compact('info'));
+        return is_null($info) ? $this->json->fail() : $this->json->successful(compact('info'));
     }
 
     /**
