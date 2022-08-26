@@ -37,16 +37,16 @@ class UploadService
             case 2: // OSS
                 $config = [
                     'storageName' => sys_config('alioss_bucket'),
-                    'accessKey' => sys_config('alioss_accessKeyID'),
                     'storageRegion' => sys_config('alioss_endpoint'),
-                    'secretKey' => sys_config('alioss_accessKeySecret'),
+                    'accessKey' => sys_config('alioss_accessKey_id'),
+                    'secretKey' => sys_config('alioss_accessKey_secret'),
                 ];
                 break;
             case 3: // COS
                 $config = [
                     'storageName' => sys_config('txcos_bucket'),
-                    'accessKey' => sys_config('txcos_secretId'),
-                    'secretKey' => sys_config('txcos_secretKey'),
+                    'accessKey' => sys_config('txcos_secret_id'),
+                    'secretKey' => sys_config('txcos_secret_key'),
                     'storageRegion' => sys_config('txcos_region'),
                 ];
                 break;
