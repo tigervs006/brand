@@ -53,7 +53,6 @@ class ChannelController extends BaseController
     {
         $post = $this->request->only(
             [
-                'id',
                 'pid',
                 'sort',
                 'path',
@@ -64,9 +63,11 @@ class ChannelController extends BaseController
                 'banner',
                 'status',
                 'keywords',
+                'id' => null,
                 'description'
             ], 'post', 'trim'
         );
+        $message = $post['id'] ? '编辑' : '新增';
         // 过滤空值字段
         $data = array_filter($post, function ($val) {
             // 避免过滤0、boolean值
@@ -76,7 +77,6 @@ class ChannelController extends BaseController
         if (!empty($data['pid']) && 0 <= $data['pid']) {
             $data['level'] = $this->services->value(['id' => $data['pid']], 'level') + 1;
         }
-        $message = isset($post['id']) ? '编辑' : '新增';
         // 验证必要数据
         try {
             $this->validate($data, $this->validator);
