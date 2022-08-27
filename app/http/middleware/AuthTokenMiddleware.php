@@ -2,10 +2,9 @@
 declare (strict_types = 1);
 namespace app\http\middleware;
 
-use think\Request;
+use app\Request;
 use think\Response;
 use core\utils\JwtAuth;
-use core\exceptions\AuthException;
 use core\interfaces\MiddlewareInterface;
 
 /**
@@ -34,9 +33,7 @@ class AuthTokenMiddleware implements MiddlewareInterface
     public function handle(Request $request, \Closure $next): Response
     {
         if (config('index.access_token_check')) {
-            $token = $request->header('Authorization');
-            !$token && throw new AuthException('Token is missing or incorrect');
-            $this->jwtService->verifyToken(trim($token));
+            $this->jwtService->verifyToken($request->token());
         }
 
         return $next($request);
