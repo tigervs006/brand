@@ -39,12 +39,13 @@ class AuthServices extends BaseServices
      */
     public function verifyAuthority(array $token): void
     {
+        $gid = $token['gid'];
         /* 获取当前访问路由 */
         $rules = request()->rule()->getRule();
         $groupServices = app()->make(GroupServices::class);
-        $groupRole = $groupServices->value(['id' => $token['gid']], 'menu');
+        $groupRole = $groupServices->value(['id' => $gid], 'menu');
         /* 缓存用户组ID为KEY的路由权限 */
-        $roleMenu = Cache::remember($token['gid'] . '_role_menu', function () use ($groupRole) {
+        $roleMenu = Cache::remember("{$gid}_role_menu", function () use ($groupRole) {
             return $this->queryMenu($groupRole, ['type' => 3])->toArray();
         }, 3600 * 24 * 7);
         if (!in_array($rules, array_column($roleMenu, 'routes'))) {
