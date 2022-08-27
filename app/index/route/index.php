@@ -8,6 +8,7 @@ Route::group(function () {
     Route::rule('region', 'index/region');
     Route::rule('about/$', 'about/index');
     Route::rule('support/$', 'support/index');
+    Route::rule('support/video/:id', 'support/detail');
     Route::rule('case/$', 'cases/index')->name('caseList');                     // 案例列表
     Route::rule('tags/:id', 'tags/index')->name('tagsDetail');                  // 标签列表
     Route::rule('case/:id', 'cases/detail')->name('caseDetail');                // 案例详情
