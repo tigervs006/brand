@@ -50,9 +50,9 @@ class ChannelServices extends BaseServices
      */
     public function getChildInfo(array $map, string $field, ?array $order = ['id' => 'asc']): array
     {
-        $info = $this->dao->getOne($map, $field);
+        $info = $this->dao->getOne($map, $field)->toArray();
         $childInfo = $this->dao->getData(['pid' => $info['id']], $order, $field);
-        return $info ? array_merge($info->toArray(), $childInfo->toArray()) : [];
+        return $info ? array_merge([$info], $childInfo->toArray()) : [];
     }
 
     /**
