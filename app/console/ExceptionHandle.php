@@ -3,7 +3,7 @@ declare (strict_types = 1);
 namespace app\console;
 
 use Throwable;
-use think\Request;
+use app\Request;
 use think\Response;
 use think\facade\Log;
 use think\facade\Config;

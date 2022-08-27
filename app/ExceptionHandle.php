@@ -63,7 +63,7 @@ class ExceptionHandle extends Handle
      * Render an exception into an HTTP response.
      *
      * @access public
-     * @param \think\Request   $request
+     * @param Request $request
      * @param Throwable $e
      * @return Response
      */
