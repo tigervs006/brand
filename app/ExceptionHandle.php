@@ -4,8 +4,10 @@ namespace app;
 
 use Throwable;
 use think\Response;
+use think\facade\Log;
 use think\exception\Handle;
 use think\exception\HttpException;
+use think\db\exception\DbException;
 use think\exception\ValidateException;
 use think\exception\HttpResponseException;
 use think\db\exception\DataNotFoundException;
@@ -37,8 +39,24 @@ class ExceptionHandle extends Handle
      */
     public function report(Throwable $exception): void
     {
-        // 使用内置的方式记录异常日志
-        parent::report($exception);
+        $data = [
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+            'code' => $this->getCode($exception),
+            'message' => $this->getMessage($exception),
+        ];
+
+        //日志内容
+        $log = [
+            request()->ip(),
+            ceil(msectime() - (request()->time(true) * 1000)),
+            strtoupper(request()->rule()->getMethod()),
+            request()->baseUrl(),
+            json_encode(request()->param(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+
+        ];
+        Log::write(implode("|", $log), "error");
     }
 
     /**
@@ -51,9 +69,21 @@ class ExceptionHandle extends Handle
      */
     public function render($request, Throwable $e): Response
     {
-        // 添加自定义异常处理机制
-
-        // 其他错误交给系统处理
-        return parent::render($request, $e);
+        if ($e instanceof DbException) {
+            return app('json')->fail($e->getMessage(), [
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'message' => $e->getMessage()
+            ]);
+        } else {
+            return app('json')->fail($e->getMessage(), 400, config('index.app_debug') ? [
+                'file' => $e->getFile(),
+                'code' => $e->getCode(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTrace(),
+                'message' => $e->getMessage(),
+                'previous' => $e->getPrevious()
+            ] : []);
+        }
     }
 }

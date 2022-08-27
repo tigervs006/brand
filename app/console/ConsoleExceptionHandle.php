@@ -5,14 +5,14 @@ namespace app\console;
 use Throwable;
 use think\Request;
 use think\Response;
-use think\facade\Env;
+use think\facade\Log;
 use think\exception\Handle;
 use core\exceptions\ApiException;
 use core\exceptions\AuthException;
 use think\db\exception\DbException;
 use think\exception\ValidateException;
 
-class ApiExceptionHandle extends Handle
+class ConsoleExceptionHandle extends Handle
 {
 
     /**
@@ -22,8 +22,25 @@ class ApiExceptionHandle extends Handle
      */
     public function report(Throwable $exception): void
     {
-        // 使用内置的方式记录异常日志
-        parent::report($exception);
+        $data = [
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+            'code' => $this->getCode($exception),
+            'message' => $this->getMessage($exception),
+        ];
+
+        //日志内容
+        $log = [
+            request()->tokenInfo()['aud'],
+            request()->ip(),
+            ceil(msectime() - (request()->time(true) * 1000)),
+            strtoupper(request()->rule()->getMethod()),
+            app('http')->getName() . '/' . request()->rule()->getRule(),
+            json_encode(request()->param(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+
+        ];
+        Log::write(implode("|", $log), "error");
     }
 
     /**
@@ -36,7 +53,7 @@ class ApiExceptionHandle extends Handle
     {
         // 添加自定义异常处理机制
         if ($e instanceof DbException) {
-            return app('json')->fail('数据获取异常', [
+            return app('json')->fail($e->getMessage(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'message' => $e->getMessage()
@@ -44,7 +61,7 @@ class ApiExceptionHandle extends Handle
         } else if ($e instanceof AuthException || $e instanceof ApiException || $e instanceof ValidateException) {
             return app('json')->fail($e->getMessage(), $e->getCode());
         } else {
-            return app('json')->fail('未知错误', Env::get('app_debug', false) ? [
+            return app('json')->fail($e->getMessage(), 400, config('index.app_debug') ? [
                 'file' => $e->getFile(),
                 'code' => $e->getCode(),
                 'line' => $e->getLine(),
@@ -54,5 +71,4 @@ class ApiExceptionHandle extends Handle
             ] : []);
         }
     }
-
 }

@@ -1,8 +1,8 @@
 <?php
 
-use app\console\ApiExceptionHandle;
+use app\console\ConsoleExceptionHandle;
 
 // 容器Provider定义文件
 return [
-    'think\exception\Handle' => ApiExceptionHandle::class
+    'think\exception\Handle' => ConsoleExceptionHandle::class
 ];
