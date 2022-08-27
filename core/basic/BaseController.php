@@ -3,7 +3,7 @@ declare (strict_types = 1);
 namespace core\basic;
 
 use think\App;
-use think\Request;
+use app\Request;
 use think\Validate;
 use think\facade\View;
 

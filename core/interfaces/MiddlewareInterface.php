@@ -2,7 +2,7 @@
 
 namespace core\interfaces;
 
-use think\Request;
+use app\Request;
 
 interface MiddlewareInterface
 {
