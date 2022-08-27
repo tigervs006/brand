@@ -11,17 +11,19 @@ use core\exceptions\ApiException;
 use core\exceptions\AuthException;
 use think\db\exception\DbException;
 use think\exception\ValidateException;
+use app\services\system\SystemLogServices;
 
 class ConsoleExceptionHandle extends Handle
 {
-
     /**
-     * 记录异常信息（包括日志或者其它方式记录）
+     * 记录异常信息
      * @return void
      * @param Throwable $exception
      */
     public function report(Throwable $exception): void
     {
+        $tokenInfo = request()->tokenInfo();
+
         $data = [
             'file' => $exception->getFile(),
             'line' => $exception->getLine(),
@@ -29,9 +31,9 @@ class ConsoleExceptionHandle extends Handle
             'message' => $this->getMessage($exception),
         ];
 
-        //日志内容
+        /* 日志内容 */
         $log = [
-            request()->tokenInfo()['aud'],
+            $tokenInfo['aud'],
             request()->ip(),
             ceil(msectime() - (request()->time(true) * 1000)),
             strtoupper(request()->rule()->getMethod()),
@@ -41,6 +43,9 @@ class ConsoleExceptionHandle extends Handle
 
         ];
         Log::write(implode("|", $log), "error");
+        /* 写入日志到数据库 */
+        $logServices = $this->app->make(SystemLogServices::class);
+        $logServices->actionLogRecord($tokenInfo, 1, $this->getMessage($exception));
     }
 
     /**
@@ -51,7 +56,7 @@ class ConsoleExceptionHandle extends Handle
      */
     public function render($request, Throwable $e): Response
     {
-        // 添加自定义异常处理机制
+        /* 添加自定义异常处理机制 */
         if ($e instanceof DbException) {
             return app('json')->fail($e->getMessage(), [
                 'file' => $e->getFile(),
