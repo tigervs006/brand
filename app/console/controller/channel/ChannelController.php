@@ -76,8 +76,6 @@ class ChannelController extends BaseController
         if (!empty($data['pid']) && 0 <= $data['pid']) {
             $data['level'] = $this->services->value(['id' => $data['pid']], 'level') + 1;
         }
-        // 处理特殊符号
-        $data['keywords'] = Str::strSymbol($data['keywords']);
         $message = isset($post['id']) ? '编辑' : '新增';
         // 验证必要数据
         try {
@@ -85,6 +83,8 @@ class ChannelController extends BaseController
         } catch (ValidateException $e) {
             throw new ApiException($e->getError());
         }
+        // 处理特殊符号
+        $data['keywords'] = Str::strSymbol($data['keywords']);
         $this->services->saveChannel($data, $message);
         return $this->json->successful($message . '栏目成功');
     }
