@@ -2,6 +2,7 @@
 declare (strict_types = 1);
 namespace app\services\auth;
 
+use think\Collection;
 use think\facade\Cache;
 use app\dao\auth\AuthDao;
 use app\services\BaseServices;
@@ -56,9 +57,10 @@ class AuthServices extends BaseServices
     /**
      * 生成菜单树状结构
      * @return array
+     * @param array|Collection $data data
      * @param int|null $pid 父级id
      * @param string|null $pname 父级名称
-     * @param array|\think\Collection $data data
+     * @param string|null $plocale
      */
     public function getTreeMenu(array|\think\Collection $data, ?int $pid = 0, ?string $pname = '顶级菜单', ?string $plocale = 'menu.top'): array
     {
