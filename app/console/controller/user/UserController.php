@@ -59,7 +59,7 @@ class UserController extends BaseController
                 2 == $val['type'] && $info['btnRules'][] = $val['name'];
             }
         }
-        return is_null($info) ? $this->json->fail('查无此人...') : $this->json->successful(compact('info'));
+        return is_null($info) ? $this->json->fail() : $this->json->successful(compact('info'));
     }
 
     /**
