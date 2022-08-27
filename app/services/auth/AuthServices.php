@@ -10,7 +10,7 @@ use core\exceptions\ApiException;
 use core\exceptions\AuthException;
 
 /**
- * @method \think\Collection queryMenu(string $ids, ?array $where = []) 查询用户菜单
+ * @method Collection queryMenu(string $ids, ?array $where = []) 查询用户菜单
  */
 class AuthServices extends BaseServices
 {
@@ -47,7 +47,7 @@ class AuthServices extends BaseServices
         $groupRole = $groupServices->value(['id' => $gid], 'menu');
         /* 缓存用户组ID为KEY的路由权限 */
         $roleMenu = Cache::remember("{$gid}_role_menu", function () use ($groupRole) {
-            return $this->queryMenu($groupRole, ['type' => 3])->toArray();
+            return $this->dao->queryMenu($groupRole, ['type' => 3])->toArray();
         }, 3600 * 24 * 7);
         if (!in_array($rules, array_column($roleMenu, 'routes'))) {
             throw new AuthException("Access Denied! You don't have permission to access this resource", 403);
@@ -62,7 +62,7 @@ class AuthServices extends BaseServices
      * @param string|null $pname 父级名称
      * @param string|null $plocale
      */
-    public function getTreeMenu(array|\think\Collection $data, ?int $pid = 0, ?string $pname = '顶级菜单', ?string $plocale = 'menu.top'): array
+    public function getTreeMenu(array|Collection $data, ?int $pid = 0, ?string $pname = '顶级菜单', ?string $plocale = 'menu.top'): array
     {
         $tree = [];
         foreach ($data as $val) {
