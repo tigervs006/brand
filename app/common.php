@@ -15,6 +15,17 @@ if (!function_exists('sys_config')) {
         return app('sysConfig')->value(['name' => $name], $value);
     }
 }
+if (!function_exists('msectime')) {
+    /**
+     * 获取毫秒数
+     * @return float
+     */
+    function msectime(): float
+    {
+        list($msec, $sec) = explode(' ', microtime());
+        return (float)sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000);
+    }
+}
 
 if (!function_exists('strOrderFilter')) {
     /**
