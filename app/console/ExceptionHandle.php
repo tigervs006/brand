@@ -11,10 +11,11 @@ use think\exception\Handle;
 use core\exceptions\ApiException;
 use core\exceptions\AuthException;
 use think\db\exception\DbException;
+use core\exceptions\UploadException;
 use think\exception\ValidateException;
 use app\services\system\SystemLogServices;
 
-class ConsoleExceptionHandle extends Handle
+class ExceptionHandle extends Handle
 {
     /**
      * 记录异常信息
@@ -66,7 +67,7 @@ class ConsoleExceptionHandle extends Handle
                 'line' => $e->getLine(),
                 'message' => $e->getMessage()
             ]);
-        } else if ($e instanceof AuthException || $e instanceof ApiException || $e instanceof ValidateException) {
+        } else if ($e instanceof AuthException || $e instanceof ApiException || $e instanceof UploadException || $e instanceof ValidateException) {
             return app('json')->fail($e->getMessage(), $e->getCode());
         } else {
             return app('json')->fail($e->getMessage(), 400, Config::get('index.app_debug') ? [
