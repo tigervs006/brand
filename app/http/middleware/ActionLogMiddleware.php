@@ -2,7 +2,7 @@
 
 namespace app\http\middleware;
 
-use think\Request;
+use app\Request;
 use core\interfaces\MiddlewareInterface;
 use app\services\system\SystemLogServices;
 
@@ -17,9 +17,7 @@ class ActionLogMiddleware implements MiddlewareInterface
 
     public function handle(Request $request, \Closure $next)
     {
-        /* 获取当前请求的token */
-        $token = $request->header('Authorization');
-        $this->logServices->actionLogRecord($request, $token);
+        $this->logServices->actionLogRecord($request->tokenInfo());
         return $next($request);
     }
 }
