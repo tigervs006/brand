@@ -6,6 +6,7 @@ use Throwable;
 use think\Request;
 use think\Response;
 use think\facade\Log;
+use think\facade\Config;
 use think\exception\Handle;
 use core\exceptions\ApiException;
 use core\exceptions\AuthException;
@@ -43,9 +44,11 @@ class ConsoleExceptionHandle extends Handle
 
         ];
         Log::write(implode("|", $log), "error");
-        /* 写入日志到数据库 */
-        $logServices = $this->app->make(SystemLogServices::class);
-        $logServices->actionLogRecord($tokenInfo, 1, $this->getMessage($exception));
+        if (Config::get('index.record_action_log')) {
+            /* 写入日志到数据库 */
+            $logServices = $this->app->make(SystemLogServices::class);
+            $logServices->actionLogRecord($tokenInfo, 1, $this->getMessage($exception));
+        }
     }
 
     /**
@@ -66,7 +69,7 @@ class ConsoleExceptionHandle extends Handle
         } else if ($e instanceof AuthException || $e instanceof ApiException || $e instanceof ValidateException) {
             return app('json')->fail($e->getMessage(), $e->getCode());
         } else {
-            return app('json')->fail($e->getMessage(), 400, config('index.app_debug') ? [
+            return app('json')->fail($e->getMessage(), 400, Config::get('index.app_debug') ? [
                 'file' => $e->getFile(),
                 'code' => $e->getCode(),
                 'line' => $e->getLine(),
