@@ -32,10 +32,7 @@ class AuthTokenMiddleware implements MiddlewareInterface
      */
     public function handle(Request $request, \Closure $next): Response
     {
-        if (config('index.access_token_check')) {
-            $this->jwtService->verifyToken($request->token());
-        }
-
+        config('index.access_token_check') && $this->jwtService->verifyToken($request->token());
         return $next($request);
     }
 }
