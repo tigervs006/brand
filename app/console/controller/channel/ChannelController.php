@@ -53,6 +53,7 @@ class ChannelController extends BaseController
     {
         $post = $this->request->only(
             [
+                'nid',
                 'pid',
                 'sort',
                 'path',

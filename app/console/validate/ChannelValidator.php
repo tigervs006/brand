@@ -11,6 +11,7 @@ class ChannelValidator extends validate
     ];
 
     protected $rule = [
+        'nid'           => 'require|integer',
         'pid'           => 'require|integer',
         'sort'          => 'integer|between:1,1000',
         'path'          => 'require|max:50',
@@ -24,6 +25,8 @@ class ChannelValidator extends validate
     ];
 
     protected $message = [
+        'nid.require'           => '模型标识不得为空',
+        'nid.integer'           => '模型标识必须是正整数',
         'pid.require'           => '请选择上级栏目',
         'pid.integer'           => '上级栏目ID必须是正整数',
         'sort.integer'          => '栏目排序必须是正整数',
