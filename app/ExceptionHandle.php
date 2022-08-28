@@ -48,6 +48,7 @@ class ExceptionHandle extends Handle
 
         //日志内容
         $log = [
+            'visitor',
             request()->ip(),
             ceil(msectime() - (request()->time(true) * 1000)),
             strtoupper(request()->rule()->getMethod()),
