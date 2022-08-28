@@ -68,9 +68,9 @@ class ExceptionHandle extends Handle
                 'message' => $e->getMessage()
             ]);
         } else if ($e instanceof AuthException || $e instanceof ApiException || $e instanceof UploadException || $e instanceof ValidateException) {
-            return app('json')->fail($e->getMessage(), $e->getCode());
+            return app('json')->fail($e->getMessage(), $e->getCode() ?: 400);
         } else {
-            return app('json')->fail($e->getMessage(), $e->getCode(), Config::get('index.app_debug') ? [
+            return app('json')->fail($e->getMessage(), $e->getCode() ?: 400, Config::get('index.app_debug') ? [
                 'file' => $e->getFile(),
                 'code' => $e->getCode(),
                 'line' => $e->getLine(),
