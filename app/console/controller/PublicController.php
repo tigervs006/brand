@@ -109,13 +109,14 @@ class PublicController extends BaseController
 
         $info = [
             'uid' => $userInfo['id'],
+            'gid' => $userInfo['gid'],
             'name' => $userInfo['name'],
             'avatar' => $userInfo['avatar'],
             'authorization' => $token,
         ];
 
         /* 记录用户登录日志 */
-        $this->logServices->actionLogRecord(array_merge($userInfo, ['uid' => $userInfo['id']]), 2, '用户登录');
+        $this->logServices->actionLogRecord($info, 2, '用户登录');
 
         return $this->json->successful('Login successful', compact('info'));
     }
@@ -126,13 +127,10 @@ class PublicController extends BaseController
      */
     final public function logout(): Json
     {
-        $post = $this->request->only(
-            [
-                'id',
-                'gid'
-            ], 'post', 'trim');
+        $uid['uid'] = $this->request->post('id/d', 0, 'trim');
+        $gid['gid'] = $this->request->post('gid/d', 0, 'trim');
         /* 记录退出登录日志 */
-        $this->logServices->actionLogRecord(array_merge($post, ['uid' => $post['id']]), 2, '退出登录');
+        $this->logServices->actionLogRecord(array_merge($uid, $gid), 2, '退出登录');
         return $this->json->successful('Logout successful');
     }
 
