@@ -150,7 +150,7 @@ class ArticleController extends BaseController
     {
         /** @var \app\services\channel\ChannelServices $channelServices */
         $channelServices = $this->app->make(\app\services\channel\ChannelServices::class);
-        $list = $channelServices->getChildInfo(['id' => 11], 'id, name, cname');
+        $list = $channelServices->getData(['nid' => 1], ['id' => 'asc'], 'id, name, cname');
         return $list ? $this->json->successful(compact('list')) : $this->json->fail();
     }
 

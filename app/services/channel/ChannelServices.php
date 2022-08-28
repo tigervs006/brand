@@ -42,20 +42,6 @@ class ChannelServices extends BaseServices
     }
 
     /**
-     * 获取子栏目信息
-     * @return array
-     * @param array $map 条件
-     * @param string $field 字段
-     * @param array|null $order 排序
-     */
-    public function getChildInfo(array $map, string $field, ?array $order = ['id' => 'asc']): array
-    {
-        $info = $this->dao->getOne($map, $field)->toArray();
-        $childInfo = $this->dao->getData(['pid' => $info['id']], $order, $field);
-        return $info ? array_merge([$info], $childInfo->toArray()) : [];
-    }
-
-    /**
      * 获取父栏目信息
      * @return array
      * @param array $info 栏目信息

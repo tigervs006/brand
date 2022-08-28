@@ -136,7 +136,7 @@ class ProductController extends BaseController
     final public function getCate(): Json
     {
         $channelServices = $this->app->make(ChannelServices::class);
-        $list = $channelServices->getChildInfo(['id' => 1], 'id, name, cname');
+        $list = $channelServices->getData(['nid' => 2], ['id' => 'asc'], 'id, name, cname');
         return $list ? $this->json->successful(compact('list')) : $this->json->fail();
     }
 }
