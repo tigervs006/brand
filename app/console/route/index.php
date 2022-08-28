@@ -54,12 +54,18 @@ Route::group(function () {
     })->prefix('user.clientController/');
     // 栏目部分
     Route::group('channel', function () {
-        Route::get('<id?>$', 'index')->option(['route_name' => '获取栏目详情']);
+        Route::get('<id?>$', 'index')->option(['route_name' => '栏目详情']);
         Route::get('list', 'list')->option(['route_name' => '栏目列表']);
         Route::post('save', 'save')->option(['route_name' => '新增/编辑栏目']);
         Route::post('del', 'delete')->option(['route_name' => '删除栏目']);
         Route::post('status', 'setStatus')->option(['route_name' => '设置栏目状态']);
     })->prefix('channel.channelController/');
+    Route::group('module', function () {
+        Route::get('list', 'list')->option(['route_name' => '模型列表']);
+        Route::post('del', 'delete')->option(['route_name' => '删除模型']);
+        Route::post('save', 'save')->option(['route_name' => '新增/编辑模型']);
+        Route::post('status', 'setStatus')->option(['route_name' => '设置模型状态']);
+    })->prefix('channel.moduleController/');
     // 友链部分
     Route::group('link', function () {
         Route::get('list', 'list')->option(['route_name' => '友链列表']);
