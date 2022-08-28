@@ -6,6 +6,7 @@ use think\App;
 use app\Request;
 use think\Validate;
 use think\facade\View;
+use think\response\Redirect;
 
 /**
  * 控制器基础类
@@ -54,6 +55,12 @@ abstract class BaseController
     protected int $incValue = 1;
 
     /**
+     * 重定向
+     * @var Redirect
+     */
+    protected Redirect $redirect;
+
+    /**
      * @var int|array|string
      */
     protected int|array|string $id;
@@ -81,11 +88,12 @@ abstract class BaseController
      * @access public
      * @param  App  $app  应用对象
      */
-    public function __construct(App $app, View $view, Request $request)
+    public function __construct(App $app, View $view, Request $request, Redirect $redirect)
     {
         $this->app     = $app;
         $this->view    = $view;
         $this->request = $request;
+        $this->redirect = $redirect;
         // 初始化
         $this->initialize();
     }
