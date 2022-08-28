@@ -14,6 +14,7 @@ use core\exceptions\UploadException;
 use app\services\user\ClientServices;
 use app\services\system\RegionServices;
 use app\services\user\JwtTokenServices;
+use app\services\system\SystemLogServices;
 
 class PublicController extends BaseController
 {
@@ -53,6 +54,11 @@ class PublicController extends BaseController
      */
     private ClientServices $clientServices;
 
+    /**
+     * @var SystemLogServices
+     */
+    private SystemLogServices $logServices;
+
     public function initialize()
     {
         parent::initialize();
@@ -62,6 +68,7 @@ class PublicController extends BaseController
         $this->jwtServices = $this->app->make(JwtTokenServices::class);
         $this->clientServices = $this->app->make(ClientServices::class);
         $this->regionServices = $this->app->make(RegionServices::class);
+        $this->logServices = $this->app->make(SystemLogServices::class);
     }
 
     /**
@@ -108,7 +115,7 @@ class PublicController extends BaseController
         ];
 
         /* 记录用户登录日志 */
-        $this->userServices->loginActionLog($userInfo);
+        $this->logServices->actionLogRecord(array_merge($userInfo, ['uid' => $userInfo['id']]), 2, '用户登录');
 
         return $this->json->successful('Login successful', compact('info'));
     }
@@ -125,7 +132,7 @@ class PublicController extends BaseController
                 'gid'
             ], 'post', 'trim');
         /* 记录退出登录日志 */
-        $this->userServices->loginActionLog($post, '退出登录');
+        $this->logServices->actionLogRecord(array_merge($post, ['uid' => $post['id']]), 2, '退出登录');
         return $this->json->successful('Logout successful');
     }
 
