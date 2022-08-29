@@ -29,8 +29,7 @@ class ModuleController extends BaseController
      */
     final public function list(): Json
     {
-        $nidLike = [];
-        $nameLike = [];
+        $whereLike = [];
         $betweenTime = [];
         /** 获取搜索条件 */
         $map = $this->request->only(['status'], 'get', 'trim');
@@ -43,17 +42,17 @@ class ModuleController extends BaseController
         /** 获取排序条件 */
         $order = $this->request->only(['id', 'create_time'], 'get', 'strOrderFilter');
         /** 组装控制器搜索条件 */
-        $nid && $nidLike = ['nid', '%' . $nid . '%'];
+        $nid && array_push($whereLike, ['nid', '%' . $nid . '%']);
         /** 组装模型名搜索条件 */
-        $name && $nameLike = ['name', '%' . $name . '%'];
+        $name && array_push($whereLike, ['name', '%' . $name . '%']);
         /** 组装按时间段搜索条件 */
         $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
         /** 获取模型列表 */
-        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order ?: ['id' => 'asc'], $betweenTime, array_merge($nidLike, $nameLike));
+        $list = $this->services->getList($this->current, $this->pageSize, $map ?: null, '*', $order ?: ['id' => 'asc'], $betweenTime, $whereLike);
         if ($list->isEmpty()) {
             return $this->json->fail();
         } else {
-            $total = $this->services->getCount($map ?: null, null, $betweenTime, array_merge($nidLike, $nameLike));
+            $total = $this->services->getCount($map ?: null, null, $betweenTime, $whereLike);
             return $this->json->successful(compact('total', 'list'));
         }
     }
