@@ -127,10 +127,9 @@ class PublicController extends BaseController
      */
     final public function logout(): Json
     {
-        $uid['uid'] = $this->request->post('id/d', 0, 'trim');
-        $gid['gid'] = $this->request->post('gid/d', 0, 'trim');
+        $token = $this->request->tokenInfo();
         /* 记录退出登录日志 */
-        $this->logServices->actionLogRecord(array_merge($uid, $gid), 2, '退出登录');
+        $this->logServices->actionLogRecord($token, 2, '退出登录');
         return $this->json->successful('Logout successful');
     }
 
