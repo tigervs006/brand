@@ -41,8 +41,8 @@ class ChannelController extends BaseController
         $cname = $this->request->get('cname/s', null, 'trim');
         $cname && $whereLike = ['cname', '%' . $cname . '%'];
         $data = $this->services->getData($map ?? null, ['id' => 'asc'], '*', null, $whereLike);
-        $list = $map ? $this->services->getTreeData($data) : $data;
-        return $list ? $this->json->successful(compact('list')) : $this->json->fail();
+        $list = empty($map) ? $this->services->getTreeData($data) : $data;
+        return empty($list) || $list->isEmpty() ? $this->json->fail() : $this->json->successful(compact('list'));
     }
 
     /**
