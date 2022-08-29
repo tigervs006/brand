@@ -36,13 +36,13 @@ class ChannelController extends BaseController
      */
     final public function list(): Json
     {
-        // 适配ProFormTreeSelect的search参数
-        $title = $this->request->get('keyWords/s', null, 'trim');
+        $whereLike = [];
         $map = $this->request->get(['status'], null, 'trim');
-        $title && $map[] = ['cname', 'like', '%' . $title . '%'];
-        $data = $this->services->getData($map ?? null, ['id' => 'asc']);
-        $list = empty($map) ? $this->services->getTreeData($data, 0) : $data;
-        return $list ? $this->json->successful(compact('list')) : $this->json->fail('There is not thing');
+        $cname = $this->request->get('cname/s', null, 'trim');
+        $cname && $whereLike = ['cname', '%' . $cname . '%'];
+        $data = $this->services->getData($map ?? null, ['id' => 'asc'], '*', null, $whereLike);
+        $list = $map ? $this->services->getTreeData($data) : $data;
+        return $list ? $this->json->successful(compact('list')) : $this->json->fail();
     }
 
     /**
