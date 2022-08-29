@@ -29,11 +29,11 @@ class AuthController extends BaseController
     {
         $map = $this->request->only(
             [
+                'status',
                 'hideInMenu',
-                'status' => 1,
                 'hideChildrenInMenu'
             ], 'get', 'trim');
-        $data = $this->services->getData($map, ['id' => 'asc']);
+        $data = $this->services->getData($map ?: null, ['id' => 'asc']);
         $list = $this->services->getTreeMenu($data);
         return $list ? $this->json->successful(compact('list')) : $this->json->fail();
     }
