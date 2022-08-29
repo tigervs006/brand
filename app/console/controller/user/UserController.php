@@ -127,9 +127,9 @@ class UserController extends BaseController
         /** 获取排序字段 */
         $order = $this->request->only(['create_time', 'last_login'], 'get', 'strOrderFilter');
         /** 组装用户名搜索条件 */
-        $name && $whereLike = ['name', '%' . $name . '%'];
+        $name && array_push($whereLike, ['name', '%' . $name . '%']);
         /** 组装手机号搜索条件 */
-        $mobile && $whereLike = ['mobile', '%' . $mobile . '%'];
+        $mobile && array_push($whereLike, ['mobile', '%' . $mobile . '%']);
         /** 组装时间段搜索条件  */
         $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
         $list = $this->services->getList($this->current, $this->pageSize, $map?: null, $this->field, $order, $betweenTime, $whereLike, ['group']);

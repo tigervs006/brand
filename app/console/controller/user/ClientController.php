@@ -51,9 +51,9 @@ class ClientController extends BaseController
         /** 获取排序条件 */
         $order = $this->request->only(['create_time'], 'get', 'strOrderFilter');
         /** 组装手机号搜索条件 */
-        $mobile && $whereLike = ['mobile', '%' . $mobile . '%'];
+        $mobile && array_push($whereLike, ['mobile', '%' . $mobile . '%']);
         /** 组装用户名搜索条件 */
-        $username && $whereLike = ['username', '%' . $username . '%'];
+        $username && array_push($whereLike, ['username', '%' . $username . '%']);
         /** 组装按时间段搜索条件  */
         $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
 

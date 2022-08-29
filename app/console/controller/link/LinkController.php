@@ -42,9 +42,9 @@ class LinkController extends BaseController
         /** 获取排序条件 */
         $order = $this->request->only(['id', 'sort', 'create_time'], 'get', 'strOrderFilter');
         /** 组装文章标题搜索条件 */
-        $name && $whereLike = ['name', '%' . $name . '%'];
+        $name && array_push($whereLike, ['name', '%' . $name . '%']);
         /** 组装联系方式搜索条件 */
-        $contact && $whereLike = ['contact', '%' . $contact . '%'];
+        $contact && array_push($whereLike, ['contact', '%' . $contact . '%']);
         /** 组装按时间段搜索条件 */
         $dateRange && $betweenTime = ['create_time', $dateRange['dateRange'][0], $dateRange['dateRange'][1]];
         /** 获取友情链接列表 */
