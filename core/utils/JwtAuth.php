@@ -55,7 +55,7 @@ class JwtAuth
      * jwt密钥串
      * @var string
      */
-    private string $jwtSercet = 'YvZubJZqZK0QI5YhWp7EP1Ytm9X3hJzL';
+    private string $jwtSercet = 'NmMjQFBRZmFeOXIyU0pRN2RHeFBoJHZlTCVwdjhlNjhGJENzeUxIbjJla3BQeF55';
 
     public function __construct()
     {
