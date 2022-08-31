@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2a8a27dbc5055632722a256746605dd0",
+    "content-hash": "03634967546edff0543070a0dbc3f78a",
     "packages": [
         {
             "name": "adbario/php-dot-notation",
@@ -67,16 +67,16 @@
         },
         {
             "name": "alibabacloud/cdn-20180510",
-            "version": "1.0.13",
+            "version": "1.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/alibabacloud-sdk-php/cdn-20180510.git",
-                "reference": "b26b6669b9a05526e442f1ce46fb09eb4b263074"
+                "reference": "db45aadfd0281e937068f546507bbdfd4a87efbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/alibabacloud-sdk-php/cdn-20180510/zipball/b26b6669b9a05526e442f1ce46fb09eb4b263074",
-                "reference": "b26b6669b9a05526e442f1ce46fb09eb4b263074",
+                "url": "https://api.github.com/repos/alibabacloud-sdk-php/cdn-20180510/zipball/db45aadfd0281e937068f546507bbdfd4a87efbd",
+                "reference": "db45aadfd0281e937068f546507bbdfd4a87efbd",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -110,9 +110,9 @@
             ],
             "description": "Alibaba Cloud Alibaba Cloud CDN (20180510) SDK Library for PHP",
             "support": {
-                "source": "https://github.com/alibabacloud-sdk-php/cdn-20180510/tree/1.0.13"
+                "source": "https://github.com/alibabacloud-sdk-php/cdn-20180510/tree/1.0.14"
             },
-            "time": "2022-07-28T08:26:37+00:00"
+            "time": "2022-08-31T06:34:10+00:00"
         },
         {
             "name": "alibabacloud/credentials",
@@ -1293,7 +1293,7 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "4.2.x-dev",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
@@ -1357,7 +1357,7 @@
             ],
             "support": {
                 "issues": "https://github.com/lcobucci/jwt/issues",
-                "source": "https://github.com/lcobucci/jwt/tree/4.2.x"
+                "source": "https://github.com/lcobucci/jwt/tree/4.2.1"
             },
             "funding": [
                 {
@@ -3616,9 +3616,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "lcobucci/jwt": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
