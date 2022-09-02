@@ -146,6 +146,7 @@ nav .navbar-collapse {
     color: red;
     margin: .25rem;
     font-size: .75rem;
+    padding: 0 .25rem 0;
     border: 1px solid red;
     border-radius: .25rem;
 }
