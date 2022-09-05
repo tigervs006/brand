@@ -37,12 +37,12 @@
                 </div>
                 <div class="part-article-prenext">
 {present name="$prenext.pre.id"}
-                    <div class="transition text-ellipsis"><a href="/industry/{$prenext.pre.id}.html" title="{$prenext.pre.title}">上一篇：{$prenext.pre.title}</a></div>
+                    <div class="transition text-ellipsis"><a href="{:url('newsDetail', ['dirname' => $prenext.pre.dirname ?? '', 'id' => $prenext.pre.id])}" title="{$prenext.pre.title}">上一篇：{$prenext.pre.title}</a></div>
 {else /}
                     <div class="transition text-ellipsis"><a href="javascript:">上一篇：{$prenext.pre.title}</a></div>
 {/present}
 {present name="$prenext.next.id"}
-                    <div class="transition text-ellipsis"><a href="/industry/{$prenext.next.id}.html" title="{$prenext.next.title}">下一篇：{$prenext.next.title}</a></div>
+                    <div class="transition text-ellipsis"><a href="{:url('newsDetail', ['dirname' => $prenext.next.dirname ?? '', 'id' => $prenext.next.id])}" title="{$prenext.next.title}">下一篇：{$prenext.next.title}</a></div>
 {else /}
                     <div class="transition text-ellipsis"><a href="javascript:">下一篇：{$prenext.next.title}</a></div>
 {/present}

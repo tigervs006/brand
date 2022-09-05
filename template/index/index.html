@@ -42,133 +42,24 @@
                     </a>
                 </div>
             </div>
+{volist name="product" id="item"}
             <div class="col-custom-5">
                 <div class="border rounded ani-transform part-product-item">
-                    <a href="product/2.html" target="_blank" class="text-reset text-decoration-none" title="K21智能书籍高拍仪">
-                        <img alt="K21智能书籍高拍仪" class="img-fluid" src="__STATIC__/images/product/2/p-1.png">
+                    <a href="{:url('productDetail', ['dirname' => $item.channel.dirname ?? '', 'id' => $item.id])}" target="_blank" class="text-reset text-decoration-none" title="{$item.title}">
+                        <img alt="{$item.title}" class="img-fluid" src="{$item.album|first}">
                         <div class="part-product-item-desc">
-                            <p class="fs-6 text-center text-ellipsis">K21智能书籍高拍仪</p>
-                            <p class="text-muted text-start text-ellipsis">2300万高清像素CMOS传感器，支持最大A3画幅的书籍扫描，1.5S/双页，无须拆书直接扫描</p>
+                            <p class="fs-6 text-center text-ellipsis">{$item.title}</p>
+                            <p class="text-muted text-start text-ellipsis">{$item.description}</p>
                             <div class="d-flex flex-wrap part-product-item-attr">
-                                <span>2300万像素</span>
-                                <span>自动翻页检测</span>
+{volist name="item.special" id="item"}
+                                <span>{$item}</span>
+{/volist}
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
-            <div class="col-custom-5">
-                <div class="border rounded ani-transform part-product-item">
-                    <a href="product/3.html" target="_blank" class="text-reset text-decoration-none" title="DM20签批一体高拍仪">
-                        <img alt="DM20签批一体高拍仪" class="img-fluid" src="__STATIC__/images/product/3/p-3.png">
-                        <div class="part-product-item-desc">
-                            <p class="fs-6 text-center text-ellipsis">DM20签批一体高拍仪</p>
-                            <p class="text-muted text-start text-ellipsis">集电磁手写、电容触控、身份验证、指纹采集、签批录像、客户评价、广告播放、数据加密等功能为一体的高拍仪</p>
-                            <div class="d-flex flex-wrap part-product-item-attr">
-                                <span>签批一体</span>
-                                <span>人证比对</span>
-                                <span>指纹采集</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-custom-5">
-                <div class="border rounded ani-transform part-product-item">
-                    <a href="product/4.html" target="_blank" class="text-reset text-decoration-none" title="M60 1000万像素高拍仪">
-                        <img alt="M60 1000万像素高拍仪" class="img-fluid" src="__STATIC__/images/product/4/p-4.png">
-                        <div class="part-product-item-desc">
-                            <p class="fs-6 text-center text-ellipsis">M60多功能高拍仪</p>
-                            <p class="text-muted text-start text-ellipsis">全新产品外观结构设计、集成八合一（3个摄像头、二代证读卡器、指纹采集仪、磁条读卡器、第码二维码识别、接触式/非接触式IC卡阅读器）</p>
-                            <div class="d-flex flex-wrap part-product-item-attr">
-                                <span>OCR识别</span>
-                                <span>高速扫描</span>
-                                <span>1000万像素</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-custom-5">
-                <div class="border rounded ani-transform part-product-item">
-                    <a href="product/5.html" target="_blank" class="text-reset text-decoration-none" title="D60双摄3600万像素高拍仪">
-                        <img alt="D60双摄3600万像素高拍仪" class="img-fluid" src="__STATIC__/images/product/5/d60.png">
-                        <div class="part-product-item-desc">
-                            <p class="fs-6 text-center text-ellipsis">D60双摄3600万像素高拍仪</p>
-                            <p class="text-muted text-start text-ellipsis">双1800万像素高清镜头，满足客户高像素高分辨率的要求</p>
-                            <div class="d-flex flex-wrap part-product-item-attr">
-                                <span>高清双摄</span>
-                                <span>自动连拍</span>
-                                <span>3600万像素</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-custom-5">
-                <div class="border rounded ani-transform part-product-item">
-                    <a href="product/6.html" target="_blank" class="text-reset text-decoration-none" title="V80多功能教学高拍仪">
-                        <img alt="V80多功能教学高拍仪" class="img-fluid" src="__STATIC__/images/product/6/v80.png">
-                        <div class="part-product-item-desc">
-                            <p class="fs-6 text-center text-ellipsis">V80多功能教学高拍仪</p>
-                            <p class="text-muted text-start text-ellipsis">首创证件扫描模模式，折叠伸缩便模式，支持1800万高清像素以及OCR文本智能识别</p>
-                            <div class="d-flex flex-wrap part-product-item-attr">
-                                <span>视频展台</span>
-                                <span>自动对焦</span>
-                                <span>远程教学</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-custom-5">
-                <div class="border rounded ani-transform part-product-item">
-                    <a href="product/7.html" target="_blank" class="text-reset text-decoration-none" title="75寸多功能触控一体机">
-                        <img alt="75寸多功能触控一体机" class="img-fluid" src="__STATIC__/images/product/7/u75.png">
-                        <div class="part-product-item-desc">
-                            <p class="fs-6 text-center text-ellipsis">75寸4K多功能触控一体机</p>
-                            <p class="text-muted text-start text-ellipsis">75寸4k高清触控一体机办公触控防眩光同屏互传摄像头内置麦 I3模块（内置摄像头和麦克风）</p>
-                            <div class="d-flex flex-wrap part-product-item-attr">
-                                <span>4K分辨率</span>
-                                <span>20点触控</span>
-                                <span>无线投屏</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-custom-5">
-                <div class="border rounded ani-transform part-product-item">
-                    <a href="product/8.html" target="_blank" class="text-reset text-decoration-none" title="D20 1000万像素高拍仪">
-                        <img alt="D20 1000万像素高拍仪" class="img-fluid" src="__STATIC__/images/product/8/d20.png">
-                        <div class="part-product-item-desc">
-                            <p class="fs-6 text-center text-ellipsis">D20 1000万像素高拍仪</p>
-                            <p class="text-muted text-start text-ellipsis">录制视频、实时投影，开户新型投影方式，适合线上会议、远程办公、网课教学等场景</p>
-                            <div class="d-flex flex-wrap part-product-item-attr">
-                                <span>A4画幅</span>
-                                <span>1800万像素</span>
-                                <span>OCR文字识别</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-custom-5">
-                <div class="border rounded ani-transform part-product-item">
-                    <a href="product/9.html" target="_blank" class="text-reset text-decoration-none" title="IDR200二代身份证阅读器">
-                        <img alt="IDR200二代身份证阅读器" class="img-fluid" src="__STATIC__/images/product/9/idr200.png">
-                        <div class="part-product-item-desc">
-                            <p class="fs-6 text-center text-ellipsis">IDR200二代身份证阅读器</p>
-                            <p class="text-muted text-start text-ellipsis">支持所有基于公安部身份证读卡标准接口的软件系统</p>
-                            <div class="d-flex flex-wrap part-product-item-attr">
-                                <span>兼容性广</span>
-                                <span>秒级读取</span>
-                                <span>蓝牙/USB</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
+{/volist}
         </div>
         <div class="more">
             <a role="button" target="_blank" href="product/" class="btn btn-danger rounded-pill">查看更多</a>
@@ -476,7 +367,7 @@
 {foreach $hotart as $item}
 {compare name="item['is_head']" value="1" type="equal"}
                 <div class="img-animated overflow-hidden border-bottom-dashed">
-                    <a target="_blank" href="industry/{$item.id}.html" class="text-reset text-decoration-none" title="{$item.title}">
+                    <a target="_blank" href="{:url('newsDetail', ['dirname' => $item.channel.dirname ?? '', 'id' => $item.id])}" class="text-reset text-decoration-none" title="{$item.title}">
                         <div class="rounded overflow-hidden">
                             <img class="img-fluid" alt="{$item.title}" title="{$item.title}" src="{$item.litpic}"/>
                         </div>
@@ -494,7 +385,7 @@
 {compare name="item['is_head']" value="1" type="notequal"}
                     <li class="col-12 col-md-6 part-industry-right-item">
                         <div class="overflow-hidden border-bottom-dashed">
-                            <a target="_blank" href="industry/{$item.id}.html" class="text-reset text-decoration-none" title="{$item.title}">
+                            <a target="_blank" href="{:url('newsDetail', ['dirname' => $item.channel.dirname ?? '', 'id' => $item.id])}" class="text-reset text-decoration-none" title="{$item.title}">
                                 <h3 class="transition text-ellipsis">{$item.title}</h3>
                                 <p class="part-industry-detail"><span>发布时间：{$item.create_time|date="Y-m-d"} </span>| <span>阅读量：{$item.click} </span>| <span>作者：{$item.author}</span></p>
                                 <p class="text-clamp-2 text-clamp-ellipsis">{$item.description}</p>

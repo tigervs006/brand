@@ -22,9 +22,9 @@
             <!--左侧内容 Start-->
             <div class="col-12 col-md-8">
                 <ul class="list-unstyled">
-{volist name="result" id="item" empty="<p class='text-danger'>There is nothing</p>"}
+{volist name="list" id="item" empty="Empty List"}
                     <li>
-                        <a href="{:url('article', ['id' => $item.id])}" target="_blank" class="text-reset text-decoration-none" title="{$item.title}">
+                        <a href="{:url('newsDetail', ['dirname' => $item.channel.dirname ?? '', 'id' => $item.id])}" target="_blank" class="text-reset text-decoration-none" title="{$item.title}">
                             <div class="row gx-0 img-animated part-artList-item border-bottom-dashed">
                                 <div class="col-5 col-md-3 exclude rounded overflow-hidden">
                                     <img alt="{$item.title}" class="img-fluid" title="{$item.title}" src="{$item.litpic}"/>
@@ -61,7 +61,7 @@
 {/volist}
                     <li>
                         <nav aria-label="Page navigation">
-                            {$result|raw}
+                            {$list|raw}
                         </nav>
                     </li>
                 </ul>

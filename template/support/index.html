@@ -25,15 +25,7 @@
         <div class="row g-2 g-md-3">
             <div class="col-6 col-md-3">
                 <div class="text-center">
-                    <a target="_blank" class="text-reset text-decoration-none" title="下载软件驱动" href="software/" >
-                        <img alt="软件驱动" title="软件驱动" class="img-fluid ani-simple" src="__STATIC__/static/icon/download.png"/>
-                        <p>软件驱动下载</p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="text-center">
-                    <a target="_blank" class="text-reset text-decoration-none" title="手册&说明书" href="instruction/" >
+                    <a target="_blank" class="text-reset text-decoration-none" title="手册&说明书" href="{:url('supportList', ['dirname' => 'instruction'])}" >
                         <img alt="手册&说明书" title="手册&说明书" class="img-fluid ani-simple" src="__STATIC__/static/icon/instruction.png"/>
                         <p>手册&说明书</p>
                     </a>
@@ -41,7 +33,15 @@
             </div>
             <div class="col-6 col-md-3">
                 <div class="text-center">
-                    <a target="_blank" class="text-reset text-decoration-none" title="产品操作视频" href="video/" >
+                    <a target="_blank" class="text-reset text-decoration-none" title="下载软件驱动" href="{:url('supportList', ['dirname' => 'software'])}" >
+                        <img alt="软件驱动" title="软件驱动" class="img-fluid ani-simple" src="__STATIC__/static/icon/download.png"/>
+                        <p>软件驱动下载</p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="text-center">
+                    <a target="_blank" class="text-reset text-decoration-none" title="产品操作视频" href="{:url('supportList', ['dirname' => 'video'])}" >
                         <img alt="产品操作视频" title="产品操作视频" class="img-fluid ani-simple" src="__STATIC__/static/icon/video.png"/>
                         <p>产品操作视频</p>
                     </a>

@@ -1,15 +1,15 @@
 {extend name="../base" /}
-{block name="title"}<title>S80双摄像头1500万像素高拍仪</title>{/block}
-{block name="keywords"}<meta name="keywords" content="高拍仪,高拍仪产品,S80高拍仪">{/block}
-{block name="description"}<meta name="description" content="S80双摄像头1500万像素高拍仪是一款时尚多功能的文档扫描仪，内置1500万像素CMOS传感器，是在办公室或家庭中使用的理想设备。">{/block}
+{block name="title"}<title>{$info.title}</title>{/block}
+{block name="keywords"}<meta name="keywords" content="{$info.keywords}">{/block}
+{block name="description"}<meta name="description" content="{$info.description}">{/block}
 {block name="pagejs"}{__block__}{/block}
 {block name="main"}
 <!--栏目banner部分 Start-->
 <section class="industry">
     <div class="d-flex channel container align-items-center">
         <div class="col col-md-6 mt-5 mt-md-0 text-white text-left">
-            <h1 class="mb-4">S80双摄像头1500万像素高拍仪</h1>
-            <p class="text-clamp-3 text-clamp-ellipsis">S80双摄像头1500万像素高拍仪是一款时尚多功能的文档扫描仪，内置1500万像素CMOS传感器，是在办公室或家庭中使用的理想设备。它可以将文档，书籍，杂志和身份证数字化，转换成为可编辑的PDF，Word，Excel等文本格式。</p>
+            <h1 class="mb-4">{$info.title}</h1>
+            <p class="text-clamp-3 text-clamp-ellipsis">{$info.description}</p>
         </div>
     </div>
 </section>
@@ -17,19 +17,12 @@
 <!--商品详情部分 Start-->
 <section>
     <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="flex-nowrap breadcrumb">
-                <li class="breadcrumb-item"><a href="/">首页</a></li>
-                <li class="breadcrumb-item"><a href="/product/">产品中心</a></li>
-                <li class="breadcrumb-item"><a href="/product/">办公高拍仪</a></li>
-                <li class="breadcrumb-item active text-ellipsis" aria-current="page">S80双摄像头1500万像素高拍仪</li>
-            </ol>
-        </nav>
+{include file="../basic/crumbs" /}
         <div class="row g-2 g-md-5">
             <div class="col-12 col-md-6">
                 <div class="part-produce-album">
                     <div class="rounded overflow-hidden position-relative part-produce-big">
-                        <img class="img-fluid part-produce-bigimg" alt="S80双摄像头1500万像素高拍仪" title="S80双摄像头1500万像素高拍仪" src="__STATIC__/images/product/1/pt-1.png"/>
+                        <img class="img-fluid part-produce-bigimg" alt="${info.title}" title="${info.title}" src="{$info.album|first}"/>
                         <button class="prenext ctl-prev" type="button" data-slide="ctprev">
                             <span class="ctl-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
@@ -41,43 +34,39 @@
                     </div>
                     <div class="part-produce-small">
                         <ul class="d-flex flex-row list-unstyled align-items-center">
+{volist name="info.album" id="item" empty="Empay Album"}
                             <li class="border border-danger part-produce-item">
-                                <img class="img-fluid" alt="S80双摄像头1500万像素高拍仪" title="S80双摄像头1500万像素高拍仪" src="__STATIC__/images/product/1/pt-1-thumb.png" data-origin="__STATIC__/images/product/1/pt-1.png"/>
+                                <img class="img-fluid" alt="{$info.title}" title="{$info.title}" src="{$item}?x-oss-process=style/pthumb" data-origin="{$item}"/>
                             </li>
-                            <li class="border part-produce-item">
-                                <img class="img-fluid" alt="S80双摄像头细节展示" title="S80双摄像头细节展示" src="__STATIC__/images/product/1/pt-2-thumb.png" data-origin="__STATIC__/images/product/1/pt-2.png"/>
-                            </li>
-                            <li class="border part-produce-item">
-                                <img class="img-fluid" alt="S80双摄像头功能介绍" title="S80双摄像头功能介绍" src="__STATIC__/images/product/1/pt-3-thumb.png" data-origin="__STATIC__/images/product/1/pt-3.png"/>
-                            </li>
+{/volist}
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-md-6">
                 <div  class="part-produce-detail">
-                    <h2>S80双摄像头1500万像素高拍仪</h2>
+                    <h2>{$info.title}</h2>
                     <div class="d-flex flex-wrap part-product-item-attr">
-                        <span>指纹识别</span>
-                        <span>1500万像素</span>
-                        <span>身份证识别</span>
+{volist name="info.special" id="item" empty=""}
+                        <span>{$item}</span>
+{/volist}
                     </div>
-                    <p class="text-muted text-clamp-3 text-clamp-ellipsis">S80双摄像头1500万像素高拍仪是一款时尚多功能的文档扫描仪，内置1500万像素CMOS传感器，是在办公室或家庭中使用的理想设备。它可以将文档，书籍，杂志和身份证数字化，转换成为可编辑的PDF，Word，Excel等文本格式。</p>
-                    <ul class="d-flex flex-row flex-wrap list-unstyled">
-                        <li>
-                            <img alt="1000万像素" title="1000万像素" class="img-fluid" src="__STATIC__/static/icon/10MP.png"/>
-                        </li>
-                        <li>
-                            <img alt="支持A3尺寸" title="支持A3尺寸" class="img-fluid" src="__STATIC__/static/icon/size.png"/>
-                        </li>
-                        <li>
-                            <img alt="TWAIN" title="TWAIN" class="img-fluid" src="__STATIC__/static/icon/TWAIN.png"/>
-                        </li>
-                        <li>
-                            <img alt="支持USB2.0" title="支持USB2.0" class="img-fluid" src="__STATIC__/static/icon/USB2.0.png"/>
-                        </li>
-                    </ul>
-                    <div class="d-grid gap-2 d-md-block">
+                    <p class="text-muted text-clamp-3 text-clamp-ellipsis">{$info.description}</p>
+<!--                    <ul class="d-flex flex-row flex-wrap list-unstyled">-->
+<!--                        <li>-->
+<!--                            <img alt="1000万像素" title="1000万像素" class="img-fluid" src="__STATIC__/static/icon/10MP.png"/>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <img alt="支持A3尺寸" title="支持A3尺寸" class="img-fluid" src="__STATIC__/static/icon/size.png"/>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <img alt="TWAIN" title="TWAIN" class="img-fluid" src="__STATIC__/static/icon/TWAIN.png"/>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <img alt="支持USB2.0" title="支持USB2.0" class="img-fluid" src="__STATIC__/static/icon/USB2.0.png"/>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+                    <div class="mt-3 d-grid gap-2 d-md-block">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formModal">立即订购</button>
                         <button type="button" onclick="consulting()" class="btn btn-outline-danger">在线咨询</button>
                     </div>
@@ -89,9 +78,11 @@
                 <li class="nav-item">
                     <button type="button" class="nav-link active" data-bs-target="#detail">商品详情</button>
                 </li>
+{present name="parameter"}
                 <li class="nav-item">
                     <button type="button" class="nav-link" data-bs-target="#parameter">商品参数</button>
                 </li>
+{/present}
                 <li class="nav-item">
                     <button type="button" class="nav-link" data-bs-target="#supports">下载支持</button>
                 </li>
@@ -99,11 +90,10 @@
             <div class="tab-content">
                 <div id="detail" class="tab-pane fade show active">
                     <div class="part-product-content">
-                        <img alt="S1500A2" src="__STATIC__/images/product/1/20210621103535_59879.png"/>
-                        <img alt="S1500A2" src="__STATIC__/images/product/1/20210621103551_71108.jpg"/>
-                        <img alt="S1500A2" src="__STATIC__/images/product/1/20210621103705_97007.jpg"/>
+                        {$info.detail.content|raw|default="Empty Content"}
                     </div>
                 </div>
+{present name="parameter"}
                 <div id="parameter" class="tab-pane fade">
                     <div class="part-product-content">
                         <table class="table align-middle table-striped table-bordered">
@@ -184,6 +174,7 @@
                         </table>
                     </div>
                 </div>
+{/present}
                 <div id="supports" class="tab-pane fade">
                     <div class="part-product-content">
                         <table class="table table-hover align-middle table-bordered">
