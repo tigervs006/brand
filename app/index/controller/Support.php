@@ -3,17 +3,33 @@ declare (strict_types = 1);
 namespace app\index\controller;
 
 use core\basic\BaseController;
+use app\services\channel\ChannelServices;
 
 class Support extends BaseController
 {
-    final public function index(): string
+    /**
+     * @var ChannelServices
+     */
+    private ChannelServices $channelServices;
+
+    public function initialize()
     {
-        return $this->view::fetch('../support/index');
+        parent::initialize();
+        $this->channelServices = $this->app->make(ChannelServices::class);
     }
 
-    final public function video(): string
+    final public function index(): string
     {
-        return $this->view::fetch('../support/video');
+        $name = ['name' => getPath()];
+        $map = array_merge($this->status, $name);
+        $row = $this->channelServices->getOne($map, '*', ['module']);
+        is_null($row) && abort(404, "page doesn't exist");
+        $template = match ($row['module']['nid']) {
+            'download' => '../modules/software',
+            'video' => '../modules/video',
+            default => '../support/index',
+        };
+        return $this->view::fetch($template);
     }
 
     final public function detail(): string
@@ -21,13 +37,8 @@ class Support extends BaseController
         return $this->view::fetch('../support/detail');
     }
 
-    final public function software(): string
+    final public function video(): string
     {
-        return $this->view::fetch('../support/software');
-    }
-
-    final public function instruction(): string
-    {
-        return $this->view::fetch('../support/instruction');
+        return $this->view::fetch('../modules/detail');
     }
 }
