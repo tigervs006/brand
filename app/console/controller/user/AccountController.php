@@ -2,7 +2,6 @@
 declare (strict_types=1);
 namespace app\console\controller\user;
 
-use core\utils\JwtAuth;
 use think\response\Json;
 use core\basic\BaseController;
 use app\services\auth\AuthServices;
@@ -10,12 +9,6 @@ use app\services\auth\GroupServices;
 
 class AccountController extends BaseController
 {
-    /**
-     * Token类
-     * @var JwtAuth
-     */
-    private JwtAuth $auth;
-
     /**
      * 权限类
      * @var AuthServices
@@ -31,7 +24,6 @@ class AccountController extends BaseController
     public function initialize()
     {
         parent::initialize();
-        $this->auth = $this->app->make(JwtAuth::class);
         $this->authServices = $this->app->make(AuthServices::class);
         $this->groupServices = $this->app->make(GroupServices::class);
 
@@ -54,11 +46,8 @@ class AccountController extends BaseController
      */
     final public function menu(): Json
     {
-        $token = $this->request->header('Authorization');
-        /* 通过token中的gid查询用户菜单，防止篡改 */
-        $parseToken = $this->auth->parseToken($token);
-        $map = ['id' => $parseToken['gid']];
-        $ids = $this->groupServices->value($map, 'menu');
+        $tokenInfo = $this->request->tokenInfo();
+        $ids = $this->groupServices->value(['id' => $tokenInfo['gid']], 'menu');
         $data = $this->authServices->queryMenu($ids, array_merge($this->status, ['type' => 1]));
         $list = $this->authServices->getTreeMenu($data);
         return $this->json->successful(compact('list'));
