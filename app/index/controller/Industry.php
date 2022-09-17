@@ -72,7 +72,7 @@ class Industry extends BaseController
             $this->current,
             $this->pageSize,
             $this->status,
-            'id, click, title, litpic, create_time',
+            'id, cid, click, title, litpic, create_time',
             ['click' => 'desc'], null, null, ['channel']);
     }
 }
