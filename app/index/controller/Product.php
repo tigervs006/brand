@@ -46,7 +46,7 @@ class Product extends BaseController
      * 商品详情
      * @return string
      */
-    public function detail(): string
+    public function index(): string
     {
         $map = array_merge($this->status, ['id' => $this->id]);
         $info = $this->services->getOne($map, '*', ['detail']);
