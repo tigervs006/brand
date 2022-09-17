@@ -52,7 +52,7 @@ class Index extends BaseController
      */
     final public function index(): string
     {
-        return $this->view::fetch('/index', ['hotart' => $this->getArticle(), 'product' => $this->getProduct()]);
+        return $this->view::fetch('/index', ['case' => $this->getCase(), 'hotart' => $this->getArticle(), 'product' => $this->getProduct()]);
     }
 
     /**
@@ -72,6 +72,22 @@ class Index extends BaseController
     }
 
     /**
+     * 获取案例列表
+     * @return Collection
+     */
+    private function getCase(): Collection
+    {
+        return $this->articleServices->getList(
+            1,
+            4,
+            array(['status', '=', 1], ['cid', '=', 6]),
+            $this->article_field,
+            $this->order,
+            null, null, ['channel']
+        );
+    }
+
+    /**
      * 获取文档列表
      * @return Collection
      */
@@ -80,7 +96,7 @@ class Index extends BaseController
         return $this->articleServices->getList(
             1,
             7,
-            $this->status,
+            array(['status', '=', 1], ['cid', '<>', 6]),
             $this->article_field,
             ['is_head' => 'desc', 'id' => 'desc'],
             null, null, ['channel']

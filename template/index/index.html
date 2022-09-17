@@ -149,64 +149,41 @@
             <p class="text-muted">用心服务，永不止步</p>
         </div>
         <div class="row g-2 g-md-3">
+{present name="case[0]"}
             <div class="col-12">
                 <div class="row g-2 g-md-3">
                     <div class="col-md-6 exclude">
-                        <img class="img-fluid" alt="人证比对高拍仪" title="使命必达 - 田者高拍&贵州省纪委合作案例" src="__STATIC__/static/images/guizhoujiwei-1.png"/>
+                        <img class="img-fluid" alt="{$case[0]['title']}" title="{$case[0]['title']}" src="{$case[0]['litpic']}"/>
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex flex-column part-case-top justify-content-center">
-                            <h4 class="text-center">使命必达——田者高拍&贵州省纪委合作案例</h4>
-                            <p class="text-muted text-clamp-ellipsis text-clamp-3">贵州省纪委某日下了一批集成指纹仪+人证比对的高拍仪订单后，要求高拍仪第二天必须安装到位，设备安装的地市相对偏远，航空件第二天也到不了，为了贵州省纪委项目能有最快速的服务体验，田者高拍指派了专门的司机和技术人员，满载高拍仪，当天连续驾车奔袭一千多公里</p>
+                            <h4 class="text-center">{$case[0]['title']}</h4>
+                            <p class="text-muted text-clamp-ellipsis text-clamp-3">{$case[0]['description']}</p>
                             <div class="gap-2 col-6 d-grid mx-auto">
-                                <a href="case/1.html" type="botton" class="btn btn-outline-danger">查看详情</a>
+                                <a href="{:url('caseDetail', ['id' => $case[0]['id']])}" type="botton" class="btn btn-outline-danger">查看详情</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+{/present}
+{volist name="case" id="item" offset="1"}
             <div class="col-6 col-md-4">
                 <div class="card ani-transform part-case-item">
-                    <img alt="贵州纪委高拍仪应用场景" class="card-img-top" src="__STATIC__/static/images/finance-1.png">
+                    <img alt="{$item.title}" class="card-img-top" src="{$item.litpic}">
                     <div class="card-body">
-                        <h5 class="card-title text-clamp-ellipsis text-clamp-2">最优质的产品品质与服务
-                            <br/>——田者高拍&国内某证券公司合作案例</h5>
-                        <p class="text-muted text-clamp-ellipsis text-clamp-3">针对国内某证券公司的业务系统，田者高拍为其定制了三摄像头+双录+证件识别的高拍仪，样机前后现场调试了十多次，凭借田者高拍技术人员专业而耐心的指导</p>
+                        <h5 class="card-title text-clamp-ellipsis text-clamp-2">{$item.title}</h5>
+                        <p class="text-muted text-clamp-ellipsis text-clamp-3">{$item.description}</p>
                         <div class="gap-2 col-12 d-grid mx-auto col-md-6">
-                            <a href="case/2.html" type="botton" class="btn btn-outline-danger">查看详情</a>
+                            <a href="{:url('caseDetail', ['id' => $item.id])}" type="botton" class="btn btn-outline-danger">查看详情</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-4">
-                <div class="card ani-transform part-case-item">
-                    <img alt="贵州纪委高拍仪应用场景" class="card-img-top" src="__STATIC__/static/images/wuye.png">
-                    <div class="card-body">
-                        <h5 class="card-title text-clamp-ellipsis text-clamp-2">满足最挑剔的要求
-                            <br/>——田者高拍&福建某物业公司合作案例</h5>
-                        <p class="text-muted text-clamp-ellipsis text-clamp-3">田者高拍起初为福建某物业公司的业务系统，量身匹配了行业高拍仪供其使用，物业公司前后大半年时间，只购买了1台高拍仪，但物业公司却对我们提出了无数不合理要求</p>
-                        <div class="gap-2 col-12 d-grid mx-auto col-md-6">
-                            <a href="case/3.html" type="botton" class="btn btn-outline-danger">查看详情</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-4">
-                <div class="card ani-transform part-case-item">
-                    <img alt="贵州纪委高拍仪应用场景" class="card-img-top" src="__STATIC__/static/images/runjian.png">
-                    <div class="card-body">
-                        <h5 class="card-title text-clamp-ellipsis text-clamp-2">最佳硬件拍档
-                            <br/>——田者高拍&国内某大型软件上市公司案例</h5>
-                        <p class="text-muted text-clamp-ellipsis text-clamp-3">国内某大型软件上市公司，对高拍仪硬件产品要求高，供货反应迅速，同时对供货条件要求非常苛刻，田者高拍满足其要求，在非常短的时间内，为其提供了签批一体高拍仪产品解决方案</p>
-                        <div class="gap-2 col-12 d-grid mx-auto col-md-6">
-                            <a href="case/4.html" type="botton" class="btn btn-outline-danger">查看详情</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+{/volist}
         </div>
         <div class="more">
-            <a role="button" target="_blank" href="case/" class="btn btn-danger rounded-pill">查看更多</a>
+            <a role="button" target="_blank" href="{:url('/case/')}" class="btn btn-danger rounded-pill">查看更多</a>
         </div>
     </div>
 </section>
