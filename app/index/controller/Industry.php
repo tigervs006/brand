@@ -38,28 +38,28 @@ class Industry extends BaseController
      */
     final public function index(): string
     {
-        $name = ['name' => getPath()];
-        $pid = $this->channelServices->value($name, 'pid');
-        is_null($pid) && abort(404, "page doesn't exist");
-        $map = !$pid
-            ? $this->status
-            : array_merge($this->status, ['cid' => $this->channelServices->value($name)]);
-        $list = $this->services->getPaginate($map, $this->pageSize, $this->field, $this->order, ['channel']);
-        return $this->view::fetch('../industry/index', compact('list'));
+        $result = $this->services->get($this->id, null, ['content']);
+        // 阅读量自增
+        $result && $this->services->setInc($result['id'], $this->incValue);
+        // 上/下一篇文章
+        $prenext = $this->services->getPrenext($result['id'], ['cid', '<>', 6], 'id, cid, title');
+        return $this->view::fetch('../industry/detail', ['result' => $result, 'prenext' => $prenext]);
     }
 
     /**
      * 文章内容
      * @return string
      */
-    final public function detail(): string
+    final public function list(): string
     {
-        $result = $this->services->get($this->id, null, ['content']);
-        // 阅读量自增
-        $result && $this->services->setInc($result['id'], $this->incValue);
-        // 上/下一篇文章
-        $prenext = $this->services->getPrenext($result['id'], 'id, cid, title');
-        return $this->view::fetch('../industry/detail', ['result' => $result, 'prenext' => $prenext]);
+        $name = ['name' => getPath()];
+        $pid = $this->channelServices->value($name, 'pid');
+        is_null($pid) && abort(404, "page doesn't exist");
+        $map = !$pid
+            ? array(['status', '=', 1], ['cid', '<>', 6])
+            : array_merge($this->status, ['cid' => $this->channelServices->value($name)]);
+        $list = $this->services->getPaginate($map, $this->pageSize, $this->field, $this->order, ['channel']);
+        return $this->view::fetch('../industry/index', compact('list'));
     }
 
     /**
@@ -71,7 +71,7 @@ class Industry extends BaseController
         return $this->services->getList(
             $this->current,
             $this->pageSize,
-            $this->status,
+            array(['status', '=', 1], ['cid', '<>', 6]),
             'id, cid, click, title, litpic, create_time',
             ['click' => 'desc'], null, null, ['channel']);
     }
