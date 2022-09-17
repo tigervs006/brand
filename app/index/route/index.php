@@ -20,9 +20,9 @@ Route::group(function () {
     /* 案例模型伪静态 */
     Route::group('case', function () {
         /* 案例列表 */
-        Route::rule('<dirname?>/$', 'cases/index')->name('caseList');
+        Route::rule('<dirname?>/$', 'cases/list')->name('caseList');
         /* 案例详情 */
-        Route::rule('<id>$', 'cases/detail')->name('caseDetail');
+        Route::rule('<id>$', 'cases/index')->name('caseDetail');
     });
     /* 标签模型伪静态 */
     Route::group('tags', function () {
@@ -45,11 +45,11 @@ Route::group(function () {
     /* 文档模型伪静态 */
     Route::group('news', function () {
         /* 顶级栏目 */
-        Route::rule('<id>$', 'industry/detail');
+        Route::rule('<id>$', 'industry/index');
         /* 文档列表 */
-        Route::rule('<dirname?>/$', 'industry/index')->name('newsList');
+        Route::rule('<dirname?>/$', 'industry/list')->name('newsList');
         /* 文章详情 */
-        Route::rule('<dirname?><id>$', 'industry/detail')->name('newsDetail');
+        Route::rule('<dirname?><id>$', 'industry/index')->name('newsDetail');
     });
     /* 关于我们伪静态 */
     Route::group('about', function () {
@@ -78,7 +78,7 @@ Route::group(function () {
         /* 商品列表 */
         Route::rule('<dirname?>/$', 'product/list')->name('productList');
         /* 商品详情 */
-        Route::rule('<dirname?><id>$', 'product/detail')->name('productDetail');
+        Route::rule('<dirname?><id>$', 'product/index')->name('productDetail');
     });
     /* 图集模型伪静态 */
     Route::group('images', function () {
