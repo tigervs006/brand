@@ -23,7 +23,7 @@
 {volist name="channel" id="item"}
 {if $item.children}
                 <li class="nav-item dropdown">
-                    <a class="nav-link position-relative" href="/{$item.name}/" id="{$item.name}" data-bs-toggle="dropdown">{$item.cname}</a>
+                    <a class="nav-link position-relative" href="/{$item.fullpath}" id="{$item.name}" data-bs-toggle="dropdown">{$item.cname}</a>
 {present name="item['children'][0]['children']"}
                     <div class="dropdown-menu" aria-labelledby="product">
                         <ul class="list-group list-group-horizontal-md">
@@ -32,7 +32,7 @@
                                 <dl class="accordion">
                                     <dt>{$child1.cname}</dt>
 {volist name="child1.children" id="child2"}
-                                    <dd><a class="dropdown-item" href="/{$item.name}/{$child1.name}/{$child2.name}/" target="_blank">{$child2.cname}</a></dd>
+                                    <dd><a class="dropdown-item" href="/{$child2.fullpath}" target="_blank">{$child2.cname}</a></dd>
 {/volist}
                                 </dl>
                             </li>
@@ -42,7 +42,7 @@
 {else /}
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="{$item.name}">
 {volist name="item.children" id="child"}
-                        <li><a class="dropdown-item" href="/{$item.name}/{$child.name}/">{$child.cname}</a></li>
+                        <li><a class="dropdown-item" href="/{$child.fullpath}">{$child.cname}</a></li>
 {/volist}
                     </ul>
 {/present}
