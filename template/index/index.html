@@ -37,7 +37,7 @@
         <div class="row g-2 g-md-3">
             <div class="col-custom-2">
                 <div class="border rounded overflow-hidden ani-transform part-product-recommend">
-                    <a href="product/1.html" target="_blank" title="S80双摄像头1500万像素高拍仪">
+                    <a href="{:url('productDetail', ['dirname' => 'gaopaiyi/', 'id' => 1])}" target="_blank" title="S80双摄像头1500万像素高拍仪">
                         <img alt="S80双摄像头1500万像素高拍仪" class="img-fluid" src="__STATIC__/static/images/20220113175156.png">
                     </a>
                 </div>
@@ -62,7 +62,7 @@
 {/volist}
         </div>
         <div class="more">
-            <a role="button" target="_blank" href="product/" class="btn btn-danger rounded-pill">查看更多</a>
+            <a role="button" target="_blank" href="{:url('/product/')}" class="btn btn-danger rounded-pill">查看更多</a>
         </div>
     </div>
 </section>
@@ -148,26 +148,26 @@
             <h2>成功案例</h2>
             <p class="text-muted">用心服务，永不止步</p>
         </div>
+{volist name="case" id="item"}
+{equal name="$i" value="1"}
         <div class="row g-2 g-md-3">
-{present name="case[0]"}
             <div class="col-12">
                 <div class="row g-2 g-md-3">
                     <div class="col-md-6 exclude">
-                        <img class="img-fluid" alt="{$case[0]['title']}" title="{$case[0]['title']}" src="{$case[0]['litpic']}"/>
+                        <img class="img-fluid" alt="{$item.title}" title="{$item.title}" src="{$item.litpic}"/>
                     </div>
                     <div class="col-md-6">
                         <div class="d-flex flex-column part-case-top justify-content-center">
-                            <h4 class="text-center">{$case[0]['title']}</h4>
-                            <p class="text-muted text-clamp-ellipsis text-clamp-3">{$case[0]['description']}</p>
+                            <h4 class="text-center">{$item.title}</h4>
+                            <p class="text-muted text-clamp-ellipsis text-clamp-3">{$item.description}</p>
                             <div class="gap-2 col-6 d-grid mx-auto">
-                                <a href="{:url('caseDetail', ['id' => $case[0]['id']])}" type="botton" class="btn btn-outline-danger">查看详情</a>
+                                <a href="{:url('caseDetail', ['id' => $item.id])}" type="botton" class="btn btn-outline-danger">查看详情</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-{/present}
-{volist name="case" id="item" offset="1"}
+{else /}
             <div class="col-6 col-md-4">
                 <div class="card ani-transform part-case-item">
                     <img alt="{$item.title}" class="card-img-top" src="{$item.litpic}">
@@ -180,6 +180,7 @@
                     </div>
                 </div>
             </div>
+{/equal}
 {/volist}
         </div>
         <div class="more">
@@ -338,11 +339,10 @@
             <h2>新闻资讯</h2>
             <p class="text-muted">INDUSTRY NEWS</p>
         </div>
-{present name="$hotart"}
         <div class="row g-3">
+{volist name="hotart" id="item"}
+{equal name="item['is_head']" value="1"}
             <div class="col-12 col-md-4 part-industry-left">
-{foreach $hotart as $item}
-{compare name="item['is_head']" value="1" type="equal"}
                 <div class="img-animated overflow-hidden border-bottom-dashed">
                     <a target="_blank" href="{:url('newsDetail', ['dirname' => $item.channel.dirname ?? '', 'id' => $item.id])}" class="text-reset text-decoration-none" title="{$item.title}">
                         <div class="rounded overflow-hidden">
@@ -353,13 +353,13 @@
                         <p class="text-clamp-3 text-clamp-ellipsis">{$item.description}</p>
                     </a>
                 </div>
-{/compare}
-{/foreach}
             </div>
+{/equal}
+{/volist}
             <div class="col-12 col-md-8">
                 <ul class="row g-3 list-unstyled part-industry-right">
-{foreach $hotart as $item}
-{compare name="item['is_head']" value="1" type="notequal"}
+{volist name="hotart" id="item"}
+{notequal name="item['is_head']" value="1"}
                     <li class="col-12 col-md-6 part-industry-right-item">
                         <div class="overflow-hidden border-bottom-dashed">
                             <a target="_blank" href="{:url('newsDetail', ['dirname' => $item.channel.dirname ?? '', 'id' => $item.id])}" class="text-reset text-decoration-none" title="{$item.title}">
@@ -369,19 +369,14 @@
                             </a>
                         </div>
                     </li>
-{/compare}
-{/foreach}
+{/notequal}
+{/volist}
                 </ul>
             </div>
         </div>
-{if count($hotart) >= 7}
         <div class="more">
-            <a role="button" target="_blank" href="industry/" class="btn btn-danger rounded-pill">查看更多</a>
+            <a role="button" target="_blank" href="{:url('/news/')}" class="btn btn-danger rounded-pill">查看更多</a>
         </div>
-{/if}
-{else /}
-        <p class="text-danger text-center">There is nothing</p>
-{/present}
     </div>
 </section>
 <!--新闻资讯部分 End-->{/block}
