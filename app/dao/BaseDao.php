@@ -259,7 +259,8 @@ abstract class BaseDao
             $pre = array(
                 'id' => $pre[0]['id'],
                 'title' => $pre[0]['title'],
-                'dirname' => $pre[0]['channel']['dirname']
+                'dirname' => $pre[0]['channel']['dirname'],
+                'fullpath' => $pre[0]['channel']['fullpath']
             );
         }
         if ($next->isEmpty()) {
@@ -270,7 +271,8 @@ abstract class BaseDao
             $next = array(
                 'id' => $next[0]['id'],
                 'title' => $next[0]['title'],
-                'dirname' => $next[0]['channel']['dirname']
+                'dirname' => $next[0]['channel']['dirname'],
+                'fullpath' => $next[0]['channel']['fullpath']
             );
         }
         return compact('pre', 'next');
