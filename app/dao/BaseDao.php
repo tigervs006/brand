@@ -244,13 +244,13 @@ abstract class BaseDao
     public function getPrenext(int $id, ?array $map = null, ?string $field = 'id, title', ?string $firstPre = '已经是第一篇了', ?string $lastNext = '这是最后一篇了'): array
     {
         $nextMap = array(['id', '>', $id]);
-        $pretMap = array(['id', '<', $id]);
+        $prevMap = array(['id', '<', $id]);
         if ($map) {
-            $nextMap = array(['id', '>', $id], $map);
-            $pretMap = array(['id', '<', $id], $map);
+            $nextMap = array(['id', '>', $id], ...$map);
+            $prevMap = array(['id', '<', $id], ...$map);
         }
         $next = $this->getModel()->where($nextMap)->field($field)->with(['channel'])->limit(1)->select();
-        $pre = $this->getModel()->where($pretMap)->field($field)->with(['channel'])->order('id', 'desc')->limit(1)->select();
+        $pre = $this->getModel()->where($prevMap)->field($field)->with(['channel'])->order('id', 'desc')->limit(1)->select();
         if ($pre->isEmpty()) {
             $pre = array(
                 'title' => $firstPre
