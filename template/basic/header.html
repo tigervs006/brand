@@ -18,12 +18,12 @@
         <div id="navbarNav" class="collapse offset-md-1 navbar-collapse">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active position-relative" href="/">首页</a>
+                    <a class="nav-link <?php if ('/' === $_SERVER['REQUEST_URI']) echo 'active';?> position-relative" href="/">首页</a>
                 </li>
 {volist name="channel" id="item"}
 {if $item.children}
                 <li class="nav-item dropdown">
-                    <a class="nav-link position-relative" href="/{$item.fullpath}" id="{$item.name}" data-bs-toggle="dropdown">{$item.cname}</a>
+                    <a class="nav-link <?php if (1 <= stripos($_SERVER['REQUEST_URI'], $item['fullpath'])) echo 'active';?> position-relative" href="/{$item.fullpath}" id="{$item.name}" data-bs-toggle="dropdown">{$item.cname}</a>
 {present name="item['children'][0]['children']"}
                     <div class="dropdown-menu" aria-labelledby="product">
                         <ul class="list-group list-group-horizontal-md">
@@ -49,7 +49,7 @@
                 </li>
 {else /}
                 <li class="nav-item">
-                    <a class="nav-link position-relative" href="/{$item.name}/">{$item.cname}</a>
+                    <a class="nav-link <?php if (1 <= stripos($_SERVER['REQUEST_URI'], $item['fullpath'])) echo 'active';?> position-relative" href="/{$item.name}/">{$item.cname}</a>
                 </li>
 {/if}
 {/volist}
