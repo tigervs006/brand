@@ -27,22 +27,6 @@ class Product extends BaseController
     }
 
     /**
-     * 商品列表
-     * @return string
-     */
-    public function list(): string
-    {
-        $name = ['name' => getPath()];
-        $pid = $this->channelServices->value($name, 'pid');
-        is_null($pid) && abort(404, "page doesn't exist");
-        $map = !$pid
-            ? $this->status
-            : array_merge($this->status, ['pid' => $this->channelServices->value($name)]);
-        $list = $this->services->getPaginate($map, $this->pageSize, null, $this->order, ['channel']);
-        return $this->view::fetch('../product/index', compact('list'));
-    }
-
-    /**
      * 商品详情
      * @return string
      */
@@ -52,5 +36,21 @@ class Product extends BaseController
         $info = $this->services->getOne($map, '*', ['detail']);
         is_null($info) && abort(404, "page doesn't exist");
         return $this->view::fetch('../product/detail', compact('info'));
+    }
+
+    /**
+     * 商品列表
+     * @return string
+     * @throws \Throwable
+     */
+    public function list(): string
+    {
+        $name = ['name' => getPath()];
+        $id = $this->channelServices->value($name, 'id');
+        is_null($id) && abort(404, "page doesn't exist");
+        $ids = $this->channelServices->getChildIds($id);
+        $map = array_merge($this->status, ['pid' => $ids]);
+        $list = $this->services->getPaginate($map, $this->pageSize, null, $this->order, ['channel']);
+        return $this->view::fetch('../product/index', compact('list'));
     }
 }
