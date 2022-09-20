@@ -36,7 +36,7 @@ class Cases extends BaseController
         // 阅读量自增
         $info && $this->services->setInc($info['id'], $this->incValue);
         // 上/下一篇文章
-        $prenext = $this->services->getPrenext($info['id'], ['cid', '=', 6], 'id, cid, title');
+        $prenext = $this->services->getPrenext($info['id'], array(['cid', '=', 6]), 'id, cid, title');
         return $this->view::fetch('../case/detail', compact('info', 'prenext'));
     }
 
