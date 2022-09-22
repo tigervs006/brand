@@ -8,6 +8,10 @@ Route::group(function () {
     Route::rule('region', 'index/region');
     /* 单页模型伪静态 */
     Route::rule('single/<dirname?>$', 'single/index');
+    /* 网站搜索 */
+    Route::rule('search/$', 'index/search')->pattern(['keyword' => '\S+']);
+    /* 搜索分页 */
+    Route::rule('search/page/<current>$', 'index/search')->pattern(['keyword' => '\S+']);
     /* 行业模型伪静态 */
     Route::group('area', function () {
         /* 顶级栏目 */

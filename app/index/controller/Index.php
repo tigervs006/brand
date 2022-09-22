@@ -56,6 +56,20 @@ class Index extends BaseController
     }
 
     /**
+     * 网站搜索
+     * @return string
+     * @param string $keyword
+     */
+    final public function search(string $keyword): string
+    {
+        !$keyword && abort(404, '请输入搜索词');
+        $map = array(['title', 'like', '%' . $keyword . '%']);
+        $list = $this->articleServices->getPaginate($map, $this->current, $this->pageSize, 'search/', '*', $this->order, ['channel'], ['keyword' => $keyword]);
+        $total = $list->isEmpty() ? 0 : $this->articleServices->getCount($map);
+        return $this->view::fetch('../search', compact('list', 'total'));
+    }
+
+    /**
      * 获取商品列表
      * @return Collection
      */
