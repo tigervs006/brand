@@ -12,6 +12,8 @@ Route::group(function () {
     Route::group('area', function () {
         /* 顶级栏目 */
         Route::rule('<id>$', 'area/detail');
+        /* 分页列表 */
+        Route::rule('<dirname?>page/<current>$', 'area/list');
         /* 行业列表 */
         Route::rule('<dirname?>/$', 'area/index')->name('areaList');
         /* 行业详情 */
@@ -28,6 +30,8 @@ Route::group(function () {
     Route::group('tags', function () {
         /* 顶级栏目 */
         Route::rule('<id>$', 'tags/detail');
+        /* 分页列表 */
+        Route::rule('<dirname?>page/<current>$', 'tags/list');
         /* 标签列表 */
         Route::rule('<dirname?>/$', 'tags/index')->name('tagsList');
         /* 标签详情 */
@@ -37,6 +41,8 @@ Route::group(function () {
     Route::group('video', function () {
         /* 顶级栏目 */
         Route::rule('<id>$', 'video/detail');
+        /* 分页列表 */
+        Route::rule('<dirname?>page/<current>$', 'video/list');
         /* 视频列表 */
         Route::rule('<dirname?>/$', 'video/index')->name('videoList');
         /* 视频详情 */
@@ -46,6 +52,8 @@ Route::group(function () {
     Route::group('news', function () {
         /* 顶级栏目 */
         Route::rule('<id>$', 'industry/index');
+        /* 分页列表 */
+        Route::rule('<dirname?>page/<current>$', 'industry/list');
         /* 文档列表 */
         Route::rule('<dirname?>/$', 'industry/list')->name('newsList');
         /* 文章详情 */
@@ -75,6 +83,8 @@ Route::group(function () {
     Route::group('product', function () {
         /* 顶级栏目 */
         Route::rule('<id>$', 'product/detail');
+        /* 分页列表 */
+        Route::rule('<dirname?>page/<current>$', 'product/list');
         /* 商品列表 */
         Route::rule('<dirname?>/$', 'product/list')->name('productList');
         /* 商品详情 */
@@ -84,6 +94,8 @@ Route::group(function () {
     Route::group('images', function () {
         /* 顶级栏目 */
         Route::rule('<id>$', 'images/detail');
+        /* 分页列表 */
+        Route::rule('<dirname?>page/<current>$', 'images/list');
         /* 图集列表 */
         Route::rule('<dirname?>/$', 'images/list')->name('imagesList');
         /* 图集详情 */
@@ -93,6 +105,8 @@ Route::group(function () {
     Route::group('download', function () {
         /* 顶级栏目 */
         Route::rule('<id>$', 'download/detail');
+        /* 分页列表 */
+        Route::rule('<dirname?>page/<current>$', 'download/list');
         /* 下载列表 */
         Route::rule('<dirname?>/$', 'download/list')->name('downloadList');
         /* 下载详情 */
@@ -109,4 +123,4 @@ Route::group(function () {
     });
     /* miss路由 */
     Route::miss(function() { return '404 Not Found!'; });
-})->option(['method' => 'get', 'https' => true])->pattern(['id' => '\d+', 'dirname' => '[a-zA-Z\_\-\/]+']);
+})->option(['method' => 'get', 'https' => true])->pattern(['id' => '\d+', 'current' => '\d+', 'dirname' => '[(a-zA-Z\_\-\/)|(?!page\/)]*']);
