@@ -21,10 +21,12 @@ Route::group(function () {
     });
     /* 案例模型伪静态 */
     Route::group('case', function () {
-        /* 案例列表 */
-        Route::rule('<dirname?>/$', 'cases/list')->name('caseList');
+        /* 分页列表 */
+        Route::rule('<dirname?>page/<current>$', 'cases/list');
         /* 案例详情 */
         Route::rule('<id>$', 'cases/index')->name('caseDetail');
+        /* 案例列表 */
+        Route::rule('<dirname?>/$', 'cases/list')->name('caseList');
     });
     /* 标签模型伪静态 */
     Route::group('tags', function () {
