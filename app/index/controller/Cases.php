@@ -42,13 +42,10 @@ class Cases extends BaseController
 
     final public function list(): string
     {
-        $name = ['name' => getPath()];
-        $pid = $this->channelServices->value($name, 'pid');
-        is_null($pid) && abort(404, "page doesn't exist");
-        $map = !$pid
-            ? array_merge($this->status, ['cid' => 6])
-            : array_merge($this->status, ['cid' => $this->channelServices->value($name)]);
-        $list = $this->services->getPaginate($map, $this->pageSize, $this->field, $this->order, ['channel']);
-        return $this->view::fetch('../case/index', compact('list'));
+        /* 获取当前栏目信息 */
+        $info = $this->channelServices->listInfo();
+        $map = array_merge($this->status, ['cid' => $info['ids']]);
+        $list = $this->services->getPaginate($map, $this->current, 3, $info['fullpath'], '*', $this->order, ['channel']);
+        return $this->view::fetch('../case/index', compact('list', 'info'));
     }
 }

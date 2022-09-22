@@ -33,7 +33,7 @@ class Industry extends BaseController
     }
 
     /**
-     * 文章列表
+     * 文章内容
      * @return string
      */
     final public function index(): string
@@ -42,24 +42,21 @@ class Industry extends BaseController
         // 阅读量自增
         $result && $this->services->setInc($result['id'], $this->incValue);
         // 上/下一篇文章
-        $prenext = $this->services->getPrenext($result['id'], ['cid', '<>', 6], 'id, cid, title');
+        $prenext = $this->services->getPrenext($result['id'], array(['cid', '<>', 6]), 'id, cid, title');
         return $this->view::fetch('../industry/detail', ['result' => $result, 'prenext' => $prenext]);
     }
 
     /**
-     * 文章内容
+     * 文章列表
      * @return string
      */
     final public function list(): string
     {
-        $name = ['name' => getPath()];
-        $pid = $this->channelServices->value($name, 'pid');
-        is_null($pid) && abort(404, "page doesn't exist");
-        $map = !$pid
-            ? array(['status', '=', 1], ['cid', '<>', 6])
-            : array_merge($this->status, ['cid' => $this->channelServices->value($name)]);
-        $list = $this->services->getPaginate($map, $this->pageSize, $this->field, $this->order, ['channel']);
-        return $this->view::fetch('../industry/index', compact('list'));
+        /* 获取当前栏目信息 */
+        $info = $this->channelServices->listInfo();
+        $map = array_merge($this->status, ['cid' => $info['ids']]);
+        $list = $this->services->getPaginate($map, $this->current, $this->pageSize, $info['fullpath'], $this->field, $this->order, ['channel']);
+        return $this->view::fetch('../industry/index', compact('list', 'info'));
     }
 
     /**

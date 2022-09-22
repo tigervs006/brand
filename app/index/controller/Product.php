@@ -45,12 +45,10 @@ class Product extends BaseController
      */
     public function list(): string
     {
-        $name = ['name' => getPath()];
-        $id = $this->channelServices->value($name, 'id');
-        is_null($id) && abort(404, "page doesn't exist");
-        $ids = $this->channelServices->getChildIds($id);
-        $map = array_merge($this->status, ['pid' => $ids]);
-        $list = $this->services->getPaginate($map, $this->pageSize, null, $this->order, ['channel']);
-        return $this->view::fetch('../product/index', compact('list'));
+        /* 获取当前栏目信息 */
+        $info = $this->channelServices->listInfo();
+        $map = array_merge($this->status, ['pid' => $info['ids']]);
+        $list = $this->services->getPaginate($map, $this->current, $this->pageSize, $info['fullpath'], '*', $this->order, ['channel']);
+        return $this->view::fetch('../product/index', compact('list', 'info'));
     }
 }
