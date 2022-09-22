@@ -45,7 +45,7 @@ class Cases extends BaseController
         /* 获取当前栏目信息 */
         $info = $this->channelServices->listInfo();
         $map = array_merge($this->status, ['cid' => $info['ids']]);
-        $list = $this->services->getPaginate($map, $this->current, 3, $info['fullpath'], '*', $this->order, ['channel']);
+        $list = $this->services->getPaginate($map, $this->current, 9, $info['fullpath'], '*', $this->order, ['channel']);
         return $this->view::fetch('../case/index', compact('list', 'info'));
     }
 }
