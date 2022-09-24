@@ -16,22 +16,23 @@
         }
     ],
     "require": {
+        "ext-zlib": "*",
         "php": ">=8.0.15",
         "lcobucci/jwt": "4.2.1",
         "qcloud/cos-sdk-v5": "^2.5.6",
         "topthink/framework": "^6.0.13",
         "topthink/think-orm": "^2.0.54",
         "topthink/think-view": "^1.0.14",
+        "phpmailer/phpmailer": "^6.6.3",
         "topthink/think-queue": "^3.0.7",
         "aliyuncs/oss-sdk-php": "^2.6.0",
         "topthink/think-multi-app": "^1.0.14",
-        "alibabacloud/cdn-20180510": "^1.0.14",
         "qcloud_sts/qcloud-sts-sdk": "^3.0.8",
-        "phpmailer/phpmailer": "^6.6.3"
+        "alibabacloud/cdn-20180510": "^1.0.14"
     },
     "require-dev": {
-        "symfony/var-dumper": "^4.4.44",
-        "topthink/think-trace":"^1.4"
+        "topthink/think-trace":"^1.4",
+        "symfony/var-dumper": "^4.4.44"
     },
     "autoload": {
         "psr-4": {
