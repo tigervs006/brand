@@ -1,5 +1,5 @@
 <?php
-
+declare (strict_types = 1);
 namespace core\services;
 
 use think\facade\Config;
