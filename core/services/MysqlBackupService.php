@@ -75,7 +75,7 @@ class MysqlBackupService
     public function setTimeout(int $time = 0): static
     {
         if (!is_null($time)) {
-            set_time_limit($time) || ini_set("max_execution_time", $time);
+            set_time_limit($time) || ini_set("max_execution_time", (string) $time);
         }
         return $this;
     }
