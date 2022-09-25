@@ -43,7 +43,6 @@ class ExceptionHandle extends Handle
             app('http')->getName() . '/' . request()->rule()->getRule(),
             json_encode(request()->param(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
             json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-
         ];
 
         /* 把日志写入到文件 */
@@ -66,7 +65,7 @@ class ExceptionHandle extends Handle
     {
         /* 添加自定义异常处理机制 */
         if ($e instanceof DbException) {
-            return app('json')->fail($e->getMessage(), [
+            return app('json')->fail($e->getMessage(), $e->getCode(), [
                 'file' => $e->getFile(),
                 'line' => $e->getLine(),
                 'message' => $e->getMessage()
