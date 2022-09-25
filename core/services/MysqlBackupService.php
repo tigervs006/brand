@@ -279,11 +279,11 @@ class MysqlBackupService
                 return $key;
             }
             ob_end_clean();
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header('Content-Description: File Transfer');
-            header('Access-Control-Allow-Origin: ' . request()->domain());
             header('Content-Type: application/octet-stream');
             header('Content-Length: ' . filesize($fileName));
+            header('Access-Control-Allow-Origin: ' . request()->domain());
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header('Content-Disposition: attachment; filename=' . basename($fileName));
             return readfile($fileName);
         } else {

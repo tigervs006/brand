@@ -2,6 +2,7 @@
 declare (strict_types = 1);
 namespace app\console\controller\system;
 
+use think\db\exception\BindParamException;
 use think\facade\Cache;
 use think\response\Json;
 use core\basic\BaseController;
@@ -38,6 +39,8 @@ class DataBackupController extends BaseController
 
     /**
      * 查看表结构
+     * @return Json
+     * @param string $tablename
      */
     final public function read(string $tablename): Json
     {
@@ -47,14 +50,19 @@ class DataBackupController extends BaseController
 
     /**
      * 优化数据表
+     * @return Json
+     * @throws \Exception
      */
     final public function optimize(): Json
     {
         $res = $this->services->getDbBackup()->optimize($this->tables);
         return $res ? $this->json->successful('优化表成功') : $this->json->fail('优化表失败');
     }
+
     /**
      * 修复数据表
+     * @return Json
+     * @throws BindParamException
      */
     final public function repair(): Json
     {
@@ -64,6 +72,8 @@ class DataBackupController extends BaseController
 
     /**
      * 备份数据表
+     * @return Json
+     * @throws BindParamException
      */
     final public function backup(): Json
     {
@@ -73,6 +83,7 @@ class DataBackupController extends BaseController
 
     /**
      * 获取备份记录
+     * @return Json
      */
     final public function record(): Json
     {
@@ -82,6 +93,8 @@ class DataBackupController extends BaseController
 
     /**
      * 删除备份记录
+     * @return Json
+     * @throws \Exception
      */
     public function delRecord(): Json
     {
@@ -92,6 +105,8 @@ class DataBackupController extends BaseController
 
     /**
      * 恢复备份记录
+     * @return Json
+     * @throws \Exception
      */
     public function import(): Json
     {
@@ -141,8 +156,10 @@ class DataBackupController extends BaseController
 
     /**
      * 下载备份记录
+     * @return Json
+     * @throws \Exception
      */
-    public function download()
+    public function download(): Json
     {
         $time = intval(request()->param('time'));
         $key = $this->services->getDbBackup()->downloadFile($time, 0, true);
