@@ -2,10 +2,10 @@
 declare (strict_types = 1);
 namespace app\console\controller\system;
 
-use think\db\exception\BindParamException;
 use think\facade\Cache;
 use think\response\Json;
 use core\basic\BaseController;
+use think\db\exception\BindParamException;
 use app\services\system\DataBackupServices;
 
 class DataBackupController extends BaseController
