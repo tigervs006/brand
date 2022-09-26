@@ -51,7 +51,7 @@ class DataBackupServices extends BaseServices
             $v['size'] = formatBytes($v['data_length'] + $v['index_length']);
             $list[$k] = $v;
         }
-        return array_merge($list, ['total' => count($list)]);
+        return $list;
     }
 
     /**
@@ -66,7 +66,7 @@ class DataBackupServices extends BaseServices
         foreach ($list as $key => $f) {
             $list[$key]['EXTRA'] = ($f['EXTRA'] == 'auto_increment' ? '是' : ' ');
         }
-        return array_merge($list, ['total' => count($list)]);
+        return $list;
     }
 
     /**
