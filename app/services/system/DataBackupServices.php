@@ -79,13 +79,13 @@ class DataBackupServices extends BaseServices
 
     /**
      * 备份表
-     * @param string $tables
      * @return string
+     * @param array|string $tables
      * @throws BindParamException
      */
-    public function backup(string $tables): string
+    public function backup(array|string $tables): string
     {
-        $tables = explode(',', $tables);
+        $tables = is_array($tables) ? $tables : explode(',', $tables);
         $data = '';
         ini_set ("memory_limit","-1");
         foreach ($tables as $t) {
