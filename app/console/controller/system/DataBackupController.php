@@ -11,9 +11,9 @@ use app\services\system\DataBackupServices;
 class DataBackupController extends BaseController
 {
     /**
-     * @var array|mixed
+     * @var array|string|null
      */
-    private mixed $tables;
+    private array|string|null $tables;
 
     /**
      * @var DataBackupServices
@@ -96,9 +96,10 @@ class DataBackupController extends BaseController
      * @return Json
      * @throws \Exception
      */
-    public function delRecord(): Json
+    public function delete(): Json
     {
-        $filename = intval(request()->post('filename'));
+        $post = ['filename/d', null, 'intval'];
+        $filename = $this->request->post(...$post);
         $this->services->getDbBackup()->delFile($filename);
         return $this->json->successful('删除备份记录成功...');
     }
@@ -115,8 +116,7 @@ class DataBackupController extends BaseController
                 'part'  => 0,
                 'time'  => 0,
                 'start' => 0,
-            ], 'post', 'intval'
-        );
+            ], 'post', 'intval');
         $db = $this->services->getDbBackup();
         if (is_numeric($param['time']) && !$param['start']) {
             $list = $db->getFile('timeverif', $param['time']);
@@ -161,8 +161,14 @@ class DataBackupController extends BaseController
      */
     public function download(): Json
     {
-        $time = intval(request()->param('time'));
-        $key = $this->services->getDbBackup()->downloadFile($time, 0, true);
+        $param = $this->request->only(
+            [
+                'time',
+                'part' => 0,
+                'isFile' => true
+            ],
+            'get', 'intval');
+        $key = $this->services->getDbBackup()->downloadFile(...$param);
         return $this->json->successful(compact('key'));
     }
 }
