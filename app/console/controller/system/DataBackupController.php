@@ -34,8 +34,7 @@ class DataBackupController extends BaseController
     final public function index(): Json
     {
         $list = $this->services->getDataList();
-        $total = count($list);
-        return $this->json->successful(compact('list', 'total'));
+        return $this->json->successful($list);
     }
 
     /**
@@ -46,8 +45,7 @@ class DataBackupController extends BaseController
     final public function read(string $tablename): Json
     {
         $list = $this->services->getRead($tablename);
-        $total = count($list);
-        return $this->json->successful(compact('list', 'total'));
+        return $this->json->successful($list);
     }
 
     /**

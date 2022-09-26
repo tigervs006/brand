@@ -48,10 +48,11 @@ class DataBackupServices extends BaseServices
     {
         $list = $this->dbBackup->dataList();
         foreach ($list as $k => $v) {
+            $v['id'] = $k + 1;
             $v['size'] = formatBytes($v['data_length'] + $v['index_length']);
             $list[$k] = $v;
         }
-        return $list;
+        return ['list' => $list, 'total' => count($list)];
     }
 
     /**
@@ -66,7 +67,7 @@ class DataBackupServices extends BaseServices
         foreach ($list as $key => $f) {
             $list[$key]['EXTRA'] = ($f['EXTRA'] == 'auto_increment' ? '是' : ' ');
         }
-        return $list;
+        return ['list' => $list, 'total' => count($list)];
     }
 
     /**
@@ -107,6 +108,7 @@ class DataBackupServices extends BaseServices
         $files = $this->dbBackup->fileList();
         foreach ($files as $key => $t) {
             $data[$key]['backtime'] = $key;
+            $data[$key]['id'] = $t['time'];
             $data[$key]['part'] = $t['part'];
             $data[$key]['time'] = $t['time'];
             $data[$key]['compress'] = $t['compress'];
