@@ -262,20 +262,20 @@ class MysqlBackupService
 
     /**
      * 下载备份
-     * @return false|int|string
-     * @param $time
+     * @return int|false|string
+     * @param int $time
      * @param int $part
-     * @param bool $isFile
+     * @param int $isFile
      * @throws Exception
      */
-    public function downloadFile($time, int $part = 0, bool $isFile = false): bool|int|string
+    public function downloadFile(int $time, int $part = 0, int $isFile = 0): int|false|string
     {
         $file = $this->getFile('time', $time);
         $fileName = $file[$part];
         if (file_exists($fileName)) {
             if ($isFile) {
-                $key = password_hash(time() . $fileName, PASSWORD_DEFAULT);
-                Cache::set($key, ['path' => $fileName, 'fileName' => substr(strstr($fileName, 'backup'), 7)], 300);
+                $key = password_hash($fileName, PASSWORD_DEFAULT);
+                Cache::set($key, ['path' => $fileName, 'fileName' => substr(strstr($fileName, 'backup'), 15)], 300);
                 return $key;
             }
             ob_end_clean();
