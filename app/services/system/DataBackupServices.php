@@ -41,6 +41,16 @@ class DataBackupServices extends BaseServices
     }
 
     /**
+     * 获取表引擎
+     * @return string
+     * @param string $tablename
+     */
+    public function getEngines(string $tablename): string
+    {
+        return $this->dbBackup->engines($tablename);
+    }
+
+    /**
      * 获取数据库列表
      * @return array
      */
@@ -65,6 +75,7 @@ class DataBackupServices extends BaseServices
         $database = Env::get("database.database");
         $list = Db::query("select * from information_schema.columns where table_name = '" . $tablename . "' and table_schema = '" . $database . "'");
         foreach ($list as $key => $f) {
+            $list[$key]['id'] = $key + 1;
             $list[$key]['EXTRA'] = ($f['EXTRA'] == 'auto_increment' ? '是' : ' ');
         }
         return ['list' => $list, 'total' => count($list)];
@@ -119,5 +130,4 @@ class DataBackupServices extends BaseServices
         krsort($data);
         return ['list' => array_values($data), 'total' => count($data)];
     }
-
 }

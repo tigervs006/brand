@@ -28,9 +28,9 @@ class MysqlBackupService
 
     /**
      * 打开文件大小
-     * @var int
+     * @var int|float
      */
-    private int $size = 0;
+    private int|float $size = 0;
 
     /**
      * 数据备份配置
@@ -126,12 +126,12 @@ class MysqlBackupService
     /**
      * 查询表引擎
      * @return string
-     * @param $db
-     * @param string $table
+     * @param string $tablename 表名
      */
-    public function checkEngines($db, string $table): string
+    public function engines(string $tablename): string
     {
-        $res = $db->query("SHOW CREATE TABLE {$table}");
+        $db = self::connect();
+        $res = $db->query("SHOW CREATE TABLE {$tablename}");
         $tableInfo = $res[0]['Create Table'];
         preg_match('/ENGINE\=(\w+)/i', $tableInfo, $matches);
         return $matches[count($matches) -1];
@@ -294,9 +294,9 @@ class MysqlBackupService
     /**
      * 还原数据
      * @param $start
-     * @return bool|array|int
+     * @return int|bool|array
      */
-    public function import($start): bool|array|int
+    public function import($start): int|bool|array
     {
         $db = self::connect();
         if ($this->config['compress']) {
@@ -417,10 +417,11 @@ class MysqlBackupService
         } else {
             $list = $db->query("OPTIMIZE TABLE {$tables}");
         }
-        if (!$list) {
+        if ($list) {
+            return $list;
+        } else {
             throw new Exception("data sheet'{$tables}'Repair mistakes please try again!");
         }
-        return $list;
     }
 
     /**
@@ -448,10 +449,10 @@ class MysqlBackupService
 
     /**
      * 写入SQL语句
-     * @return bool
+     * @return int|false
      * @param string $sql
      */
-    private function write(string $sql): bool
+    private function write(string $sql): int|false
     {
         $size = strlen($sql);
         $size = $this->config['compress'] ? $size / 2 : $size;
@@ -461,9 +462,9 @@ class MysqlBackupService
 
     /**
      * 打开一个卷，用于写入数据
-     * @param integer $size 写入数据的大小
+     * @param int|float $size 写入数据的大小
      */
-    private function open(int $size): void
+    private function open(int|float $size): void
     {
         if ($this->fp) {
             $this->size += $size;

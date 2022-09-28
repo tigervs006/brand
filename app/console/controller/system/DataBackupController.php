@@ -11,9 +11,9 @@ use app\services\system\DataBackupServices;
 class DataBackupController extends BaseController
 {
     /**
-     * @var array|string|null
+     * @var null|array|string
      */
-    private array|string|null $tables;
+    private null|array|string $tables;
 
     /**
      * @var DataBackupServices
@@ -55,8 +55,8 @@ class DataBackupController extends BaseController
      */
     final public function optimize(): Json
     {
-        $res = $this->services->getDbBackup()->optimize($this->tables);
-        return $res ? $this->json->successful('优化表成功') : $this->json->fail('优化表失败');
+        $this->services->getDbBackup()->optimize($this->tables);
+        return $this->json->successful('优化成功');
     }
 
     /**
@@ -67,7 +67,7 @@ class DataBackupController extends BaseController
     final public function repair(): Json
     {
         $res = $this->services->getDbBackup()->repair($this->tables);
-        return $res ? $this->json->successful('修复表成功') : $this->json->fail('修复表失败');
+        return 'OK' === $res[0]['Msg_text'] ? $this->json->successful('修复成功') : $this->json->fail($res[0]['Msg_text']);
     }
 
     /**
@@ -88,7 +88,7 @@ class DataBackupController extends BaseController
     final public function record(): Json
     {
         $list = $this->services->getBackup();
-        return $this->json->successful($list);
+        return empty($list['list']) ? $this->json->fail() : $this->json->successful($list);
     }
 
     /**
@@ -113,6 +113,7 @@ class DataBackupController extends BaseController
     {
         $param = $this->request->only(
             [
+                'gz',
                 'part'  => 0,
                 'time'  => 0,
                 'start' => 0,
@@ -122,9 +123,9 @@ class DataBackupController extends BaseController
             $list = $db->getFile('timeverif', $param['time']);
             if (is_array($list)) {
                 Cache::set('backup_list', $list, 300);
-                return $this->json->successful('初始化完成！', array('part' => 1, 'start' => 0));
+                return $this->json->successful('初始化完成！', array('part' => 1, 'start' => 1));
             } else {
-                return $this->json->fail('备份文件可能已经损坏，请检查！');
+                return $this->json->fail('备份文件可能已经损坏');
             }
         } else if (is_numeric($param['part']) && is_numeric($param['start'])) {
             $list = Cache::get('backup_list');
