@@ -174,17 +174,18 @@ abstract class BaseDao
 
     /**
      * 删除一条或多条数据
-     * @return boolean
+     * @return int|bool
      * @param int|array|string $id
-     * @param string|null $key key
+     * @param null|string $key key
+     * @param null|bool $force 强制删除
      */
-    public function delete(int|array|string $id, ?string $key = null): bool
+    public function delete(int|array|string $id, ?string $key = null, ?bool $force = false): int|bool
     {
-        if (is_array($id)) {
-            return $this->getModel()->useSoftDelete('delete_time',time())->delete($id) >= 1;
+        if ($force) {
+            return $this->getModel()->destroy($id, $force);
         } else {
             $where = [is_null($key) ? $this->getPk() : $key => $id];
-            return $this->getModel()->where($where)->useSoftDelete('delete_time',time())->delete() >= 1;
+            return $this->getModel()->where($where)->useSoftDelete('delete_time',time())->delete();
         }
     }
 
@@ -207,12 +208,12 @@ abstract class BaseDao
 
     /**
      * 批量更新数据
-     * @return BaseModel
+     * @return int|BaseModel
      * @param array $ids
      * @param array $data
      * @param string|null $key
      */
-    public function batchUpdate(array $ids, array $data, ?string $key): BaseModel
+    public function batchUpdate(array $ids, array $data, ?string $key): int|BaseModel
     {
         return $this->getModel()->whereIn(is_null($key) ? $this->getPK() : $key, $ids)->update($data);
     }
