@@ -10,7 +10,6 @@ use core\exceptions\ApiException;
 use core\exceptions\AuthException;
 use app\services\user\UserServices;
 use app\services\auth\GroupServices;
-use core\exceptions\UploadException;
 use app\services\user\ClientServices;
 use app\services\system\RegionServices;
 use app\services\user\JwtTokenServices;
@@ -134,34 +133,6 @@ class PublicController extends BaseController
         /* 记录退出登录日志 */
         $this->logServices->actionLogRecord($token, 2, '退出登录');
         return $this->json->successful('Logout successful');
-    }
-
-    /**
-     * 文件上传
-     * @return Json
-     */
-    final public function upload(): Json
-    {
-        try {
-            $upload = \core\services\UploadService::init();
-            /* 设置默认值upload是因为ckeditor上传时有固定的name */
-            $uploadPath = $this->request->post('path/s', 'images/article', 'trim');
-            $fileInfo = $upload->to($uploadPath)->validate()->move();
-            return $fileInfo ? $this->json->successful('File uploaded successfully', $fileInfo) : $this->json->fail('File upload failed');
-        } catch (\Exception $e) {
-            throw new UploadException($e->getMessage());
-        }
-    }
-
-    /**
-     * 删除文件
-     * @return Json
-     */
-    final public function removeFile(): Json
-    {
-        $remove = \core\services\UploadService::init();
-        $fileInfo = $remove->delete($this->request->param('filePath/s', null, 'trim'));
-        return $fileInfo ? $this->json->successful('File deleted successfully') : $this->json->fail('File deleted failed');
     }
 
     /**
