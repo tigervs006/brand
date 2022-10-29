@@ -26,13 +26,13 @@
         "phpmailer/phpmailer": "^6.6.3",
         "topthink/think-queue": "^3.0.7",
         "aliyuncs/oss-sdk-php": "^2.6.0",
-        "topthink/think-multi-app": "^1.0.14",
+        "topthink/think-multi-app": "^1.0.15",
         "qcloud_sts/qcloud-sts-sdk": "^3.0.8",
-        "alibabacloud/cdn-20180510": "^1.0.14"
+        "alibabacloud/cdn-20180510": "^1.1.4"
     },
     "require-dev": {
-        "topthink/think-trace":"^1.4",
-        "symfony/var-dumper": "^4.4.44"
+        "topthink/think-trace":"^1.5",
+        "symfony/var-dumper": "^4.4.46"
     },
     "autoload": {
         "psr-4": {
