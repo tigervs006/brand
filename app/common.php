@@ -11,8 +11,6 @@
 
 declare (strict_types = 1);
 
-// 应用公共文件
-
 if (!function_exists('getPath')) {
     /**
      * 获取pathinfo
@@ -49,6 +47,22 @@ if (!function_exists('msectime')) {
     {
         list($msec, $sec) = explode(' ', microtime());
         return (float)sprintf('%.0f', (floatval($msec) + floatval($sec)) * 1000);
+    }
+}
+
+if(!function_exists('filterSearch')) {
+    /**
+     * 模糊搜索条件
+     * @return array
+     * @param array $map
+     */
+    function filterSearch(array $map): array
+    {
+        $search = [];
+        foreach ($map as $key => $val) {
+            $search[] = [$key, 'like', '%' . $val . '%'];
+        }
+        return $search;
     }
 }
 
