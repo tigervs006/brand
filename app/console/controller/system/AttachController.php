@@ -12,6 +12,7 @@
 declare (strict_types = 1);
 namespace app\console\controller\system;
 
+use core\exceptions\ApiException;
 use think\response\Json;
 use core\basic\BaseController;
 use core\services\UploadService;
@@ -133,13 +134,39 @@ class AttachController extends BaseController
     final public function remove(): Json
     {
         $post = $this->request->post('attach');
-        array_walk($post, function ($val) {
-            /* 从存储中删除文件 */
-            UploadService::init($val['storage'])->delete($val['path']);
-            /* 从数据库删除记录 */
-            $this->services->delete($val['id'], 'id', true);
-        });
+        $this->services->destroy($post); /* 真实删除文件 */
         return $this->json->successful('File deleted successfully');
+    }
+
+    /**
+     * 查找并删除文件
+     * @return Json
+     * @author Kevin
+     * @createAt 2022/11/3 10:03
+     */
+    final public function findAndDelete(): Json
+    {
+        $attach = [];
+        $path = $this->request->post('path');
+        try {
+            $this->validate(
+                compact('path'),
+                ['path' => 'require|array'],
+                [
+                    'path.require' => '文件路径不得为空',
+                    'path.array' => '文件路径类型需为数组',
+                ]
+            );
+        } catch (\think\exception\ValidateException $e) {
+            throw new ApiException($e->getMessage());
+        }
+
+        foreach ($path as $url) {
+            $attach[] = $this->services->getOne(['static_path' => $url], '*');
+        }
+
+        $attach && $this->services->destroy($attach);
+        return $attach ? $this->json->successful('File deleted successfully') : $this->json->fail("File doesn't exist");
     }
 
     /**
@@ -171,7 +198,7 @@ class AttachController extends BaseController
         $path = $this->cateServices->value(['id' => $pid], 'dirname') . '/';
         try {
             $this->validate(
-                ['pid' => $pid, 'ext' => $ext],
+                compact('pid', 'ext'),
                 ['pid' => 'require|integer', 'ext' => 'require'],
                 [
                     'pid.integer' => '目录id须为正整数',
